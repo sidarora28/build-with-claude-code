@@ -1,4 +1,4 @@
-<img width="1588" height="1036" alt="image" src="https://github.com/user-attachments/assets/8650ab35-7103-4afc-bfe0-8ce6ac52174e" /># Getting Started
+Getting Started
 
 You're about to build real AI systems — agents, skills, MCP integrations, an orchestrator — in six modules, taught entirely inside Claude Code. This page walks you through everything you need to do before the course starts.
 
