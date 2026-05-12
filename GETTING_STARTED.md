@@ -53,7 +53,8 @@ Or use this direct link to skip the click: [Download ZIP](https://github.com/sid
 ### Step 4 — Open the folder in Claude Desktop
 
 In Claude Desktop, use **File → Open Folder** (or equivalent) and point it at the `build-with-claude-code` folder you just downloaded.
-<img width="1588" height="1036" alt="image" src="https://github.com/user-attachments/assets/fb18ea3c-cf2c-4d39-af69-0a86b5f106bd" />
+<img width="1588" height="1036" alt="image" src="https://github.com/user-attachments/assets/5214011a-6c29-456b-8b8e-d65fe77014dd" />
+
 
 
 ### Step 5 — Start the course
