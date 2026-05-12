@@ -1,4 +1,4 @@
-# Getting Started
+<img width="1588" height="1036" alt="image" src="https://github.com/user-attachments/assets/8650ab35-7103-4afc-bfe0-8ce6ac52174e" /># Getting Started
 
 You're about to build real AI systems — agents, skills, MCP integrations, an orchestrator — in six modules, taught entirely inside Claude Code. This page walks you through everything you need to do before the course starts.
 
@@ -48,10 +48,13 @@ Once inside Claude Desktop, look for the **Claude Code** option. If you don't se
 4. You'll have a folder called `build-with-claude-code` — move it somewhere you'll remember (Desktop or Documents)
 
 Or use this direct link to skip the click: [Download ZIP](https://github.com/sidarora28/build-with-claude-code/archive/refs/heads/main.zip)
+<img width="1588" height="1036" alt="image" src="https://github.com/user-attachments/assets/1a252f81-f505-4fcb-991b-f1d7b720436b" />
 
 ### Step 4 — Open the folder in Claude Desktop
 
 In Claude Desktop, use **File → Open Folder** (or equivalent) and point it at the `build-with-claude-code` folder you just downloaded.
+<img width="1588" height="1036" alt="image" src="https://github.com/user-attachments/assets/fb18ea3c-cf2c-4d39-af69-0a86b5f106bd" />
+
 
 ### Step 5 — Start the course
 
