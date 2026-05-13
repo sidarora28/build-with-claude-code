@@ -161,6 +161,8 @@ If time allows, give an input that is genuinely ambiguous and see how the orches
 >
 > What you understand now is not a toy pattern. It is the architecture that runs inside Cursor, inside Claude, inside every serious AI product you have ever used. You did not watch a video about it. **You built it from scratch in under an hour.**
 >
+> If you're in the Slack — drop a message in **#japm-build-with-claude-code** with what you just built. Not in yet? https://join.slack.com/t/justanotherpmhq/shared_invite/zt-3xp0b5cn9-3EMYOiedl9lgc38LyTmqhQ
+>
 > One module left. Module 5 is where you learn to make what you've built fast, cheap, and reliable — and which of those to care about when. Reply 'next' when ready."
 
 Wait for "next". Point at `module-5/TASK.md`.

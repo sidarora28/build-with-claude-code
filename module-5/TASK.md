@@ -169,7 +169,9 @@ After April speaks (whether the learner engaged or not), June takes the mic for 
 
 > "That's the end of the course. You finished what 60% of starters never finish.
 >
-> Two small asks, only if it feels right:
+> Head to **#japm-build-with-claude-code** in the Slack and drop a message that you finished. Tell us what you built. The community is here: https://join.slack.com/t/justanotherpmhq/shared_invite/zt-3xp0b5cn9-3EMYOiedl9lgc38LyTmqhQ
+>
+> Two more small asks, only if it feels right:
 > 1. **Star the repo.** It's how other PMs find this.
 > 2. **Send it to one person** you think would benefit. Just point them at the repo.
 >

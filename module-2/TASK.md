@@ -202,6 +202,8 @@ Make one targeted edit based on their diagnosis. Re-trigger. Show the difference
 >
 > What you understand now: a Skill is how you encode your judgment into Claude permanently. That workflow now runs exactly the way you want it — without you explaining anything.
 >
+> If you're in the Slack — drop a message in **#japm-build-with-claude-code** with the name of the Skill you just built. Not in yet? https://join.slack.com/t/justanotherpmhq/shared_invite/zt-3xp0b5cn9-3EMYOiedl9lgc38LyTmqhQ
+>
 > Module 3 is the one that surprises people most. Claude stops working inside this folder and starts taking real actions in tools you use every day. Reply 'next' when ready."
 
 Wait for "next". Point at `module-3/TASK.md`.

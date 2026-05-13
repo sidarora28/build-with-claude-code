@@ -230,6 +230,8 @@ Wait for their answer. Then give the framework:
 >
 > What you understand now: an agent is a loop with a goal, a brain that guides it, and hands that let it act. You can now look at any agent — in this course, in any product — and understand exactly what it's doing and why.
 >
+> If you're in the Slack community — drop a message in **#japm-build-with-claude-code** that you finished Module 1 and what topic you ran your agents on. Not in the Slack yet? https://join.slack.com/t/justanotherpmhq/shared_invite/zt-3xp0b5cn9-3EMYOiedl9lgc38LyTmqhQ
+>
 > Module 2 is where you build something different: a Skill. Not an agent. The difference matters, and I'll explain it at the start. Reply 'next' when ready."
 
 Wait for "next". Point at `module-2/TASK.md`.

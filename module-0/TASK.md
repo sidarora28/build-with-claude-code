@@ -200,7 +200,9 @@ Tease only. Do not build anything here.
 >
 > That is more hands-on Claude Code than 95% of people who have heard of it have ever done. You didn't watch a demo. You did the actual thing.
 >
-> ⭐ Quick aside while it's fresh: if this clicked, drop a star on the repo — it's how other people find this course. Here's the link: https://github.com/sidarora28/aipm
+> ⭐ Quick aside while it's fresh: if this clicked, drop a star on the repo — it's how other people find this course. Here's the link: https://github.com/sidarora28/build-with-claude-code
+>
+> One more thing — there's a Slack community for people going through this course. If you're not in it yet: https://join.slack.com/t/justanotherpmhq/shared_invite/zt-3xp0b5cn9-3EMYOiedl9lgc38LyTmqhQ — head to **#japm-build-with-claude-code** and drop a message that you finished Module 0. Takes 30 seconds and you'll be able to ask questions and see what others are building.
 >
 > Module 1 is where it gets fun. You're about to build your first AI agent — a system that thinks, acts, and hands work to another agent automatically. Reply 'next' when you're ready."
 

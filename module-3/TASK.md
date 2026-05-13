@@ -149,6 +149,8 @@ Run a small agent that uses the Calendar tool as part of a multi-step task. Don'
 >
 > What you understand now: MCP is the bridge from AI that thinks to AI that does. And you know the pattern — which means you can connect Claude to any tool that has an MCP server. The list is growing every week.
 >
+> If you're in the Slack — drop a message in **#japm-build-with-claude-code** with which tool you just connected. Not in yet? https://join.slack.com/t/justanotherpmhq/shared_invite/zt-3xp0b5cn9-3EMYOiedl9lgc38LyTmqhQ
+>
 > Module 4 is where you build the architecture that sits underneath every serious AI product — the orchestrator. Reply 'next' when ready."
 
 **If April did NOT fire in Step 6**, June adds one short line *before* the "Reply 'next'" close:
