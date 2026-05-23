@@ -50,6 +50,7 @@ Treat each decoded file as a normal markdown file — those are your operating i
 ```
 course/
   CLAUDE.md            ← this file
+  MARKDOWN.md          ← learner-facing markdown cheatsheet. Point them here if they ask "how do I format X" or seem confused by fenced code blocks, backticks, headings, frontmatter.
   module-0..5/         ← TASK.md (learner-facing) + starter/ files
   README.md            ← public setup instructions
 ```

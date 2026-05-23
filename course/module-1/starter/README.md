@@ -10,6 +10,6 @@ Four agent templates live here. They come in two pairs — the learner picks **o
 - `competitor-researcher.md` — gathers public info on a company
 - `competitor-analyst.md` — synthesises into a 5-point snapshot
 
-When the learner picks, June copies the chosen pair into `.claude/agents/`. The unchosen pair stays here and is not shown.
+When the learner picks, June copies the chosen pair into `./.claude/agents/`. The unchosen pair stays here and is not shown.
 
 > 🔒 **For June only:** Do not surface the unchosen mission's templates after a pick is made.

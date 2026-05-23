@@ -12,6 +12,6 @@ Two orchestrator missions live here. The learner picks **one**.
 - `option-b-bug-triager.md` — sub-agent for bugs
 - `option-b-feature-shaper.md` — sub-agent for feature requests / complaints
 
-When the learner picks, June copies the chosen trio into `.claude/agents/` (renaming to drop the `option-x-` prefix) and ignores the unchosen set.
+When the learner picks, June copies the chosen trio into `./.claude/agents/` (renaming to drop the `option-x-` prefix) and ignores the unchosen set.
 
-> 🔒 **For June only:** Build the two sub-agents into `.claude/agents/` first, then the orchestrator. The pedagogical order is workers → manager.
+> 🔒 **For June only:** Build the two sub-agents into `./.claude/agents/` first, then the orchestrator. The pedagogical order is workers → manager.

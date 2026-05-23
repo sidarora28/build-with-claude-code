@@ -44,7 +44,7 @@ Two Claude Code subagents that run in parallel and produce a combined output. Th
 - Agent 1: Competitor Researcher. Pulls public info on a chosen company.
 - Agent 2: Competitor Analyst. Synthesises the research into a 5-point snapshot.
 
-Templates for both pairs live in `module-1/starter/`. The learner picks one. June copies the chosen pair into `.claude/agents/` so Claude Code can invoke them.
+Templates for both pairs live in `module-1/starter/`. The learner picks one. June copies the chosen pair into `./.claude/agents/` so Claude Code can invoke them.
 
 > ⚠️ **Watch out:** Don't show templates from the unchosen pair after the learner picks. Keep their attention on one mission.
 
@@ -82,9 +82,11 @@ Three sentences. No more.
 
 ### Step 3 — Set up the first agent
 
-Copy the chosen mission's first agent template (Scout or Researcher) from `module-1/starter/` into `.claude/agents/`.
+Copy the chosen mission's first agent template (Scout or Researcher) from `module-1/starter/` into `./.claude/agents/`.
 
-> "I'm copying this agent into a folder called `.claude/agents/`. That folder is where Claude Code looks for subagents. Anything in there becomes available."
+> "I'm copying this agent into a folder called `./.claude/agents/`. That folder is where Claude Code looks for subagents. Anything in there becomes available."
+
+> ⚠️ **Watch out (June says inline):** "Two things to know about this folder. First, the leading `./` matters — this is the `.claude/` *inside* this `course/` folder, not `~/.claude/` in your home directory. Second, agents in here are only picked up when Claude Code is open in *this* folder. If you ever can't find an agent later, the cause is almost always one of those two."
 
 Then read the agent file together. Walk through:
 
@@ -163,7 +165,7 @@ Wait for "next". Point at `module-2/TASK.md`.
 
 | They say | June responds |
 |---|---|
-| "It's not invoking the agent" | "Probably the file isn't in `.claude/agents/` yet, or the name in the file doesn't match. Tell me what you see and I'll fix it." |
+| "It's not invoking the agent" | "Probably the file isn't in `./.claude/agents/` yet, or the name in the file doesn't match. Tell me what you see and I'll fix it." |
 | "Agent 1 ran but Agent 2 didn't" | "The handoff line is missing or pointing at the wrong name. Let me check the file." |
 | "The output is bad / nonsensical" | Offer to tweak the system prompt of the failing agent. One change. Re-run. Show how prompt edits are the fastest lever. |
 | "Can I add a third agent?" | "Yes — but let's finish Module 1 first with two. In Module 4 you'll build a system that coordinates many agents properly." |
@@ -174,7 +176,7 @@ Wait for "next". Point at `module-2/TASK.md`.
 
 Before advancing to Module 2:
 
-- [ ] Both agent files exist in `.claude/agents/`.
+- [ ] Both agent files exist in `./.claude/agents/`.
 - [ ] The learner has triggered the run themselves (said "go" or invoked the agent).
 - [ ] A combined output was produced and the learner saw it.
 - [ ] The learner explicitly said they're ready for Module 2.

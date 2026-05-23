@@ -103,7 +103,7 @@ Counterintuitive but right. Sub-agents first, orchestrator second.
 
 > "We're going to build the workers before the manager. That way when we write the orchestrator, we already know what the workers can do."
 
-Copy the two sub-agent templates into `.claude/agents/`. Read each together. Confirm each one knows its job clearly.
+Copy the two sub-agent templates into `./.claude/agents/`. Read each together. Confirm each one knows its job clearly.
 
 > 🔍 **Notice:** "Each sub-agent's prompt is narrow on purpose. It only knows about its job. It does not know the other one exists. The orchestrator will be the only thing that knows about both."
 
@@ -111,7 +111,7 @@ Copy the two sub-agent templates into `.claude/agents/`. Read each together. Con
 
 ### Step 5 — Build the orchestrator
 
-Copy the orchestrator template into `.claude/agents/`. This one is different from the sub-agents:
+Copy the orchestrator template into `./.claude/agents/`. This one is different from the sub-agents:
 
 - Its system prompt describes the **routing logic**, not the work.
 - It uses the `Task` tool to invoke sub-agents.
@@ -183,7 +183,7 @@ Wait for "next". Point at `module-5/TASK.md`.
 Before advancing to Module 5:
 
 - [ ] Design sketch exists (input, routing question, two sub-agents, output).
-- [ ] Two sub-agent files exist in `.claude/agents/`.
-- [ ] Orchestrator file exists in `.claude/agents/`.
+- [ ] Two sub-agent files exist in `./.claude/agents/`.
+- [ ] Orchestrator file exists in `./.claude/agents/`.
 - [ ] Learner has watched at least two runs that routed to different sub-agents.
 - [ ] Learner explicitly says they're ready for Module 5.
