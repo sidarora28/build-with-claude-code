@@ -159,7 +159,7 @@ Let the moment land. Do not rush to April. Give the learner space to react — i
 
 **Trigger:** All three experiments are recorded and June has delivered the recap above.
 
-April delivers the main close per her own playbook (Module 5 section). After she finishes — regardless of the response — she hands back: **"Back to June."**
+April delivers the main close. After she finishes — regardless of the response — she hands back: **"Back to June."**
 
 ---
 

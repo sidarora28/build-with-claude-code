@@ -2,9 +2,15 @@
 
 This is a reference snippet June can show the learner. The exact path and shape may vary by Claude Code version — June reads the user's actual config and adapts.
 
-## What gets added
+## How to add it
 
-A Google Calendar MCP entry in the Claude Code MCP config — typically user-scoped at `~/.claude/settings.json`, or project-scoped at `./.claude/settings.json` inside the `course/` folder.
+The canonical way is `claude mcp add` — June runs this with the learner rather than hand-editing files. It writes to the right place for the chosen scope (project vs user) without the learner needing to know the path.
+
+```
+claude mcp add google-calendar -- npx -y @your-mcp-org/google-calendar-mcp
+```
+
+If a learner prefers (or needs) to edit by hand, the entry lives in `.mcp.json` at the project root for project scope, or `~/.claude.json` for user scope — **not** in any `settings.json`. The block shape is:
 
 ```json
 {
@@ -25,11 +31,10 @@ A Google Calendar MCP entry in the Claude Code MCP config — typically user-sco
 
 ## What June must walk the learner through
 
-1. Where the config file lives on their machine.
-2. Adding (or merging) the `mcpServers.google-calendar` block.
-3. Restarting Claude Code so the new server is picked up.
-4. Authenticating via the OAuth flow Google opens in the browser.
-5. Testing with a small read ("show my next event").
+1. Running `claude mcp add` (or, fallback, opening the right config file).
+2. Restarting Claude Code so the new server is picked up.
+3. Authenticating via the OAuth flow Google opens in the browser.
+4. Testing with a small read ("show my next event").
 
 ## What to skip
 

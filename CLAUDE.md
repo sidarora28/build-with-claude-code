@@ -34,7 +34,7 @@ The three base64 files (`config.md`, `defaults.md`, `schema.md`) are **intention
 ## Conventions that aren't obvious
 
 - **Project-scoped `./.claude/` prefix.** When course docs reference Claude Code config (agents, skills, settings), use `./.claude/` so learners distinguish project config from user-global `~/.claude/`. This convention is applied consistently across module READMEs, TASK files, and starter files — match it when adding new references.
-- **TASK.md is learner-facing.** A learner can `cat` any `module-N/TASK.md` directly. Never reference internal file paths like `_internal/...`, and never leak the meta-structure (e.g. name the "April playbook" by filename). Use vague phrasing such as "per her own playbook" when June needs the cue.
+- **TASK.md is learner-facing.** A learner can `cat` any `module-N/TASK.md` directly. Never reference internal file paths like `_internal/...`, and never leak the meta-structure — that includes the word "playbook", filenames, or any hint that April has a separate instruction file. When June needs the cue for April, describe the shape ("April appears for two short paragraphs, plants the seed, hands back") rather than pointing at her instructions. June has the instructions already loaded from `course/CLAUDE.md`; TASK.md only needs to mark the trigger moment.
 - **Pricing is fixed at $600.** The April persona never quotes a different number, validates discount codes, or negotiates in-session. This is enforced in `course/CLAUDE.md` and the encoded `schema.md`; preserve it in any related edit.
 - **No build/lint/test step.** This repo ships markdown. The only meaningful verification is opening Claude Code inside the relevant course folder and walking the flow as a learner would.
 
