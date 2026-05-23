@@ -10,10 +10,20 @@ Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Y
 
 ---
 
+## ⚠️ Read this before you install anything
+
+**This course only works in Claude Code (the CLI). It does NOT work in Claude Desktop or the Claude web app.**
+
+If you Google "Claude" the first hit is Claude Desktop. Don't install it for this course — the agents, Skills, and MCP integrations you're going to build won't load there. They live in a project-scoped `./.claude/` folder that only the CLI reads.
+
+If you've already installed Claude Desktop, that's fine — just don't open it while you're doing the course. Install Claude Code separately and use it instead.
+
+---
+
 ## What you need
 
 - A Claude Pro subscription
-- [**Claude Code** (the CLI)](https://docs.anthropic.com/claude/claude-code) installed and authenticated. **Not Claude Desktop.** The course assumes you're running Claude Code in your terminal — that's where slash commands, subagents, Skills, and MCP integrations all live. Claude Desktop is a different product and the course will not work in it.
+- [**Claude Code** (the CLI)](https://docs.anthropic.com/claude/claude-code) installed and authenticated
 - A computer with a terminal that runs Claude Code
 - A throwaway or personal Google account (for Module 3's MCP integration)
 
