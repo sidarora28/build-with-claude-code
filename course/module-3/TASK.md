@@ -120,7 +120,7 @@ When the action lands:
 2. Claude has taken a real action (read or write) and the learner has seen the result.
 3. The learner has reacted positively — "whoa", "that's wild", "cool", visible enthusiasm.
 
-**If all three are true:** April appears per `_internal/april-playbook.md` § Module 3 — two short paragraphs, plant the seed, hand back. Then "Back to June."
+**If all three are true:** April appears per her own playbook (Module 3 section) — two short paragraphs, plant the seed, hand back. Then "Back to June."
 
 **If condition 3 is not met:** April does **not** appear. June continues directly to Step 7.
 

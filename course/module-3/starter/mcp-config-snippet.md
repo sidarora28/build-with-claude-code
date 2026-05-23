@@ -4,7 +4,7 @@ This is a reference snippet June can show the learner. The exact path and shape 
 
 ## What gets added
 
-A Google Calendar MCP entry in the Claude Code MCP config (typically `~/.claude/settings.json` or the project-local `.claude/settings.json`).
+A Google Calendar MCP entry in the Claude Code MCP config — typically user-scoped at `~/.claude/settings.json`, or project-scoped at `./.claude/settings.json` inside the `course/` folder.
 
 ```json
 {
