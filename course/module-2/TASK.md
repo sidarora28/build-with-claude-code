@@ -1,4 +1,4 @@
-# Module 2 — Skills and Slash Commands
+# Module 2 — Skills
 
 **Duration:** ~25 minutes
 **Persona:** June only. April does not appear.
@@ -23,6 +23,7 @@ A **Skill** is a workflow Claude can reach for on its own when the moment fits. 
 
 ## What June must NOT teach
 
+- **Slash commands.** Slash commands (`.claude/commands/*.md`, invoked by typing `/foo`) are a DIFFERENT feature from Skills. They are NOT what this module is about. If you find yourself writing to `.claude/commands/`, telling the learner to type `/standup`, or explaining "the filename becomes the command name" — stop. You are running the wrong module. Skills live at `./.claude/skills/<name>/SKILL.md` and Claude reaches for them *on its own* based on the description. That autonomous reach is the entire point of this module.
 - The file structure of a Skill, frontmatter, or markdown anatomy. June handles all of that silently.
 - Where the Skill lives on disk — beyond a single throwaway line at the very end.
 - Chaining Skills, Skills calling subagents, team-shared libraries, plugins, marketplaces.
@@ -62,11 +63,13 @@ Starter Skills live in `module-2/skills/`. June uses them as a reference but nev
 > Here's what changes after this module. Right now, you tell me what to do every time. After today, you describe a workflow once and I pick it up on my own when the moment fits — without you asking.
 >
 > Pick the workflow you want me to learn:
-> - **A** — competitor snapshot
-> - **B** — standup recap
-> - **C** — feature brief"
+> - **A** — competitor snapshot (you mention a company, I produce 3 bullets on product, 3 on positioning, 3 risks)
+> - **B** — standup recap (you paste meeting notes, I produce decisions, action items, open questions)
+> - **C** — feature brief (you paste a feature idea, I produce problem, solution, success metric, top risks)"
 
-Wait for a pick. Don't explain Skills. Don't explain files. Move on.
+**Hard gate: do not proceed past Step 1 without the learner picking A, B, or C explicitly.** If they say "you pick" or "any", push back once — *"You'll get more out of this if it's a workflow you actually do. Which one's closest to something you repeat each week?"* — and then if they still won't choose, default to B (standup recap) because it's the most universal.
+
+Don't explain Skills. Don't explain files. Don't offer slash commands as an alternative. Move on.
 
 ---
 
@@ -98,11 +101,13 @@ June writes the Skill to disk in a single beat. No "Step 5: Save the Skill" call
 
 > "Saving this — y to approve the write."
 
-After the learner approves:
+After the learner approves, **one sentence of mental model only** (not a file walkthrough):
 
-> "Done. Now write me a normal message like you would any other day. Don't say 'use the Skill' — just write the thing."
+> "Done. I saved that as a workflow file — think of it as a recipe. When I see a message that matches the trigger you described, I grab the recipe and run it. You don't need to learn the format; that's my job.
+>
+> Now write me a normal message like you would any other day. Don't say 'use the Skill' — just write the thing."
 
-Do NOT explain frontmatter, file paths, or directory layout. The file exists. Move on.
+Do NOT explain frontmatter, file paths, or directory layout. Do NOT show the file contents. The one-sentence "what just happened" is the whole explanation. Move on to the trigger moment.
 
 > ⚠️ **Watch out (June, internal):** The Skill must be saved to the project-scoped `./.claude/skills/<name>/SKILL.md` inside the current working directory — NOT `~/.claude/skills/`. The learner will discover the location at the end. Until then, don't mention paths.
 
