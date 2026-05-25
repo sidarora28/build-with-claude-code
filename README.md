@@ -2,7 +2,7 @@
 
 A free, hands-on course for anyone who wants to build with AI. Six modules, taught entirely inside Claude Code by an AI tutor named June.
 
-By the end you will have built: a foundation file Claude reads every session, a two-agent system, a Skill that fires on its own when the moment fits, a Gmail MCP integration, an orchestrator that routes work to specialists, and a tuned, measurable system.
+You'll build a real working app on your laptop — **Daily Brain** — a stripped-down second brain that reads your meeting notes, summarises them, tracks your action items, lets you query them, and (by Module 5) plugs into your Gmail. By the end you have something you actually use on Monday morning.
 
 Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Yelp.
 
@@ -17,6 +17,7 @@ Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Y
 ```bash
 git clone https://github.com/sidarora28/build-with-claude-code.git
 cd build-with-claude-code/course
+npm install
 claude
 # then type: hi
 ```

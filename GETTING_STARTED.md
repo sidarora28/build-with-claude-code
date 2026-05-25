@@ -140,7 +140,23 @@ The `cd` command means "change directory" — basically "open this folder." Your
 
 ---
 
-## Step 6: Launch Claude Code from the course folder
+## Step 6: Install the dashboard's dependencies
+
+The course includes a small web dashboard you'll grow into a real tool over the six modules. Before launching anything, install what it needs:
+
+```bash
+npm install
+```
+
+This takes 30-90 seconds. It downloads everything the dashboard needs to run on your laptop. You'll see a lot of progress text and some warnings — warnings are fine, errors are not.
+
+When it finishes you should see a `node_modules/` folder appear in your `course/` folder (don't worry about it — it's just the dependencies).
+
+> **If this didn't work:** If `npm` is "command not found," you need Node.js. Install it from [nodejs.org](https://nodejs.org/) (pick the LTS version), close and reopen your terminal, then try `npm install` again. If `node --version` shows something below 18, upgrade.
+
+---
+
+## Step 7: Launch Claude Code from the course folder
 
 This part matters: you have to launch Claude Code from **inside** the course folder, because that's where the special `.claude/` files (the ones that make June work) live.
 
@@ -156,7 +172,7 @@ You'll see Claude Code start up with a chat prompt waiting for input.
 
 ---
 
-## Step 7: Say hi
+## Step 8: Say hi
 
 In the Claude Code prompt, type:
 

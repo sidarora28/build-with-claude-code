@@ -2,11 +2,11 @@
 
 A free, hands-on course taught entirely inside Claude Code. No videos. No slides. Every lesson is a real task.
 
-By the end of six modules you will have built: a CLAUDE.md memory file, a two-agent system, a Skill registered as a slash command, an MCP integration with Google Calendar, an orchestrator routing work to specialist sub-agents, and three live performance experiments.
+Over six modules you'll build **Daily Brain** — a real working app on your laptop. A stripped-down second brain that reads your meeting notes, summarises them, tracks action items, lets you ask questions, and (by Module 5) plugs into your Gmail. By the end you have something you actually use Monday morning.
 
 Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Yelp.
 
-> ⭐ **If this looks useful, star the repo before you start.** It's the one thing that helps other PMs find it.
+> ⭐ **If this looks useful, star the repo before you start.** It's the one thing that helps other builders find it.
 
 ---
 
@@ -16,7 +16,7 @@ Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Y
 
 If you Google "Claude" the first hit is Claude Desktop. Don't install it for this course — the agents, Skills, and MCP integrations you're going to build won't load there. They live in a project-scoped `./.claude/` folder that only the CLI reads.
 
-If you've already installed Claude Desktop, that's fine — just don't open it while you're doing the course. Install Claude Code separately and use it instead.
+If you've already installed Claude Desktop, that's fine — just don't open it while you're doing the course.
 
 ---
 
@@ -24,52 +24,47 @@ If you've already installed Claude Desktop, that's fine — just don't open it w
 
 - A Claude Pro subscription
 - [**Claude Code** (the CLI)](https://docs.anthropic.com/claude/claude-code) installed and authenticated
-- A computer with a terminal that runs Claude Code
-- A throwaway or personal Google account (for Module 4's MCP integration)
+- **Node.js 18 or newer** ([nodejs.org](https://nodejs.org/), pick the LTS version) — the Daily Brain dashboard runs on this
+- A throwaway or personal Google account (for Module 5's Gmail integration)
 
-That is it. No prior coding experience. No prior AI experience. If you can describe what you want in plain English, you can do this course.
+No coding experience required. The course gives you a Next.js scaffold; you build the AI layers on top.
 
 ---
 
 ## How to start
 
-1. Clone this repo.
-   ```
-   git clone <repo-url>
-   cd course
-   ```
-2. **From inside the `course/` folder**, launch Claude Code in your terminal:
-   ```
-   claude
-   ```
-   Your current working directory matters. Anything Claude Code creates (Skills, agents, MCP config) lands inside `./.claude/` — i.e. *this* folder, not your home directory. If you launch Claude Code from somewhere else, you'll end up with files in the wrong place.
-3. Say "hi" or "start" — June, your tutor, will introduce herself and walk you through Module 1.
+If you've never used a terminal before, follow **[GETTING_STARTED.md](../GETTING_STARTED.md)** in the repo root — it walks you from zero.
 
-That is the entire setup. Everything else happens inside Claude Code.
+If you have git + Node + Claude Code already:
 
----
+```bash
+git clone https://github.com/sidarora28/build-with-claude-code.git
+cd build-with-claude-code/course
+npm install         # ~30-90s, installs the dashboard's dependencies
+claude              # launch Claude Code, then type: hi
+```
 
-## A note on `.claude/` folders
+In a second terminal once June walks you through Module 1:
 
-Claude Code has two `.claude/` directories and it matters which one you're using:
+```bash
+cd build-with-claude-code/course
+npm run dev         # starts the dashboard at http://localhost:3000
+```
 
-- **Project-scoped:** `./.claude/` (inside the folder you launched Claude Code from). This is what the course uses for every Skill, agent, and MCP config. Active only when Claude Code is open in that folder.
-- **User-scoped:** `~/.claude/` (in your home directory). Global. Active in every project. Out of scope for the course.
-
-**The course always means the project-scoped one** unless explicitly noted. If something you built isn't being picked up, the first thing to check is which folder it landed in.
+That's the entire setup. Everything else happens through June inside Claude Code.
 
 ---
 
 ## Time
 
-- Module 1 — Your First Hour with Claude Code (~45 min)
-- Module 2 — What Agents Actually Are (~60 min)
-- Module 3 — Skills and Slash Commands (~45 min)
-- Module 4 — Connecting MCP (~45 min)
-- Module 5 — The Orchestrator Pattern (~60 min)
-- Module 6 — Performance: Latency, Cost, Quality (~60 min)
+- Module 1 — Get your Daily Brain running (~30 min)
+- Module 2 — Build the summariser agent (~45 min)
+- Module 3 — Skills (consistent format) + a peek at CLAUDE.md (~30 min)
+- Module 4 — Orchestrator + action items (~60 min)
+- Module 5 — Connect Gmail (real data) (~45 min)
+- Module 6 — Make it fast and cheap (~45 min)
 
-Total: about 5 hours. The course is self-paced. You can do one module at a time across a week, or all six on a Saturday.
+Total: about 4-5 hours. Self-paced. One module across a week, or all six on a Saturday.
 
 ---
 
@@ -77,37 +72,44 @@ Total: about 5 hours. The course is self-paced. You can do one module at a time 
 
 ```
 course/
-  CLAUDE.md            ← course brain (auto-loads when you open in Claude Code)
-  MARKDOWN.md          ← markdown syntax cheatsheet (skim if any formatting confuses you)
-  module-1/            ← orientation + your first CLAUDE.md
-  module-2/            ← two-agent system
-  module-3/            ← skills + slash commands
-  module-4/            ← MCP integration
-  module-5/            ← orchestrator pattern
-  module-6/            ← performance experiments
+  CLAUDE.md            ← course brain (auto-loads when you open Claude Code here)
+  MARKDOWN.md          ← markdown cheatsheet (skim if formatting confuses you)
+  package.json         ← Node dependencies for the dashboard
+  app/                 ← the Daily Brain dashboard (Next.js)
+  components/          ← UI sections of the dashboard
+  data/meetings/       ← 10 sample meeting notes for the agents to read
+  module-1/            ← get the dashboard running
+  module-2/            ← summariser agent
+  module-3/            ← Skills + CLAUDE.md aside
+  module-4/            ← orchestrator + action items
+  module-5/            ← Gmail MCP integration
+  module-6/            ← performance tuning
   README.md            ← this file
 ```
 
-You don't need to read any of those files yourself. June handles that. Just open the folder in Claude Code and say "hi".
+You don't need to read any of those files yourself. June handles that. Just say "hi" once Claude Code is running.
 
 ---
 
 ## Troubleshooting
 
-**I'm using Claude Desktop / the web app and June isn't showing up.**
-The course is built for Claude Code (the CLI). Claude Desktop is a different product and the course's files (CLAUDE.md, slash commands, Skills, agents) aren't loaded there. Install Claude Code, `cd` into `course/`, and run `claude`.
+**`npm install` failed.**
+Most likely Node.js is missing or too old. Run `node --version` — needs to be 18 or above. If not, install from [nodejs.org](https://nodejs.org/).
 
-**Claude Code isn't picking up the course.**
-Make sure you launched Claude Code from inside `course/` specifically — not from the parent repo, not from your home directory. The `CLAUDE.md` at `course/CLAUDE.md` is what kicks the course off, and Claude Code only reads it if the cwd matches.
+**`npm run dev` says port 3000 is in use.**
+Run `npm run dev -- -p 3001` to use a different port, or kill whatever's using 3000.
+
+**June isn't showing up — I just get generic Claude.**
+You launched `claude` from the wrong folder. Type `/exit`, `cd` into the `course/` folder specifically, then run `claude` again.
+
+**I'm using Claude Desktop and nothing works.**
+This course doesn't run in Desktop. Install Claude Code (the CLI) separately. See `GETTING_STARTED.md`.
 
 **I built a Skill / agent and Claude can't find it.**
-Almost always a folder-location issue. The course uses *project-scoped* `./.claude/` (inside `course/`), not user-scoped `~/.claude/`. Check where the file landed.
-
-**June isn't appearing.**
-Type "start the course" or "hi June" explicitly. Sometimes the auto-greeting doesn't fire on the first message.
+Almost always a folder-location issue. The course uses *project-scoped* `./.claude/` (inside `course/`), not user-scoped `~/.claude/`.
 
 **Something else broke.**
-Paste the error in chat. June is built to debug this stuff with you. No dead ends.
+Paste the error in chat. June is built to debug with you. No dead ends.
 
 ---
 
@@ -115,4 +117,4 @@ Paste the error in chat. June is built to debug this stuff with you. No dead end
 
 The course is free. Share it with anyone who would benefit. The only thing it costs is the time you spend not building.
 
-If you finish a module and it clicks — **star the repo**. It's how other PMs find this.
+If you finish a module and it clicks — **star the repo**. It's how other builders find this.
