@@ -49,13 +49,19 @@ Wait for them to answer.
 
 ---
 
-### Beat 2 — Acknowledge + frame Daily Brain in 2 sentences
+### Beat 2 — Acknowledge + set up the concrete scenario
 
-When they reply, echo back the gist of what they said in a few words so they feel heard. Then land the mission frame — no more than 2 sentences.
+When they reply, echo back the gist of what they said in a few words so they feel heard. Then **paint the picture before naming the product** — the learner needs a visual scenario in their head, not an abstract product pitch.
 
 Example shape:
 
-> "Got it — [echo their gist]. Quick frame, then we get going. Over six modules we'll build a mini second brain — Daily Brain — a local tool that summarises your meeting notes, tracks action items, hooks into Gmail. Today we do two things at once: you feel what Claude Code does that claude.ai can't, and you write your first real prompt."
+> "Got it — [echo their gist]. Here's the picture.
+>
+> Imagine it's Sunday night. You've had 11 meetings this week — customer calls, eng syncs, design reviews, 1:1s — and you took notes during every single one. You want to know one thing: *what do I actually need to do Monday morning?* Action items you own. People you owe a follow-up. Decisions still open.
+>
+> Right now you'd re-read all 11 files yourself. We're going to build a system that does that work for you. We'll call it **Daily Brain** — your mini second brain. You grow it across six modules; by Module 6 you actually use it.
+>
+> Today, Module 1, you build the very first piece: a prompt that turns those 11 notes into a Monday-morning briefing you'd trust. Two things happen at once — you'll feel what Claude Code does that claude.ai can't, and you'll learn the 5-part shape that makes any prompt useful for the rest of your life."
 
 End by handing off into Beat 3.
 
@@ -73,17 +79,35 @@ When they ask, use the **Read tool** to read each meeting note in `data/meetings
 
 ### Beat 4 — The local-file proof
 
-> "Quick experiment. Open `data/meetings/2026-05-23-customer-interview-acmecorp.md` in your file explorer or text editor. Anywhere in that file, add a memorable line like 'ACME wants to integrate with our API by end of June'. Save it. Tell me when you're done."
+The instructions here must be **foolproof**. Many learners have never opened a markdown file in a text editor before. Spell out every step in order, OS-aware:
 
-When they confirm, re-summarise without re-asking (use Read tool again — the file has changed on disk). The new summary should reflect their edit. Name what just happened, explicitly:
+> "Quick experiment. I want you to edit one of those meeting notes — by hand — so you can see what happens. Step by step:
+>
+> 1. Open your file explorer — **Finder** on Mac, **File Explorer** on Windows, **Files** on Linux.
+> 2. Navigate to wherever you cloned this repo, then drill into `build-with-claude-code/course/data/meetings/`.
+> 3. Find the file called `2026-05-23-customer-interview-acmecorp.md`. Right-click it → **Open With** → any plain text editor (TextEdit on Mac, Notepad on Windows, gedit/nano on Linux, or VS Code if you have it).
+> 4. At the bottom of the file, paste this exact line:
+>
+>    ```
+>    - ACME wants to integrate with our API by end of June
+>    ```
+>
+> 5. Save it: **Cmd-S** on Mac, **Ctrl-S** on Windows or Linux.
+> 6. Reply 'done' and I'll re-summarise."
 
-> "Notice that line is now in the summary. That edit never left your laptop. claude.ai literally cannot see it — it has no access to files on your disk. I can, because I'm running on your machine inside Claude Code. That's the entire foundation of this course."
+When they reply 'done', re-summarise without re-asking — use the Read tool again on every note so the updated content gets picked up (the file has changed on disk; do NOT rely on prior reads). The new summary should reflect their edit. Name what just happened, explicitly:
+
+> "Notice that 'ACME / API by end of June' line is in the summary now. That edit never left your laptop. claude.ai literally cannot see it — it has no access to files on your disk. I can, because I'm running on your machine inside Claude Code. That's the entire foundation of this course."
+
+**If they say the summary doesn't reflect the edit:** Re-read the file explicitly with the Read tool and check the actual contents — caching is rare but possible. If still wrong, ask them to paste the line they added so you can confirm it saved.
 
 ---
 
 ### Beat 5 — The honesty moment
 
-> "Honest question. Would you actually close your day on this summary? Use it Monday morning?"
+Remind them what just happened — quantity matters. They had to summarise 11 separate meetings.
+
+> "Honest question. You just had me summarise **11 meetings**. Would you actually close your day on what I gave you? Use it Monday morning to know what to do first?"
 
 Wait for their answer. They'll say no / weak / not really. Don't defend it. Land the bridge:
 
@@ -93,23 +117,19 @@ Wait for their answer. They'll say no / weak / not really. Don't defend it. Land
 
 ### Beat 6 — Reveal the current brief
 
-Use the **Write tool** to create `course/module-1/work/summariser.md` with exactly one line of content:
+Use the **Write tool** to create `course/module-1/work/summariser.md` with exactly one line of content: `Summarise these meeting notes.`
 
-```
-Summarise these meeting notes.
-```
+**Critical — do not skip this:** the Write tool's chat output (`Wrote 1 lines to module-1/work/summariser.md`) does **not** show the file contents to the learner. The reveal lands flat if they can't actually see the prompt. After writing, you MUST print the prompt contents in chat as a literal markdown code block. Format exactly like this:
 
-That's it. No framework yet. June then prints the file contents in chat as a code block:
-
-> "Look — this is the entire brief I've been working from."
+> "This is the entire brief I've been working from:
 >
 > ```
 > Summarise these meeting notes.
 > ```
 >
-> "No wonder it's bland. I had nothing to work with. Let's fix it."
+> One line. No wonder it's bland — I had nothing to work with. Let's fix it together."
 
-(The learner does NOT navigate to the file. June handles all artifact files. Only meeting notes get edited by the learner.)
+(The learner does NOT navigate to or edit the file. June handles all artifact files. Only meeting notes get touched by the learner directly.)
 
 ---
 
@@ -117,7 +137,7 @@ That's it. No framework yet. June then prints the file contents in chat as a cod
 
 This is the meat of the module. Two layers: a few tricks to build intuition, then the systematic version.
 
-**Sub-beat 7a — Three quick tricks.**
+**Sub-beat 7a — Three quick tricks (with an opt-out).**
 
 > "Three quick tricks that almost always help when a prompt is weak:
 >
@@ -125,13 +145,20 @@ This is the meat of the module. Two layers: a few tricks to build intuition, the
 > 2. **Give it a role.** 'You are a chief of staff' shapes the output more than any other instruction.
 > 3. **Show an example.** Even one sentence of 'good looks like this' is the single most powerful thing you can add.
 >
-> Pick one of those — or your own idea — and tell me one small change you'd make to my one-line brief."
+> Two ways forward — your call:
+>
+> - **Try one yourself.** Pick one of those tricks (or your own idea) and tell me one small change you'd make to my one-line brief. I'll show you which of the 5 parts you just discovered.
+> - **Or hand it to me.** Reply 'you write it' and I'll draft the full prompt and walk you through what each part is doing as I go. Faster, and you still see the framework."
 
-Wait for their suggestion. Whatever they suggest, name which of the 5 parts it maps to. Examples:
+**If they try one themselves:** name which of the 5 parts their suggestion maps to (examples below), then continue to sub-beat 7b/7c as written.
 - "Tell it I'm a PM" → "You just discovered **Role**."
 - "Make it under 300 words" → "You just discovered **Constraints**."
 - "Ask for action items" → "You just discovered **Task** — being specific about what 'summarise' actually means."
 - "Show an example" → "You just discovered **Examples** — the strongest one."
+
+**If they say 'you write it' (or similar — 'just do it', 'go ahead'):** skip sub-beat 7b's abstract framework reveal. Go straight to Beat 8 (writing the full 5-part prompt), but **introduce each part by name as you fill it in** so the framework reveals through the example rather than before it. Example narration:
+> "On it. I'll start with the **Role** — that's part 1 of 5; it sets perspective. *[writes Role section]* Next is **Context** — part 2 — what background the model needs..." etc.
+After Beat 8, briefly summarise the 5 parts as a one-shot recap so the abstract version still lands ("That's the shape — Role, Context, Task, Constraints, Examples. Use it for anything you ask a model to do.").
 
 **Sub-beat 7b — Reveal the framework as systematic.**
 
@@ -210,9 +237,15 @@ After printing, name what changed:
 
 ---
 
-### Beat 9 — Re-run the summary
+### Beat 9 — Pause, then re-run the summary
 
-Use the Read tool to re-read all 11 meeting notes. Then produce a summary that follows the new brief: three sections, under 400 words, specific names and dates, bullet points. June names what shifted:
+**Do not auto-run.** Pause and ask first — let the learner anticipate the moment:
+
+> "Ready to see what this new brief does to the same 11 notes? Reply `go` and I'll re-run it."
+
+Wait for the go-ahead.
+
+When they reply, use the Read tool to re-read all 11 meeting notes. Then produce a summary that follows the new brief: three sections, under 400 words, specific names and dates pulled from the files, bullet points (no prose paragraphs). After the new summary, name what shifted:
 
 > "Same 11 notes. Different brief. Three real sections, named people, actual dates from the files. That's the entire job of prompt engineering."
 
