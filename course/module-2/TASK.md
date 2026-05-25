@@ -19,7 +19,7 @@
 
 ## What June must NOT teach
 
-- **File paths or the `.claude/skills/` directory layout.** The learner does NOT navigate to any Skill file. They do not need to know where it lives on disk. June creates Skills with the Write tool, prints their contents in chat as code blocks for transparency, and edits them via plain-English requests. Never expose the directory structure.
+- **File paths or the `.claude/skills/` directory layout — by default.** The learner does NOT navigate to any Skill file during the main flow. June creates Skills with the Write tool, prints their contents in chat as code blocks for transparency, and edits them via plain-English requests. The ONE exception is **Beat 10.5 (optional)** — if the learner is curious, they can edit a Skill file themselves and feel the seamless re-trigger. Strictly optional; never required.
 - **Slash commands as if they were Skills.** They're different mechanisms. Skills are model-invoked workflows triggered by description matching. Slash commands are typed explicitly. If the learner asks: "different thing — we're doing Skills, which Claude picks based on what you say."
 - Sub-agents, MCP, orchestrators — Module 3+.
 - `npm`, dashboard, browser — Module 4+.
@@ -121,11 +121,16 @@ After printing, call out the `description` specifically — that's the new piece
 
 ### Beat 5 — The auto-trigger moment (#1)
 
-Pause. Set it up clearly.
+Pause. Set it up clearly. **Offer both options — natural language and explicit reach** — so the learner knows they're not locked into one style.
 
-> "OK — now ask me for your weekly briefing in your own words. Whatever feels natural. Don't quote the description back to me; just ask like you would a colleague."
+> "OK — now ask me for your weekly briefing. You've got two options:
+>
+> - **In your own words.** Just ask like you would a colleague — *'give me this week's briefing'*, *'what happened across my meetings this week'*, whatever feels natural. I pick the Skill from the description.
+> - **Explicitly reach for it.** Type `/summariser` or say *'use the summariser Skill'*. You can pile any extra instructions on top: *'/summariser but keep it under 200 words'* or *'use the summariser and skip the decisions section'*.
+>
+> Most days you'll use natural language. The explicit form is for when you want predictability or want to layer your own twist on top."
 
-When they ask, reach for the summariser Skill — read its file contents if needed using the Read tool, follow its instructions, read the meeting notes in `data/meetings/`, produce the briefing in the prescribed 3-section format. After delivering, name what just happened:
+When they ask (either way), reach for the summariser Skill — read its file contents if needed using the Read tool, follow its instructions, read the meeting notes in `data/meetings/`, produce the briefing in the prescribed 3-section format. **If they layered extra instructions on top (e.g. "skip decisions" or "under 200 words"), respect those — that's a feature, not a confusion.** After delivering, name what just happened:
 
 > "Notice I didn't ask 'which prompt should I use?' You said [echo their phrasing] — that matched the summariser's description, so I picked it. That's the whole point. No copy-paste. No retyping. From here, every Friday: same ask, same Skill, no friction."
 
@@ -191,11 +196,16 @@ Then name the difference:
 
 ### Beat 8 — The auto-trigger moment (#2 — picking the RIGHT one)
 
-This is the routing moment. Same pause-and-ask pattern.
+This is the routing moment. Same pause-and-ask pattern, same two options.
 
-> "OK — without telling you what to say — ask me what you need to do this week. Your own words."
+> "OK — ask me what you need to do this week. Same two options as before:
+>
+> - **Natural language** — *'what's on my plate'*, *'todos for this week'*, *'what do I need to do'*. I'll route to the right Skill.
+> - **Explicit** — `/action-items-only` (or 'use the action-items-only Skill'), with any extras: e.g. *'just the high-priority ones'* or *'group them by day'*.
+>
+> Your call."
 
-When they ask, reach for action-items-only (NOT summariser). Produce the focused output — bullet list, no headings, no extra sections.
+When they ask (either way), reach for action-items-only (NOT summariser). Produce the focused output — bullet list, no headings, no extra sections. Respect any extra instructions they layered on top.
 
 > "Same 11 notes. Different Skill. You asked 'what do I need to do' — that matched action-items-only's description; the summariser stayed out of the way. That's not me being clever — that's you having written two specific trigger descriptions. The two Skills coexist because their triggers don't overlap."
 
@@ -225,6 +235,29 @@ When they ask for the change, use the **Edit tool** to update the action-items-o
 > ```
 >
 > Next time you ask for action items, they come as checkboxes. You didn't open a file, you didn't write any code. You described what you wanted. That's how you iterate on Skills."
+
+---
+
+### Beat 10.5 — Optional: edit a Skill file yourself
+
+This beat is **strictly optional** — offer it, let the learner skip if they want.
+
+> "One last optional move before we wrap. Everything we just did, I did from chat. But these Skills are real files on your laptop. If you're curious, you can edit one yourself and feel how seamless it is.
+>
+> If you want to try:
+>
+> 1. Open your file explorer and go to `course/.claude/skills/summariser/SKILL.md` (same way you opened the meeting note in Module 1).
+> 2. Tweak one thing — e.g. change the `Role` line to *'You are a sharp, slightly impatient chief of staff who hates fluff.'*
+> 3. Save.
+> 4. Tell me 'done' and ask for your briefing again. You'll see the new tone land instantly — no restart, no command.
+>
+> Or just reply 'skip' and we wrap up. Totally fine to skip — you already saw me edit from chat in the last beat."
+
+If they say 'done', re-run the summariser. Read the Skill file fresh with the Read tool (it's changed on disk). Produce the briefing — the new Role/tone should be reflected. Name it briefly:
+
+> "That tweak you just made — it landed on the next call without anything else. Files on disk, edits in chat, same Skill. They're all the same thing from my side."
+
+If they say 'skip', just acknowledge and move to Beat 11.
 
 ---
 
@@ -272,6 +305,7 @@ Before Module 3, all must hold:
 - [ ] Auto-trigger moment #2: learner asked for action items in their own words; action-items-only fired (NOT summariser); focused output produced.
 - [ ] Composition demo (action items from only customer calls) succeeded.
 - [ ] Iteration demo: June edited a Skill from a plain-English request; printed the diff.
+- [ ] Optional Beat 10.5 was offered (learner could take it or skip it).
 - [ ] Learner explicitly said ready for Module 3.
 
 If a beat misfires (auto-trigger picked the wrong Skill; learner couldn't tell why; iteration didn't land), don't paper over it — name the miss and rerun the beat.
