@@ -1,8 +1,8 @@
 # Build Your First AI Product with Claude Code
 
-A free, hands-on course for product managers learning to build with AI. Six modules, taught entirely inside Claude Code by an AI tutor named June.
+A free, hands-on course for anyone who wants to build with AI. Six modules, taught entirely inside Claude Code by an AI tutor named June.
 
-By the end you will have built: a CLAUDE.md memory file, a two-agent system, a Skill registered as a slash command, an MCP integration with Google Calendar, an orchestrator routing work to specialist sub-agents, and three live performance experiments.
+By the end you will have built: a foundation file Claude reads every session, a two-agent system, a Skill that fires on its own when the moment fits, a Gmail MCP integration, an orchestrator that routes work to specialists, and a tuned, measurable system.
 
 Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Yelp.
 
@@ -10,9 +10,9 @@ Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Y
 
 ## Start here
 
-The course lives in [`course/`](./course/). Follow the setup in **[course/README.md](./course/README.md)** — it covers what you need, how to install Claude Code, and exactly how to launch.
+**If you've never used a terminal or installed any of this before** → follow **[GETTING_STARTED.md](./GETTING_STARTED.md)**. It walks you from zero (nothing installed, no terminal experience) to typing `hi` and meeting June. ~30 minutes.
 
-Short version:
+**If you already have git and Claude Code installed** → use the short version below.
 
 ```bash
 git clone https://github.com/sidarora28/build-with-claude-code.git
@@ -21,9 +21,11 @@ claude
 # then type: hi
 ```
 
+Setup details and troubleshooting live in **[course/README.md](./course/README.md)**.
+
 ## Important
 
-This course only works in **Claude Code (the CLI)** — not Claude Desktop or the web app. The agents, Skills, and MCP integrations you'll build live in a project-scoped `.claude/` folder that only the CLI reads. See [course/README.md](./course/README.md) for full setup.
+This course only works in **Claude Code (the CLI)** — not Claude Desktop or the web app. The agents, Skills, and MCP integrations you'll build live in a project-scoped `.claude/` folder that only the CLI reads.
 
 ## Questions or feedback
 
