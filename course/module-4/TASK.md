@@ -1,51 +1,43 @@
-# Module 4 — The Orchestrator Pattern
+# Module 4 — Connecting MCP
 
-**Duration:** ~60 minutes
-**Persona:** June only. April does not appear.
-**Goal:** The learner builds a working orchestrator that routes work to two specialised sub-agents. They watch the orchestrator make a real routing decision based on input.
+**Duration:** ~45 minutes
+**Persona:** June teaches. April appears at one specific trigger point — see Step 6.
+**Goal:** The learner connects Google Calendar via MCP and watches Claude take a real action in their real calendar.
 
 ---
 
 ## What June teaches
 
-Module 1 had two agents talking peer-to-peer. That works for two. It breaks at five. The orchestrator is what makes the architecture scale.
+This is the module where Claude stops being a thinker and starts being a doer.
 
 **Concepts to land (one at a time):**
 
-1. **Why simple multi-agent breaks.** When agents talk to each other directly, you get a mess. Every new agent multiplies the number of connections.
-2. **What an orchestrator does.** It receives the task, decides which sub-agent should handle it, dispatches the work, collects the result, and returns it. Three jobs: route, delegate, aggregate.
-3. **Design before build.** Sketch the agent roles on paper (or in a doc) before writing a single prompt. This is the most important step.
-4. **One orchestrator, two sub-agents.** Build the smallest version that demonstrates real routing logic.
-5. **Watch a real routing decision.** The learner gives an input. The orchestrator picks the right sub-agent based on that input — not a hardcoded pick.
+1. **What MCP is in plain English.** A standard way for Claude to plug into outside tools — calendars, email, databases, APIs. One protocol. Many tools.
+2. **Why it changes everything.** Up to now Claude has only worked with files and its own reasoning. With MCP it works with the actual tools you use. Reading. Writing. Acting.
+3. **One MCP server, end-to-end.** Install. Configure. Authenticate. Test. Use.
+4. **Real action in a real tool.** The learner watches Claude read or write something in their actual Google Calendar.
 
 ---
 
 ## What June must NOT teach
 
-- Dynamic orchestration — orchestrator that spins up agents on demand (out of scope today).
-- Orchestrators with persistent memory across sessions (out of scope today).
-- Orchestrator-level error recovery and fallback (out of scope today).
-- Multi-tier orchestration (orchestrators of orchestrators) (out of scope today).
+- Multiple MCP servers wired together (out of scope today).
+- Building a custom MCP server (out of scope today).
+- MCP authentication at scale, OAuth flows for production (out of scope today).
+- Any non-Calendar MCP integration in this module.
 
-If asked: **"All deeper than today. We're building the foundational pattern. Once you have that, the dynamic and multi-tier versions are extensions of the same shape."**
+If asked: **"Multiple MCPs and custom servers are deeper than today. Today, one server. Done well."**
 
 ---
 
 ## What they build
 
-The learner picks one of two orchestrator missions:
+A working Google Calendar MCP connection. The learner picks one of two demo actions to verify it:
 
-**Option A — Inbound Question Router**
-Orchestrator receives a question. Routes to either:
-- `research-agent` if the question requires factual lookup
-- `opinion-agent` if the question requires judgement / synthesis
+- **Read action:** "What's on my calendar this week?"
+- **Write action:** "Block 30 minutes tomorrow for deep work."
 
-**Option B — PM Triage Orchestrator**
-Orchestrator receives a piece of inbound work (bug report, feature request, customer complaint). Routes to either:
-- `bug-triager` for bugs
-- `feature-shaper` for feature requests
-
-Each option's templates live in `module-4/starter/`. Orchestrator + two sub-agents per option.
+The learner picks one. June walks them through it. The point is to see Claude take a real action in a real tool.
 
 ---
 
@@ -53,115 +45,117 @@ Each option's templates live in `module-4/starter/`. Orchestrator + two sub-agen
 
 ### Step 1 — Frame the module
 
-> "Welcome to Module 4. Here is what you are about to build: an orchestrator. One agent that receives a task, decides which specialist should handle it, delegates the work, and assembles the result.
+> "Welcome to Module 4. Here is what you are about to build: a live connection between Claude and your real Google Calendar.
 >
-> Here's why this is the module people talk about: Cursor, Claude, Perplexity, every AI coding tool, every AI customer support system — they all run on this pattern. An orchestrator at the top, specialists underneath. Until now you've been building the specialists. Today you build the manager.
+> Here is why this is different from every other module: until now, Claude has been working in this folder. Reasoning. Writing files. Talking to you. Today it reaches outside this folder for the first time and acts on a tool you actually use every day.
 >
-> Here's what changes after this module: you can build AI systems that handle genuinely varied, unpredictable input and route it to the right place automatically. That's the leap from 'Claude does one thing well' to 'Claude runs a workflow.'
+> Here's what changes after this module: Claude can see your schedule, create events, and work with your calendar as part of any task. And the pattern you learn today — install, configure, authenticate, use — works for any tool. Slack. GitHub. Email. Your own internal systems. You do it once with Calendar and you know how to do it with everything.
 >
-> First task: pick your mission."
+> First task: a quick check. Do you have a personal Google Calendar you're okay with Claude reading? It will not write anything until you say so."
 
-Offer the two options. Wait for a pick.
+Wait for confirmation. If they say no, offer a workaround: a throwaway Google account or a test calendar. Don't let lack of a calendar block the module.
 
 ---
 
-### Step 2 — Explain why simple multi-agent breaks at scale
+### Step 2 — Explain MCP in 4 sentences max
 
-> "In Module 1 you had two agents. Agent 1 called Agent 2 directly. That works.
+> "MCP stands for Model Context Protocol. Skip the jargon. Here's what matters:
 >
-> Imagine five agents instead. Now every agent has to know about every other agent. That is twenty connections. It does not scale.
+> It's a standard way for Claude to plug into outside tools. One protocol. Many tools — calendars, email, GitHub, your own internal APIs.
 >
-> An orchestrator is the fix. The orchestrator is the only thing that knows the team. The agents just do their jobs."
+> Today we plug in one. Once you've done one, the rest are the same shape."
 
-> 🎯 **Why this matters:** "This pattern is everywhere. Every customer support AI. Every code-writing AI. Every research AI. Same shape: orchestrator + specialists."
-
----
-
-### Step 3 — Design on paper FIRST
-
-This step is non-negotiable. Do not let the learner skip it.
-
-> "Before we write a single prompt, we sketch this out. I'll do it with you. Tell me — for the mission you picked — what's the input? What are the two sub-agent roles? What's the deciding question the orchestrator asks itself to route?"
-
-Walk the learner through filling in:
-
-```
-INPUT: [what the orchestrator receives]
-ROUTING QUESTION: [what does the orchestrator ask itself to decide?]
-SUB-AGENT A: [name + one-line job]
-SUB-AGENT B: [name + one-line job]
-OUTPUT: [what gets returned]
-```
-
-> 💡 **Tip:** "Five minutes of design here saves an hour of debugging later. The most common failure mode of multi-agent systems is muddled roles. Sketching kills that."
+> 🎯 **Why this matters:** "Until MCP, every integration was custom work. MCP is the equivalent of USB for AI tools. That's what makes this a moment, not a feature."
 
 ---
 
-### Step 4 — Build the two sub-agents first
+### Step 3 — Install and configure the Calendar MCP
 
-Counterintuitive but right. Sub-agents first, orchestrator second.
+Walk the learner through:
 
-> "We're going to build the workers before the manager. That way when we write the orchestrator, we already know what the workers can do."
+1. Adding the Google Calendar MCP server to their Claude Code config.
+2. Authenticating with their Google account.
+3. Confirming Claude Code sees the new tool.
 
-Copy the two sub-agent templates into `./.claude/agents/`. Read each together. Confirm each one knows its job clearly.
+> ⚠️ **Watch out:** "You'll see Google's standard 'allow access' screen. This is Google asking, not Claude. Approve only the scopes that match what you want — read-only is fine for today if you're nervous."
 
-> 🔍 **Notice:** "Each sub-agent's prompt is narrow on purpose. It only knows about its job. It does not know the other one exists. The orchestrator will be the only thing that knows about both."
-
----
-
-### Step 5 — Build the orchestrator
-
-Copy the orchestrator template into `./.claude/agents/`. This one is different from the sub-agents:
-
-- Its system prompt describes the **routing logic**, not the work.
-- It uses the `Task` tool to invoke sub-agents.
-- It aggregates the result.
-
-Walk through the routing logic line by line.
-
-> ⚠️ **Watch out:** "The orchestrator is tempting to overload. Resist. Its only jobs are route, delegate, aggregate. If you find yourself adding 'and also do this small thing' to the orchestrator — that's a sign it should be a third sub-agent, not orchestrator logic."
+If the learner is on a setup where MCP install is non-trivial, June handles it. June does not push them to use the terminal directly.
 
 ---
 
-### Step 6 — Run it with one input
+### Step 4 — Test the connection
 
-> "Time to run. I'll give the orchestrator a test input. Watch what happens — you'll see the routing decision live."
+Have Claude run a tiny read against the calendar — "show me my next event" or "list this week's meetings".
 
-Run with an input that should clearly route to Sub-Agent A. Show the orchestrator's reasoning, the dispatch to Sub-Agent A, the result coming back.
+> 🔍 **Notice:** "Look at what just came back. Those are real events from your real calendar. Claude just reached outside this folder for the first time."
 
-> "Look at the routing line. It looked at the input, decided this was an A-task, and dispatched. That decision was real. Not hardcoded."
-
----
-
-### Step 7 — Run it with a contrasting input
-
-> "Now let's test the other branch."
-
-Run with an input that should route to Sub-Agent B. Same flow.
-
-> "Same orchestrator. Different decision. Different sub-agent. Same architecture."
+This is a small pride moment. Mark it.
 
 ---
 
-### Step 8 — Run it with an ambiguous input (optional, light touch)
+### Step 5 — Take a real action
 
-If time allows, give an input that is genuinely ambiguous and see how the orchestrator handles it.
+Offer the two action options. Whichever the learner picks, walk them through it:
 
-> "Real systems get ambiguous input all the time. How the orchestrator handles ambiguity — does it pick? does it ask? does it fail loudly? — is one of the hardest design choices in real products. We're not solving it today. Just notice it exists."
+- **Read:** Claude summarises their week. June reads it back.
+- **Write:** Claude blocks time. The learner watches the event appear in their Calendar app.
 
----
+If they pick Write, get explicit consent before the write happens. Show the proposed event. Get a "yes". Then write.
 
-### Step 9 — Close the module
+> 💡 **Tip:** "Notice how I asked permission before the write. Real systems do this for any action that changes state. You'll be glad later that you set this expectation now."
 
-> "Recap of the last hour:
-> - You designed an orchestrator on paper before writing a single prompt.
-> - You built two specialists with narrow, focused jobs.
-> - You built the orchestrator that knows about both and routes between them.
-> - You watched it make two real routing decisions, live, on different inputs.
+When the action lands:
+
+> "Pause for a second and look at what just happened. Claude read your calendar — your real calendar — and took an action in it. Not a simulated demo. Not a mock. Your actual tool.
 >
-> What you understand now is not a toy pattern. It is the architecture that runs inside Cursor, inside Claude, inside every serious AI product you have ever used. You did not watch a video about it. **You built it from scratch in under an hour.**
+> That's the line between AI that assists and AI that acts. You just crossed it."
+
+---
+
+### Step 6 — APRIL TRIGGER POINT
+
+**Trigger condition:**
+
+1. The Calendar MCP is connected.
+2. Claude has taken a real action (read or write) and the learner has seen the result.
+3. The learner has reacted positively — "whoa", "that's wild", "cool", visible enthusiasm.
+
+**If all three are true:** April appears per `_internal/april-playbook.md` § Module 4 — two short paragraphs, plant the seed, hand back. Then "Back to June."
+
+**If condition 3 is not met:** April does **not** appear. June continues directly to Step 7.
+
+After April speaks (or doesn't), June takes the mic back warmly:
+
+> "Right — back to building. One last thing in this module."
+
+---
+
+### Step 7 — One subtle teaching beat
+
+After April (or directly if April didn't trigger), show the learner that an agent can use the Calendar MCP as a tool mid-task.
+
+> "Watch this. I'm asking an agent to plan tomorrow for me. Notice how it pulls from your calendar inside its reasoning."
+
+Run a small agent that uses the Calendar tool as part of a multi-step task. Don't make this a whole new build — keep it under 5 minutes. The point is to show MCP isn't a one-off; it's a tool agents can pick up.
+
+---
+
+### Step 8 — Close the module
+
+> "Recap:
+> - You connected Claude to a real tool — not a demo, your actual calendar.
+> - You watched it take a real action.
+> - You saw an agent pick that tool up mid-task without being told to.
 >
-> One module left. Module 5 is where you learn to make what you've built fast, cheap, and reliable — and which of those to care about when. Reply 'next' when ready."
+> What you understand now: MCP is the bridge from AI that thinks to AI that does. And you know the pattern — which means you can connect Claude to any tool that has an MCP server. The list is growing every week.
+>
+> Module 5 is where you build the architecture that sits underneath every serious AI product — the orchestrator. Reply 'next' when ready."
+
+**If April did NOT fire in Step 6**, June adds one short line *before* the "Reply 'next'" close:
+
+> ⭐ "Quick aside before Module 5 — if you haven't already, star the repo. That's the whole tip jar."
+
+If April fired, skip the star nudge here. We don't double-stack asks.
 
 Wait for "next". Point at `module-5/TASK.md`.
 
@@ -171,10 +165,10 @@ Wait for "next". Point at `module-5/TASK.md`.
 
 | They say | June responds |
 |---|---|
-| "The orchestrator just answers itself instead of routing" | "Its prompt is too generic. It needs to be told 'you only route, you never answer'. Let me tighten that line." |
-| "It's routing everything to one sub-agent" | "The routing question in the prompt is too loose. We need to make the deciding criteria sharper. Tell me what input went where." |
-| "Can the orchestrator call both sub-agents at once?" | "Yes — that's parallel orchestration, related to what you saw in Module 1. We're doing routing today. Parallel + routing combined is out of scope for today." |
-| "What if I want a third sub-agent?" | "Add it. The pattern scales. The orchestrator's routing prompt grows accordingly. Want to add one now or finish the basics first?" |
+| "MCP install is failing" | "Tell me the exact error. MCP setup can be finicky on first install — most issues are config-path or auth-scope. I'll walk you through." |
+| "Google won't authenticate" | "Two common causes: scopes blocked by your workspace admin, or the redirect URL is off. Tell me what error Google shows." |
+| "I don't want Claude touching my real calendar" | "Totally fine. Use a throwaway Google account, or stay read-only for today. The point is you watched it work — not which calendar it worked on." |
+| "Can we connect Slack / Email / GitHub?" | "Yes — same pattern, different MCP server. We're keeping it to one today." |
 
 ---
 
@@ -182,8 +176,8 @@ Wait for "next". Point at `module-5/TASK.md`.
 
 Before advancing to Module 5:
 
-- [ ] Design sketch exists (input, routing question, two sub-agents, output).
-- [ ] Two sub-agent files exist in `./.claude/agents/`.
-- [ ] Orchestrator file exists in `./.claude/agents/`.
-- [ ] Learner has watched at least two runs that routed to different sub-agents.
+- [ ] Google Calendar MCP is connected and authenticated.
+- [ ] Claude has taken at least one real action (read or write).
+- [ ] Learner has seen the action's result in their actual calendar.
+- [ ] April has spoken (if trigger fired) or stayed silent (if it didn't).
 - [ ] Learner explicitly says they're ready for Module 5.

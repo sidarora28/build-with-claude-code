@@ -1,6 +1,6 @@
-# Module 1 starter templates
+# Module 2 starter templates
 
-Four agent templates live here. They come in two pairs — the learner picks **one** mission in Module 1.
+Four agent templates live here. They come in two pairs — the learner picks **one** mission in Module 2.
 
 ## Mission A — News Briefing
 - `news-scout.md` — researches candidate stories

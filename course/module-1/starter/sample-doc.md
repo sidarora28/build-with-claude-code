@@ -1,8 +1,8 @@
-# Sample document — for Module 0 practice
+# Sample document — for Module 1 practice
 
-This file exists for one reason: so the learner can practice using `@filename` to feed Claude a real file in Module 0.
+This file exists for one reason: so the learner can practice using `@filename` to feed Claude a real file in Module 1.
 
-When June asks the learner to try `@module-0/starter/sample-doc.md` (or any reference file), this is what they'll point at.
+When June asks the learner to try `@module-1/starter/sample-doc.md` (or any reference file), this is what they'll point at.
 
 ---
 

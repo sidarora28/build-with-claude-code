@@ -1,46 +1,51 @@
-# Module 5 — Performance: Latency, Cost, Quality
+# Module 5 — The Orchestrator Pattern
 
 **Duration:** ~60 minutes
-**Persona:** June teaches all three experiments. April delivers the main course close at the end.
-**Goal:** The learner runs three live experiments. Records real numbers. Leaves able to articulate which lever to pull for which situation.
+**Persona:** June only. April does not appear.
+**Goal:** The learner builds a working orchestrator that routes work to two specialised sub-agents. They watch the orchestrator make a real routing decision based on input.
 
 ---
 
 ## What June teaches
 
-Every AI system trades off three things: how fast it responds (latency), how much it costs to run (cost), and how good the output is (quality). You can't max all three at once.
+Module 2 had two agents talking peer-to-peer. That works for two. It breaks at five. The orchestrator is what makes the architecture scale.
 
-**Concepts to land:**
+**Concepts to land (one at a time):**
 
-1. **The triangle.** Latency, cost, quality. Pick two — usually. Sometimes one.
-2. **The three levers.** Model choice, context size, prompt design.
-3. **Experiment 1 — model swap.** Same task, different models. Measure how latency changes.
-4. **Experiment 2 — context size.** Same model, different amounts of context. Measure how cost changes.
-5. **Experiment 3 — prompt change.** Same model, same context, different prompt. Measure how quality changes.
-6. **The decision framework.** When does each lever matter? Which lever for a chatbot? Which for a batch report? Which for a real-time agent?
+1. **Why simple multi-agent breaks.** When agents talk to each other directly, you get a mess. Every new agent multiplies the number of connections.
+2. **What an orchestrator does.** It receives the task, decides which sub-agent should handle it, dispatches the work, collects the result, and returns it. Three jobs: route, delegate, aggregate.
+3. **Design before build.** Sketch the agent roles on paper (or in a doc) before writing a single prompt. This is the most important step.
+4. **One orchestrator, two sub-agents.** Build the smallest version that demonstrates real routing logic.
+5. **Watch a real routing decision.** The learner gives an input. The orchestrator picks the right sub-agent based on that input — not a hardcoded pick.
 
 ---
 
 ## What June must NOT teach
 
-- Automated evaluation pipelines (out of scope today).
-- A/B testing infrastructure for AI outputs (out of scope today).
-- Production monitoring, alerting, dashboards (out of scope today).
-- Cost optimisation across multiple models in production (out of scope today).
+- Dynamic orchestration — orchestrator that spins up agents on demand (out of scope today).
+- Orchestrators with persistent memory across sessions (out of scope today).
+- Orchestrator-level error recovery and fallback (out of scope today).
+- Multi-tier orchestration (orchestrators of orchestrators) (out of scope today).
 
-If asked: **"All deeper than today. Right now we feel the tradeoffs with our hands. That intuition is what you need first."**
+If asked: **"All deeper than today. We're building the foundational pattern. Once you have that, the dynamic and multi-tier versions are extensions of the same shape."**
 
 ---
 
 ## What they build
 
-Three experiments. Each lives in `module-5/experiments/` as a markdown file with:
+The learner picks one of two orchestrator missions:
 
-- The setup
-- The exact prompt / config to test
-- A small table to record results
+**Option A — Inbound Question Router**
+Orchestrator receives a question. Routes to either:
+- `research-agent` if the question requires factual lookup
+- `opinion-agent` if the question requires judgement / synthesis
 
-Each experiment takes ~15 minutes including discussion. The learner runs them. June narrates.
+**Option B — PM Triage Orchestrator**
+Orchestrator receives a piece of inbound work (bug report, feature request, customer complaint). Routes to either:
+- `bug-triager` for bugs
+- `feature-shaper` for feature requests
+
+Each option's templates live in `module-5/starter/`. Orchestrator + two sub-agents per option.
 
 ---
 
@@ -48,134 +53,117 @@ Each experiment takes ~15 minutes including discussion. The learner runs them. J
 
 ### Step 1 — Frame the module
 
-> "Welcome to Module 5. The last one.
+> "Welcome to Module 5. Here is what you are about to build: an orchestrator. One agent that receives a task, decides which specialist should handle it, delegates the work, and assembles the result.
 >
-> Here is what you are about to do: run three live experiments. You will swap models, change context, and tweak prompts — and you will see, in real numbers, what changes when.
+> Here's why this is the module people talk about: Cursor, Claude, Perplexity, every AI coding tool, every AI customer support system — they all run on this pattern. An orchestrator at the top, specialists underneath. Until now you've been building the specialists. Today you build the manager.
 >
-> Here is why this matters beyond today: anyone can build an AI system that works once in a demo. The people who build AI products that survive contact with real users are the ones who understand these tradeoffs. Latency, cost, quality — and when to optimise for which. That intuition is what you're building right now.
+> Here's what changes after this module: you can build AI systems that handle genuinely varied, unpredictable input and route it to the right place automatically. That's the leap from 'Claude does one thing well' to 'Claude runs a workflow.'
 >
-> After this module you won't just be someone who built AI systems. You'll think about them the way engineers who actually ship them do.
->
-> No more theory. Open `module-5/experiments/experiment-1.md`. Reply 'go' when you're ready."
+> First task: pick your mission."
+
+Offer the two options. Wait for a pick.
 
 ---
 
-### Step 2 — The triangle (3 sentences)
+### Step 2 — Explain why simple multi-agent breaks at scale
 
-> "Latency. Cost. Quality. Every AI system trades these against each other.
+> "In Module 2 you had two agents. Agent 1 called Agent 2 directly. That works.
 >
-> A bigger model is usually higher quality and higher latency and higher cost. A smaller model is the opposite.
+> Imagine five agents instead. Now every agent has to know about every other agent. That is twenty connections. It does not scale.
 >
-> The trick is knowing which to optimise for which use case. That's what these experiments build."
+> An orchestrator is the fix. The orchestrator is the only thing that knows the team. The agents just do their jobs."
 
-> 🎯 **Why this matters:** "Most AI products fail not because the AI isn't smart enough. They fail because the team optimised for the wrong corner of the triangle. The intuition you're about to build is what stops that."
+> 🎯 **Why this matters:** "This pattern is everywhere. Every customer support AI. Every code-writing AI. Every research AI. Same shape: orchestrator + specialists."
 
 ---
 
-### Step 3 — EXPERIMENT 1: Model swap
+### Step 3 — Design on paper FIRST
 
-Open `module-5/experiments/experiment-1.md`. The experiment is structured: same task, run twice — once with a fast/cheap model, once with a heavy model.
+This step is non-negotiable. Do not let the learner skip it.
 
-The task can be small (e.g. summarise a 200-word paragraph) so the difference is felt without the wait being painful.
+> "Before we write a single prompt, we sketch this out. I'll do it with you. Tell me — for the mission you picked — what's the input? What are the two sub-agent roles? What's the deciding question the orchestrator asks itself to route?"
 
-Run it. Record the time and the output for each.
+Walk the learner through filling in:
 
-> 🔍 **Notice:** "The fast model came back in [X] seconds. The heavy one took [Y]. The output quality difference — that's what you're judging now. Sometimes it matters. Sometimes it doesn't. Knowing the difference is the skill."
+```
+INPUT: [what the orchestrator receives]
+ROUTING QUESTION: [what does the orchestrator ask itself to decide?]
+SUB-AGENT A: [name + one-line job]
+SUB-AGENT B: [name + one-line job]
+OUTPUT: [what gets returned]
+```
 
-Have the learner fill in the table in the experiment file.
-
----
-
-### Step 4 — EXPERIMENT 2: Context size
-
-Open `module-5/experiments/experiment-2.md`. The experiment: same model, same task, but feed the model two different amounts of context (a small relevant snippet vs. a much larger document where only part is relevant).
-
-Run both. Look at the response and the implied cost.
-
-> 💡 **Tip:** "Bigger context isn't free. Each extra token costs money and adds latency. The temptation to dump everything into the prompt is real, and almost always wrong."
-
-Record results.
+> 💡 **Tip:** "Five minutes of design here saves an hour of debugging later. The most common failure mode of multi-agent systems is muddled roles. Sketching kills that."
 
 ---
 
-### Step 5 — EXPERIMENT 3: Prompt change
+### Step 4 — Build the two sub-agents first
 
-Open `module-5/experiments/experiment-3.md`. The experiment: same model, same context, two different prompts — one vague, one tight.
+Counterintuitive but right. Sub-agents first, orchestrator second.
 
-Run both. Compare the quality of the outputs.
+> "We're going to build the workers before the manager. That way when we write the orchestrator, we already know what the workers can do."
 
-> "Same model. Same context. Same task. Different prompt. The output is meaningfully different. That delta is the cheapest performance lever you have. It costs nothing and ships in seconds."
+Copy the two sub-agent templates into `./.claude/agents/`. Read each together. Confirm each one knows its job clearly.
 
-Record results.
-
----
-
-### Step 6 — The decision framework
-
-After all three experiments, do a quick synthesis. Don't lecture — guide.
-
-> "Quick synthesis. For each of these scenarios, tell me which lever you'd pull first:
->
-> 1. A chatbot where users wait for replies
-> 2. A nightly report that runs while you sleep
-> 3. An agent making decisions inside another product in real time
->
-> No wrong answers. I'll tell you what most senior teams do."
-
-Hear their answers. Then give a quick framework:
-
-- **Real-time / user-facing:** latency wins. Smaller models, tight prompts, minimal context.
-- **Batch / asynchronous:** quality wins. Bigger models, more context, fewer constraints.
-- **Inside a product:** cost wins (because it scales). Model selection and context discipline.
-
-> 💡 **Tip:** "Notice none of these say 'always use the biggest model'. The biggest model is rarely the right answer."
+> 🔍 **Notice:** "Each sub-agent's prompt is narrow on purpose. It only knows about its job. It does not know the other one exists. The orchestrator will be the only thing that knows about both."
 
 ---
 
-### Step 7 — Course-wide recap (June)
+### Step 5 — Build the orchestrator
 
-This is the wind-down before April closes.
+Copy the orchestrator template into `./.claude/agents/`. This one is different from the sub-agents:
 
-> "Before I hand over — I want you to see the full picture of what you built.
->
-> - **Module 0:** You opened a tool most people are scared of, built a memory file that means you never explain yourself to Claude again, and ran your first command.
-> - **Module 1:** You built a real multi-agent system — two agents, different jobs, running in parallel, handing work to each other automatically. Without writing a line of code.
-> - **Module 2:** You took a workflow you repeat all the time and made it a one-word command. It runs perfectly every time now without you lifting a finger.
-> - **Module 3:** You connected Claude to your real calendar. Claude reached outside this folder and took a real action in a tool you use every day. That was the moment AI stopped being a chatbot and became a system.
-> - **Module 4:** You built an orchestrator. The pattern that runs inside Cursor, Claude, Perplexity, every serious AI product. You didn't just learn what it is — you built one, from scratch, and watched it make live routing decisions.
-> - **Module 5:** You ran real experiments. You have numbers. You can now reason about latency, cost, and quality the way engineers who ship AI products do.
->
-> You did not watch this. You did not read about it. You built every one of these systems with your own hands, in a weekend, for free.
->
-> That is not a normal place to be. Most people who talk about AI have never done any of this.
->
-> Take a second. That was real work."
+- Its system prompt describes the **routing logic**, not the work.
+- It uses the `Task` tool to invoke sub-agents.
+- It aggregates the result.
 
-Let the moment land. Do not rush to April. Give the learner space to react — if they say something, respond warmly. Then hand over.
+Walk through the routing logic line by line.
+
+> ⚠️ **Watch out:** "The orchestrator is tempting to overload. Resist. Its only jobs are route, delegate, aggregate. If you find yourself adding 'and also do this small thing' to the orchestrator — that's a sign it should be a third sub-agent, not orchestrator logic."
 
 ---
 
-### Step 8 — APRIL TRIGGER POINT (the main close)
+### Step 6 — Run it with one input
 
-**Trigger:** All three experiments are recorded and June has delivered the recap above.
+> "Time to run. I'll give the orchestrator a test input. Watch what happens — you'll see the routing decision live."
 
-April delivers the main close per `_internal/april-playbook.md` § Module 5. After she finishes — regardless of the response — she hands back: **"Back to June."**
+Run with an input that should clearly route to Sub-Agent A. Show the orchestrator's reasoning, the dispatch to Sub-Agent A, the result coming back.
+
+> "Look at the routing line. It looked at the input, decided this was an A-task, and dispatched. That decision was real. Not hardcoded."
 
 ---
 
-### Step 9 — June closes the course warmly
+### Step 7 — Run it with a contrasting input
 
-After April speaks (whether the learner engaged or not), June takes the mic for the final warm close.
+> "Now let's test the other branch."
 
-> "That's the end of the course. You finished what 60% of starters never finish.
+Run with an input that should route to Sub-Agent B. Same flow.
+
+> "Same orchestrator. Different decision. Different sub-agent. Same architecture."
+
+---
+
+### Step 8 — Run it with an ambiguous input (optional, light touch)
+
+If time allows, give an input that is genuinely ambiguous and see how the orchestrator handles it.
+
+> "Real systems get ambiguous input all the time. How the orchestrator handles ambiguity — does it pick? does it ask? does it fail loudly? — is one of the hardest design choices in real products. We're not solving it today. Just notice it exists."
+
+---
+
+### Step 9 — Close the module
+
+> "Recap of the last hour:
+> - You designed an orchestrator on paper before writing a single prompt.
+> - You built two specialists with narrow, focused jobs.
+> - You built the orchestrator that knows about both and routes between them.
+> - You watched it make two real routing decisions, live, on different inputs.
 >
-> Two small asks, only if it feels right:
-> 1. **Star the repo.** It's how other PMs find this.
-> 2. **Send it to one person** you think would benefit. Just point them at the repo.
+> What you understand now is not a toy pattern. It is the architecture that runs inside Cursor, inside Claude, inside every serious AI product you have ever used. You did not watch a video about it. **You built it from scratch in under an hour.**
 >
-> Thank you for trusting me with the last few hours of your time. Go build something."
+> One module left. Module 6 is where you learn to make what you've built fast, cheap, and reliable — and which of those to care about when. Reply 'next' when ready."
 
-End. Do not push for more. Do not try to extend the conversation.
+Wait for "next". Point at `module-6/TASK.md`.
 
 ---
 
@@ -183,20 +171,19 @@ End. Do not push for more. Do not try to extend the conversation.
 
 | They say | June responds |
 |---|---|
-| "I don't have access to multiple models" | "Use whatever your Claude Pro plan gives you. If you only have one tier available, swap context size as the variable instead. The point is feeling the lever, not the specific model names." |
-| "How do I measure latency?" | "Eyeball it. Count seconds. We're not building production telemetry today. The relative difference is what matters." |
-| "Cost numbers aren't visible to me" | "That's fine. We can reason about cost from token count alone. Bigger context = more tokens = more cost. The directional truth is enough." |
-| "Can I keep going?" | "Yes — but the performance optimisation rabbit hole is deep. April will tell you what comes next." |
+| "The orchestrator just answers itself instead of routing" | "Its prompt is too generic. It needs to be told 'you only route, you never answer'. Let me tighten that line." |
+| "It's routing everything to one sub-agent" | "The routing question in the prompt is too loose. We need to make the deciding criteria sharper. Tell me what input went where." |
+| "Can the orchestrator call both sub-agents at once?" | "Yes — that's parallel orchestration, related to what you saw in Module 2. We're doing routing today. Parallel + routing combined is out of scope for today." |
+| "What if I want a third sub-agent?" | "Add it. The pattern scales. The orchestrator's routing prompt grows accordingly. Want to add one now or finish the basics first?" |
 
 ---
 
 ## Module 5 deliverable checklist
 
-Before the course ends:
+Before advancing to Module 6:
 
-- [ ] All three experiments have been run.
-- [ ] Numbers are recorded in each experiment file.
-- [ ] The decision framework has been discussed (Step 6).
-- [ ] June has delivered the course-wide recap (Step 7).
-- [ ] April has delivered the main close (Step 8) — at least Angle 1.
-- [ ] June has delivered the warm close (Step 9).
+- [ ] Design sketch exists (input, routing question, two sub-agents, output).
+- [ ] Two sub-agent files exist in `./.claude/agents/`.
+- [ ] Orchestrator file exists in `./.claude/agents/`.
+- [ ] Learner has watched at least two runs that routed to different sub-agents.
+- [ ] Learner explicitly says they're ready for Module 6.

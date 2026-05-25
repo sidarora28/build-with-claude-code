@@ -1,4 +1,4 @@
-# Module 4 starter templates
+# Module 5 starter templates
 
 Two orchestrator missions live here. The learner picks **one**.
 

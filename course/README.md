@@ -25,7 +25,7 @@ If you've already installed Claude Desktop, that's fine — just don't open it w
 - A Claude Pro subscription
 - [**Claude Code** (the CLI)](https://docs.anthropic.com/claude/claude-code) installed and authenticated
 - A computer with a terminal that runs Claude Code
-- A throwaway or personal Google account (for Module 3's MCP integration)
+- A throwaway or personal Google account (for Module 4's MCP integration)
 
 That is it. No prior coding experience. No prior AI experience. If you can describe what you want in plain English, you can do this course.
 
@@ -43,7 +43,7 @@ That is it. No prior coding experience. No prior AI experience. If you can descr
    claude
    ```
    Your current working directory matters. Anything Claude Code creates (Skills, agents, MCP config) lands inside `./.claude/` — i.e. *this* folder, not your home directory. If you launch Claude Code from somewhere else, you'll end up with files in the wrong place.
-3. Say "hi" or "start" — June, your tutor, will introduce herself and walk you through Module 0.
+3. Say "hi" or "start" — June, your tutor, will introduce herself and walk you through Module 1.
 
 That is the entire setup. Everything else happens inside Claude Code.
 
@@ -62,12 +62,12 @@ Claude Code has two `.claude/` directories and it matters which one you're using
 
 ## Time
 
-- Module 0 — Your First Hour with Claude Code (~45 min)
-- Module 1 — What Agents Actually Are (~60 min)
-- Module 2 — Skills and Slash Commands (~45 min)
-- Module 3 — Connecting MCP (~45 min)
-- Module 4 — The Orchestrator Pattern (~60 min)
-- Module 5 — Performance: Latency, Cost, Quality (~60 min)
+- Module 1 — Your First Hour with Claude Code (~45 min)
+- Module 2 — What Agents Actually Are (~60 min)
+- Module 3 — Skills and Slash Commands (~45 min)
+- Module 4 — Connecting MCP (~45 min)
+- Module 5 — The Orchestrator Pattern (~60 min)
+- Module 6 — Performance: Latency, Cost, Quality (~60 min)
 
 Total: about 5 hours. The course is self-paced. You can do one module at a time across a week, or all six on a Saturday.
 
@@ -79,12 +79,12 @@ Total: about 5 hours. The course is self-paced. You can do one module at a time 
 course/
   CLAUDE.md            ← course brain (auto-loads when you open in Claude Code)
   MARKDOWN.md          ← markdown syntax cheatsheet (skim if any formatting confuses you)
-  module-0/            ← orientation + your first CLAUDE.md
-  module-1/            ← two-agent system
-  module-2/            ← skills + slash commands
-  module-3/            ← MCP integration
-  module-4/            ← orchestrator pattern
-  module-5/            ← performance experiments
+  module-1/            ← orientation + your first CLAUDE.md
+  module-2/            ← two-agent system
+  module-3/            ← skills + slash commands
+  module-4/            ← MCP integration
+  module-5/            ← orchestrator pattern
+  module-6/            ← performance experiments
   README.md            ← this file
 ```
 

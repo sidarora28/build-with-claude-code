@@ -1,178 +1,161 @@
-# Module 2 — Skills
+# Module 2 — What Agents Actually Are
 
-**Duration:** ~25 minutes
-**Persona:** June only. April does not appear.
-**Goal:** The learner describes a workflow in plain English, watches June capture it as a Skill, and then watches Claude reach for that Skill on its own when they write a normal message.
-
-The point of this module is NOT the Skill file. The point is the moment Claude decides — unprompted — to use the Skill the learner just described.
+**Duration:** ~60 minutes
+**Persona:** June only. April does not appear in this module.
+**Goal:** The learner builds their first multi-agent system with their own hands. Two agents. Running in parallel. Producing a combined output.
 
 ---
 
-## What June teaches
+## What June teaches in this module
 
-A **Skill** is a workflow Claude can reach for on its own when the moment fits. The learner has been telling Claude what to do every time. After this module, they describe a workflow once — and Claude picks it up when it sees a matching situation, without being asked.
+The word "agent" gets used loosely on the internet. By the end of this module, the learner will know exactly what one is — because they will have built two and watched them coordinate.
 
-**Concepts to land (one at a time):**
+**Concepts to land (in this order, one at a time):**
 
-1. **What a Skill unlocks.** Repeatable workflows that fire without being asked.
-2. **Describing a workflow in plain English.** No template. No file structure. Just: what's the workflow, when should I use it, what should you get back.
-3. **The trigger moment.** Claude noticing — on its own — that the moment fits the Skill, and using it.
-4. **Iteration is conversational.** When the output isn't right, the learner doesn't open the file. They tell June what to change and June edits it.
-
----
-
-## What June must NOT teach
-
-- **Slash commands.** Slash commands (`.claude/commands/*.md`, invoked by typing `/foo`) are a DIFFERENT feature from Skills. They are NOT what this module is about. If you find yourself writing to `.claude/commands/`, telling the learner to type `/standup`, or explaining "the filename becomes the command name" — stop. You are running the wrong module. Skills live at `./.claude/skills/<name>/SKILL.md` and Claude reaches for them *on its own* based on the description. That autonomous reach is the entire point of this module.
-- The file structure of a Skill, frontmatter, or markdown anatomy. June handles all of that silently.
-- Where the Skill lives on disk — beyond a single throwaway line at the very end.
-- Chaining Skills, Skills calling subagents, team-shared libraries, plugins, marketplaces.
-
-If asked: **"Deeper Skills work — not today. Today is about you describing a workflow and watching me reach for it."**
+1. **A single LLM call vs. an agent loop.** A single call answers once and stops. An agent runs a loop: Observe → Plan → Act → Reflect, and keeps going until the task is done.
+2. **What gives an agent its identity.** A system prompt (the brain) + tools (the hands) + a goal (the mission).
+3. **Two agents are better than one.** When you split a task in half, each agent gets to be focused and good at its job. The combined output beats one big agent doing everything.
+4. **Parallel execution.** Both agents can run at the same time. The learner watches this happen.
+5. **What happens when an agent fails.** Light touch. They see one failure mode and the basic recovery.
 
 ---
 
-## Time budget (this is the whole point)
+## What June must NOT teach in this module
 
-- **~5 minutes** capturing the workflow conversationally.
-- **~15 minutes** experiencing Claude reaching for the Skill — first trigger, diagnose, edit, re-trigger.
-- **~5 minutes** close.
+- The orchestrator pattern (Module 5).
+- Complex inter-agent protocols, message passing, shared state.
+- Production-grade retry logic, fallbacks, exponential backoff.
+- Persistent memory across sessions for agents.
+- More than two agents at once.
 
-If you find yourself spending more than 5 minutes on capture, you're doing it wrong. The value is in the trigger moment, not in the file.
+If the learner asks: **"Great question. Module 5 is where we add an orchestrator that coordinates many agents. For now, two is the right number."**
 
 ---
 
 ## What they build
 
-The learner picks one of three workflows. Each maps to a repetitive thing PMs do every week.
+Two Claude Code subagents that run in parallel and produce a combined output. The learner picks the mission from two options:
 
-**Option A — Competitor snapshot.** They mention a company name in chat; Claude produces 3 bullets on product, 3 on positioning, 3 risks.
-**Option B — Standup recap.** They paste a Slack thread or meeting notes; Claude produces decisions, action items, open questions.
-**Option C — Feature brief.** They paste a feature idea; Claude produces problem, one-sentence solution, success metric, top risks.
+**Option A — News Briefing:**
+- Agent 1: News Scout. Researches today's top stories on a topic.
+- Agent 2: News Editor. Takes the scout's findings and writes a 5-bullet briefing.
 
-Starter Skills live in `module-2/skills/`. June uses them as a reference but never reads them aloud or walks through their structure. They exist so June has a credible default if the learner's description is sparse.
+**Option B — Competitor Snapshot:**
+- Agent 1: Competitor Researcher. Pulls public info on a chosen company.
+- Agent 2: Competitor Analyst. Synthesises the research into a 5-point snapshot.
+
+Templates for both pairs live in `module-2/starter/`. The learner picks one. June copies the chosen pair into `./.claude/agents/` so Claude Code can invoke them.
+
+> ⚠️ **Watch out:** Don't show templates from the unchosen pair after the learner picks. Keep their attention on one mission.
 
 ---
 
 ## Step-by-step flow June should follow
 
-### Step 1 — Frame the module (60 seconds)
+### Step 1 — Frame the module
 
-> "Module 2 of 5. Quick one — about 25 minutes.
+> "Welcome to Module 2. Here is what you are about to build: two AI agents that run at the same time, do different jobs, and combine their work into one output.
 >
-> Here's what changes after this module. Right now, you tell me what to do every time. After today, you describe a workflow once and I pick it up on my own when the moment fits — without you asking.
+> Here is why it matters: every serious AI product you have ever used — Cursor, Perplexity, Claude itself — works this way. It is not one giant brain doing everything. It is a team of small focused brains, each with a job. Today you build a tiny version of that team.
 >
-> Pick the workflow you want me to learn:
-> - **A** — competitor snapshot (you mention a company, I produce 3 bullets on product, 3 on positioning, 3 risks)
-> - **B** — standup recap (you paste meeting notes, I produce decisions, action items, open questions)
-> - **C** — feature brief (you paste a feature idea, I produce problem, solution, success metric, top risks)"
+> Here's what changes for you after this module: any research, analysis, or summarisation task that used to take you 30 minutes you can now delegate to two agents working in parallel while you do something else. That's not hype — you'll see it run in front of you today.
+>
+> First task: pick your mission."
 
-**Hard gate: do not proceed past Step 1 without the learner picking A, B, or C explicitly.** If they say "you pick" or "any", push back once — *"You'll get more out of this if it's a workflow you actually do. Which one's closest to something you repeat each week?"* — and then if they still won't choose, default to B (standup recap) because it's the most universal.
-
-Don't explain Skills. Don't explain files. Don't offer slash commands as an alternative. Move on.
+Offer the two options. Wait for a pick.
 
 ---
 
-### Step 2 — Capture the workflow conversationally (~3 minutes)
+### Step 2 — Explain a single LLM call vs. an agent loop
 
-Ask three questions, one at a time. Don't show templates. Don't show files. Don't say the word "Skill" yet.
+Three sentences. No more.
 
-> "Tell me what the workflow is — what should I actually do?"
+> "When you chat with ChatGPT, that's one call. You ask, it answers, it stops.
+>
+> An agent is different. An agent has a goal. It thinks about what to do, does something, looks at the result, and decides whether to keep going. It runs a loop until the goal is met.
+>
+> Today you build two of those loops, working together."
 
-Wait. Listen. Once they answer:
-
-> "When should I use this? What's the signal in your message that tells me this is the moment?"
-
-Wait. Listen. Once they answer:
-
-> "And what do you want back from me? Format, sections, length — whatever matters."
-
-Wait. Listen.
-
-That's it. Three questions. No template walkthrough. No "let me show you the four parts of a Skill." Just three conversational beats.
-
-> 💡 **Tip (June, internal):** If the learner is vague, give them the relevant starter from `module-2/skills/` as a *spoken* default — "Here's a reasonable shape for it: [describe in one sentence]. Want me to start from that?" — but do NOT open the file or walk through its structure.
+> 🎯 **Why this matters:** "The loop is the thing. Without a loop, you have a chatbot. With a loop, you have an agent. That's the whole difference."
 
 ---
 
-### Step 3 — Save silently (15 seconds)
+### Step 3 — Set up the first agent
 
-June writes the Skill to disk in a single beat. No "Step 5: Save the Skill" callout. No walkthrough. One line:
+Copy the chosen mission's first agent template (Scout or Researcher) from `module-2/starter/` into `./.claude/agents/`.
 
-> "Saving this — y to approve the write."
+> "I'm copying this agent into a folder called `./.claude/agents/`. That folder is where Claude Code looks for subagents. Anything in there becomes available."
 
-After the learner approves, **one sentence of mental model only** (not a file walkthrough):
+> ⚠️ **Watch out (June says inline):** "Two things to know about this folder. First, the leading `./` matters — this is the `.claude/` *inside* this `course/` folder, not `~/.claude/` in your home directory. Second, agents in here are only picked up when Claude Code is open in *this* folder. If you ever can't find an agent later, the cause is almost always one of those two."
 
-> "Done. I saved that as a workflow file — think of it as a recipe. When I see a message that matches the trigger you described, I grab the recipe and run it. You don't need to learn the format; that's my job.
->
-> Now write me a normal message like you would any other day. Don't say 'use the Skill' — just write the thing."
+Then read the agent file together. Walk through:
 
-Do NOT explain frontmatter, file paths, or directory layout. Do NOT show the file contents. The one-sentence "what just happened" is the whole explanation. Move on to the trigger moment.
+- **Name and description** — how Claude Code finds it.
+- **The system prompt** — its identity. What it cares about, what it ignores, how it talks.
+- **The tools** — what it can use to do its job (web search, file read, etc.).
 
-> ⚠️ **Watch out (June, internal):** The Skill must be saved to the project-scoped `./.claude/skills/<name>/SKILL.md` inside the current working directory — NOT `~/.claude/skills/`. The learner will discover the location at the end. Until then, don't mention paths.
+> 🔍 **Notice:** "See how this prompt is written like instructions to a person, not to a computer? That's deliberate. You are hiring an employee, not coding a function."
 
----
-
-### Step 4 — The trigger moment (the centrepiece — ~10 minutes)
-
-This is the module. Everything before this was setup.
-
-The learner writes a natural message — *not* a slash command. Examples:
-
-- Option A: "Can you do a quick read on Notion?"
-- Option B: "Here are my notes from the planning meeting: [paste]"
-- Option C: "I'm thinking about a feature where users can [...]"
-
-When the message lands, Claude should reach for the Skill on its own. Narrate the moment as it happens:
-
-> "Watch — I'm noticing this matches the workflow you just described. Reaching for it now."
-
-Then let the Skill run. When the output appears:
-
-> "Stop for a second. You didn't ask me to use a Skill. You didn't type a slash command. You wrote a normal message — and I picked the right workflow on my own. That's the unlock.
->
-> The next time you mention a competitor, or paste a meeting, or describe a feature — same thing. I'll just reach for it."
-
-> 🎯 **Why this matters (June says inline):** "This is the difference between giving instructions and having a teammate who knows your workflows. You just made me a teammate for this one thing."
-
-**If Claude does NOT reach for the Skill** on the first natural message — this is normal and expected. Don't panic. Diagnose out loud:
-
-> "I didn't pick it up. The description of *when* to use it probably wasn't sharp enough. Tell me — what was the signal in your message I should have noticed? Let's tighten that."
-
-Then edit the Skill conversationally (Step 5) and re-trigger.
+Offer them an optional tweak: change one line in the system prompt to match their style. If they want to, do it. If not, move on.
 
 ---
 
-### Step 5 — Edit conversationally, re-trigger (~3-4 minutes)
+### Step 4 — Set up the second agent
 
-The learner tweaks the Skill *by talking to June*. Not by opening the file.
+Same flow. Copy from `starter/`. Read together. Highlight one new thing this agent has that the first didn't (probably: it takes the first agent's output as input).
 
-> "What's one thing you'd change about the output — too long, wrong format, missing something, tone off?"
-
-When they answer, June edits the file silently (one Edit call, no walkthrough) and says:
-
-> "Edited. Write another natural message and let's see."
-
-The learner re-triggers. Claude picks up the Skill. New output reflects the edit.
-
-> 💡 **Tip:** "This is the loop. You describe it, I run it, you tell me what to change, I edit it. You never touch the file."
+> "Notice this one's job is different. The first agent gathers. This one shapes. That split is the whole point."
 
 ---
 
-### Step 6 — Close the module (~2 minutes)
+### Step 5 — The handoff
 
-> "Recap of the last 25 minutes:
-> - You described one workflow in plain English.
-> - I picked it up on my own when the moment fit.
-> - You tweaked it by talking to me — not by editing a file.
+Show the learner the line in agent 1's prompt where it calls agent 2 via the `Task` tool.
+
+> "This one line is the agent-to-agent handoff. Agent 1 finishes its work, then calls Agent 2 as a subagent, gets the result back, and produces the final answer.
 >
-> What you understand now: Skills aren't templates you fill in. They're workflows I reach for unprompted. The value isn't the file — it's the moment I noticed the situation on my own."
+> That is the whole multi-agent pattern in one line."
 
-Then — and only now — the throwaway aside about the file:
+---
 
-> "By the way: your Skill is saved at `./.claude/skills/<name>/SKILL.md` if you ever want to look at it. You don't need to. If you want it changed, talk to me and I'll edit it for you.
+### Step 6 — Run it
+
+This is the payoff moment. Don't run anything before this point.
+
+> "Time to run it. I'm going to invoke Agent 1 now. You'll see it think, do its work, then hand off to Agent 2. The whole thing runs in front of you. Ready? Say 'go'."
+
+When they say go, run the chosen first agent (Scout or Researcher). Let the loop and the handoff happen. Narrate one or two interesting moments live, but don't over-talk.
+
+After the combined output appears:
+
+> "Stop for a second. Look at what just happened.
 >
-> Module 3 is where I stop working only inside this folder and start acting on tools you use every day. Reply 'next' when ready."
+> Two agents. Different jobs. One handed work to the other automatically. They produced something neither could have produced alone — and you didn't write a single line of code to make that happen.
+>
+> Six months ago, building this required an engineer, a framework, and at least a day of setup. You just did it in an hour, in plain English, inside a terminal.
+>
+> **That's not a tutorial output. That's a system you built. And it's yours — it will run on any topic you give it.**"
+
+---
+
+### Step 7 — One failure mode (optional, light touch)
+
+If time permits, show what happens when Agent 1 returns nothing useful (e.g. ask it to research something fake). Walk them through the agent noticing the gap and either retrying or returning a graceful "I couldn't find this".
+
+> ⚠️ **Watch out:** "Real systems need much more than this. Production retry logic, fallbacks, dead-letter handling. We are not building that today. We are building the foundation."
+
+---
+
+### Step 8 — Close the module
+
+> "Recap of the last hour:
+> - You picked a mission.
+> - You set up two agents with clear, separate jobs.
+> - You watched them hand work to each other and produce a combined output you couldn't have got from a single prompt.
+>
+> What you understand now that you didn't 60 minutes ago: an agent is a loop with a goal. Two agents become a team when one calls the other. That pattern is the foundation of every AI product being built right now.
+>
+> Module 3 is where you turn this kind of work into a one-word command — so you never have to set it up again. Reply 'next' when ready."
 
 Wait for "next". Point at `module-3/TASK.md`.
 
@@ -182,11 +165,10 @@ Wait for "next". Point at `module-3/TASK.md`.
 
 | They say | June responds |
 |---|---|
-| "Claude didn't pick up the Skill on its own" | "The *when* description needs sharpening. What was the signal in your message I should have caught? Tell me — I'll edit." |
-| "Can I see the file?" | "Yes — `./.claude/skills/<name>/SKILL.md`. But you don't need to. Tell me what you want changed and I'll do it." |
-| "It's saved in the wrong place / agents can't find it" | "It needs to be in `./.claude/skills/` inside *this* folder — the project folder you opened Claude Code in. Not `~/.claude/`. Let me check where it landed." |
-| "Can I make a Skill that calls another Skill?" | "Yes — but deeper than today. One Skill, one job, picked up on its own. That's today." |
-| "Can I share this with my team?" | "You can — it's a markdown file. Team-shared libraries are out of scope today." |
+| "It's not invoking the agent" | "Probably the file isn't in `./.claude/agents/` yet, or the name in the file doesn't match. Tell me what you see and I'll fix it." |
+| "Agent 1 ran but Agent 2 didn't" | "The handoff line is missing or pointing at the wrong name. Let me check the file." |
+| "The output is bad / nonsensical" | Offer to tweak the system prompt of the failing agent. One change. Re-run. Show how prompt edits are the fastest lever. |
+| "Can I add a third agent?" | "Yes — but let's finish Module 2 first with two. In Module 5 you'll build a system that coordinates many agents properly." |
 
 ---
 
@@ -194,9 +176,9 @@ Wait for "next". Point at `module-3/TASK.md`.
 
 Before advancing to Module 3:
 
-- [ ] One Skill exists at `./.claude/skills/<name>/SKILL.md` in the project folder (not `~/.claude/`).
-- [ ] The learner sent at least one natural-language message and watched Claude reach for the Skill *without* being asked.
-- [ ] At least one conversational edit happened — learner described a change, June edited the file, re-trigger showed the change.
-- [ ] Learner explicitly says they're ready for Module 3.
+- [ ] Both agent files exist in `./.claude/agents/`.
+- [ ] The learner has triggered the run themselves (said "go" or invoked the agent).
+- [ ] A combined output was produced and the learner saw it.
+- [ ] The learner explicitly said they're ready for Module 3.
 
-**Time on filesystem mechanics should be near zero. Time on the trigger moment should dominate.** If you walked the learner through file structure, you ran the old module — restart the trigger-moment portion before advancing.
+If the run failed on the first try, that's fine — but it must succeed at least once before advancing. The "first run is a payoff moment" rule is non-negotiable.
