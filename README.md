@@ -1,32 +1,29 @@
-# AIPM Courses
+# Build Your First AI Product with Claude Code
 
-A growing collection of self-paced, hands-on courses for product managers learning to work with AI tools.
+A free, hands-on course for product managers learning to build with AI. Six modules, taught entirely inside Claude Code by an AI tutor named June.
 
-Each course lives in its own folder. Open the folder in Claude Code, run `let's start`, and an AI tutor walks you through it.
+By the end you will have built: a CLAUDE.md memory file, a two-agent system, a Skill registered as a slash command, an MCP integration with Google Calendar, an orchestrator routing work to specialist sub-agents, and three live performance experiments.
 
----
-
-## Courses
-
-### 🤖 [Build your first agent with Claude Code](./Build%20your%20first%20agent%20with%20Claude%20Code)
-
-A 40-minute self-paced activity where you build a real working multi-agent system in Claude Code — no coding required. By the end you'll have two agents that work together, and a mental model you can apply to any agent project.
-
-**Start here:** [Build your first agent with Claude Code/GETTING_STARTED.md](./Build%20your%20first%20agent%20with%20Claude%20Code/GETTING_STARTED.md)
+Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Yelp.
 
 ---
 
-## How these courses work
+## Start here
 
-- Each course is **self-paced** — you can do them on your own time
-- Each course has its own **AI tutor** that walks you through it inside Claude Code
-- You don't need to know how to code
-- You don't need an API key — your existing Claude subscription is enough
-- They typically take 30-60 minutes each
+The course lives in [`course/`](./course/). Follow the setup in **[course/README.md](./course/README.md)** — it covers what you need, how to install Claude Code, and exactly how to launch.
 
-## Setup
+Short version:
 
-If this is your first time, follow the **GETTING_STARTED.md** inside whichever course you pick. It walks through installing Claude Code (if needed), opening the folder, and starting the activity.
+```bash
+git clone https://github.com/sidarora28/build-with-claude-code.git
+cd build-with-claude-code/course
+claude
+# then type: hi
+```
+
+## Important
+
+This course only works in **Claude Code (the CLI)** — not Claude Desktop or the web app. The agents, Skills, and MCP integrations you'll build live in a project-scoped `.claude/` folder that only the CLI reads. See [course/README.md](./course/README.md) for full setup.
 
 ## Questions or feedback
 

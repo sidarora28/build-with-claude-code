@@ -1,5 +1,0 @@
-node_modules
-.env
-.env.local
-output/
-.DS_Store
