@@ -14,3 +14,7 @@ module-*/work/*
 # Learner-created Claude Code Skills from Module 2 onward.
 # Each learner builds their own Skills during the course — don't commit them back.
 .claude/skills/
+
+# Learner-created Claude Code agents from Module 3 onward.
+# Same reason — each learner builds their own agents in their local clone.
+.claude/agents/
