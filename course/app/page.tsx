@@ -1,47 +1,56 @@
-import { CostCounter } from '@/components/CostCounter';
-import { SummarySection } from '@/components/SummarySection';
-import { ActionItemsSection } from '@/components/ActionItemsSection';
-import { AskSection } from '@/components/AskSection';
-import { LiveStreamSection } from '@/components/LiveStreamSection';
-import { SourcesSection } from '@/components/SourcesSection';
-import { ConnectionsSidebar } from '@/components/ConnectionsSidebar';
+'use client';
+
+import { useEventStream } from '@/lib/useEventStream';
+import { PerfCounter } from '@/components/PerfCounter';
+import { OrchestratorGraph } from '@/components/OrchestratorGraph';
+import { TranscriptPane } from '@/components/TranscriptPane';
 
 export default function Dashboard() {
+  const { events, error } = useEventStream();
+
   return (
-    <div className="min-h-screen">
-      {/* Top bar */}
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div>
-            <h1 className="text-xl font-semibold">Daily Brain</h1>
-            <p className="text-xs text-zinc-500">Your local second brain — built with Claude Code</p>
+    <main className="mx-auto flex min-h-screen max-w-[1400px] flex-col gap-6 px-8 py-6">
+      <header className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-3">
+            <div
+              className="h-2 w-2 rounded-full glow-cyan"
+              style={{ background: 'var(--hud-cyan)' }}
+            />
+            <h1 className="text-glow-cyan text-lg font-semibold" style={{ color: 'var(--hud-cyan)' }}>
+              DAILY BRAIN · ORCHESTRATOR
+            </h1>
           </div>
-          <CostCounter />
+          <p className="hud-label mt-1">
+            EA + 3 specialists · live · listening to module-5/work/run.jsonl
+          </p>
         </div>
+        <PerfCounter events={events} />
       </header>
 
-      {/* Main grid */}
-      <main className="mx-auto max-w-6xl px-6 py-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
-          {/* Main column */}
-          <div className="space-y-6">
-            <SummarySection />
-            <ActionItemsSection />
-            <AskSection />
-            <LiveStreamSection />
-            <SourcesSection />
-          </div>
-
-          {/* Right rail */}
-          <aside>
-            <ConnectionsSidebar />
-          </aside>
+      {error && (
+        <div
+          className="hud-panel px-4 py-2 text-xs"
+          style={{ borderColor: '#ff8a8a', color: '#ffb3b3' }}
+        >
+          dashboard error · {error}
         </div>
-      </main>
+      )}
 
-      <footer className="mx-auto max-w-6xl px-6 py-8 text-xs text-zinc-400">
-        Running locally on your laptop. Files live in <code>course/data/meetings/</code>. Nothing leaves your machine except your prompts to Claude.
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-[auto_1fr]">
+        <div className="flex justify-center">
+          <OrchestratorGraph events={events} />
+        </div>
+        <TranscriptPane events={events} />
+      </section>
+
+      <footer
+        className="mt-auto flex items-center justify-between pt-4 text-[10px] tracking-widest"
+        style={{ color: 'var(--hud-text-dim)' }}
+      >
+        <span>RUNS LOCAL · NO DATA LEAVES YOUR MACHINE</span>
+        <span>localhost:3000 · daily-brain</span>
       </footer>
-    </div>
+    </main>
   );
 }

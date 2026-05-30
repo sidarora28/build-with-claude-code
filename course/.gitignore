@@ -16,5 +16,11 @@ module-*/work/*
 .claude/skills/
 
 # Learner-created Claude Code agents from Module 3 onward.
-# Same reason — each learner builds their own agents in their local clone.
-.claude/agents/
+# Each learner builds their own (e.g. daily-briefing.md) — those get ignored.
+# But Module 5 ships pre-built specialists + orchestrator so the lesson is
+# coordination, not 4-file typing. Those specific files are exempt below.
+.claude/agents/*
+!.claude/agents/notes-specialist.md
+!.claude/agents/calendar-specialist.md
+!.claude/agents/followups-specialist.md
+!.claude/agents/ea-orchestrator.md

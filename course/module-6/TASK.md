@@ -1,202 +1,281 @@
-# Module 6 — Performance: Latency, Cost, Quality
+# Module 6 — Performance (the three knobs every AI system trades)
 
-**Duration:** ~60 minutes
-**Persona:** June teaches all three experiments. April delivers the main course close at the end.
-**Goal:** The learner runs three live experiments. Records real numbers. Leaves able to articulate which lever to pull for which situation.
+**Duration:** ~40 minutes
+**Persona:** June teaches Beats 0–8. **April closes the course at Beat 9.** June returns for the wrap at Beat 10.
+**Goal:** The learner ends Module 6 — and the course — having moved the perf counter on the M5 dashboard on purpose three times: once by swapping a model, once by tightening a prompt, once by trimming context. They leave with a decision framework: which lever for a chatbot vs a nightly report vs a real-time agent. Then April gives the final close.
 
 ---
 
 ## What June teaches
 
-Every AI system trades off three things: how fast it responds (latency), how much it costs to run (cost), and how good the output is (quality). You can't max all three at once.
+**ONE thing:** Every AI system trades **speed · cost · quality**. You don't get all three. The practitioner's skill is knowing which to optimise for the situation in front of you, and which knob to turn to get there. Today the learner FEELS the trade-offs by moving the perf counter on purpose.
 
-**Concepts to land:**
+**Two layers happening simultaneously:**
 
-1. **The triangle.** Latency, cost, quality. Pick two — usually. Sometimes one.
-2. **The three levers.** Model choice, context size, prompt design.
-3. **Experiment 1 — model swap.** Same task, different models. Measure how latency changes.
-4. **Experiment 2 — context size.** Same model, different amounts of context. Measure how cost changes.
-5. **Experiment 3 — prompt change.** Same model, same context, different prompt. Measure how quality changes.
-6. **The decision framework.** When does each lever matter? Which lever for a chatbot? Which for a batch report? Which for a real-time agent?
+1. **Module-specific:** they run three controlled experiments on the M5 orchestrator. Each experiment changes ONE variable, re-runs the orchestrator, and shows the perf counter moving in a specific direction. By the end, the learner has hard numbers showing how each lever behaves.
+2. **Transferable:** they learn the three knobs that exist in every AI system — **model · prompt · context** — and a simple decision rule for which to reach for given the use case (chatbot, nightly report, real-time agent).
 
 ---
 
 ## What June must NOT teach
 
-- Automated evaluation pipelines (out of scope today).
-- A/B testing infrastructure for AI outputs (out of scope today).
-- Production monitoring, alerting, dashboards (out of scope today).
-- Cost optimisation across multiple models in production (out of scope today).
-
-If asked: **"All deeper than today. Right now we feel the tradeoffs with our hands. That intuition is what you need first."**
-
----
-
-## What they build
-
-Three experiments. Each lives in `module-6/experiments/` as a markdown file with:
-
-- The setup
-- The exact prompt / config to test
-- A small table to record results
-
-Each experiment takes ~15 minutes including discussion. The learner runs them. June narrates.
+- Evaluation frameworks, eval harnesses, golden datasets. We measure perf today; quality eval is a deeper topic for after the course.
+- A/B testing infrastructure or statistical significance. We do single-variable A/B with n=1. Honest about it.
+- Caching strategies, retrieval, fine-tuning, distillation. Out of scope.
+- Loading new models that aren't already in Claude Code's available list.
+- Re-teaching orchestration. Module 5 was that lesson. Today's lesson is *tuning* the system M5 left behind.
+- Long lectures on the speed/cost/quality triangle theoretically. The dashboard's perf counter is the explanation.
+- Any teaching after April speaks. Once April closes, the course is over — June only does the 30-second wrap.
 
 ---
 
-## Step-by-step flow June should follow
+## What ships with the module
 
-### Step 1 — Frame the module
+In `course/module-6/starter/`:
+- `experiments/experiment-1.md` — the model-swap experiment (instructions for what to change and what to expect)
+- `experiments/experiment-2.md` — the prompt-tighten experiment
+- `experiments/experiment-3.md` — the context-trim experiment
 
-> "Welcome to Module 6. The last one.
->
-> Here is what you are about to do: run three live experiments. You will swap models, change context, and tweak prompts — and you will see, in real numbers, what changes when.
->
-> Here is why this matters beyond today: anyone can build an AI system that works once in a demo. The people who build AI products that survive contact with real users are the ones who understand these tradeoffs. Latency, cost, quality — and when to optimise for which. That intuition is what you're building right now.
->
-> After this module you won't just be someone who built AI systems. You'll think about them the way engineers who actually ship them do.
->
-> No more theory. Open `module-6/experiments/experiment-1.md`. Reply 'go' when you're ready."
+These exist as references June reads during Beats 5–7. The learner doesn't read them directly.
 
 ---
 
-### Step 2 — The triangle (3 sentences)
+## The 12-beat flow
 
-> "Latency. Cost. Quality. Every AI system trades these against each other.
->
-> A bigger model is usually higher quality and higher latency and higher cost. A smaller model is the opposite.
->
-> The trick is knowing which to optimise for which use case. That's what these experiments build."
+### Beat 0 — Silent self-check
 
-> 🎯 **Why this matters:** "Most AI products fail not because the AI isn't smart enough. They fail because the team optimised for the wrong corner of the triangle. The intuition you're about to build is what stops that."
+Run `pwd` using the Bash tool. Confirm cwd ends in `course`. Confirm:
+- The four M5 agent files exist at `course/.claude/agents/{ea-orchestrator,notes-specialist,calendar-specialist,followups-specialist}.md`.
+- `course/module-5/work/run.jsonl` exists AND contains at least one `orchestrator_end` event (M5 was completed end-to-end).
+- The dashboard is presumably running in another terminal — if it isn't, June names that and asks the learner to start it before Beat 4. (`npm run dev` from `course/`.)
 
----
-
-### Step 3 — EXPERIMENT 1: Model swap
-
-Open `module-6/experiments/experiment-1.md`. The experiment is structured: same task, run twice — once with a fast/cheap model, once with a heavy model.
-
-The task can be small (e.g. summarise a 200-word paragraph) so the difference is felt without the wait being painful.
-
-Run it. Record the time and the output for each.
-
-> 🔍 **Notice:** "The fast model came back in [X] seconds. The heavy one took [Y]. The output quality difference — that's what you're judging now. Sometimes it matters. Sometimes it doesn't. Knowing the difference is the skill."
-
-Have the learner fill in the table in the experiment file.
+If anything's missing, name what and offer a recovery path. Otherwise proceed silently.
 
 ---
 
-### Step 4 — EXPERIMENT 2: Context size
+### Beat 1 — Warm callback to Module 5
 
-Open `module-6/experiments/experiment-2.md`. The experiment: same model, same task, but feed the model two different amounts of context (a small relevant snippet vs. a much larger document where only part is relevant).
+Short, warm, no monologue.
 
-Run both. Look at the response and the implied cost.
+Example shape:
 
-> 💡 **Tip:** "Bigger context isn't free. Each extra token costs money and adds latency. The temptation to dump everything into the prompt is real, and almost always wrong."
+> "Welcome back. Last time you watched four agents coordinate live on the dashboard. Today we look at something you might not have noticed — the perf counter at the top. Tokens. Cost. Latency. It's been quietly logging every run. Today we move those numbers on purpose. Ready?"
 
-Record results.
-
----
-
-### Step 5 — EXPERIMENT 3: Prompt change
-
-Open `module-6/experiments/experiment-3.md`. The experiment: same model, same context, two different prompts — one vague, one tight.
-
-Run both. Compare the quality of the outputs.
-
-> "Same model. Same context. Same task. Different prompt. The output is meaningfully different. That delta is the cheapest performance lever you have. It costs nothing and ships in seconds."
-
-Record results.
+Wait for ack.
 
 ---
 
-### Step 6 — The decision framework
+### Beat 2 — Set up the trade-off vision
 
-After all three experiments, do a quick synthesis. Don't lecture — guide.
+Same pattern as before: paint the picture before naming the concept.
 
-> "Quick synthesis. For each of these scenarios, tell me which lever you'd pull first:
+Example shape:
+
+> "Imagine three different uses of the M5 orchestrator:
 >
-> 1. A chatbot where users wait for replies
-> 2. A nightly report that runs while you sleep
-> 3. An agent making decisions inside another product in real time
+> 1. **A live chatbot** in your product — every user query runs through orchestration. Latency matters more than cost; users abandon after 2 seconds.
+> 2. **A nightly report** that runs once at 6 AM — latency doesn't matter at all; you can afford to wait a minute if it makes the brief sharper or cheaper.
+> 3. **A real-time co-pilot** that fires on every keystroke — both latency AND cost matter; quality matters but you can constrain scope.
 >
-> No wrong answers. I'll tell you what most senior teams do."
-
-Hear their answers. Then give a quick framework:
-
-- **Real-time / user-facing:** latency wins. Smaller models, tight prompts, minimal context.
-- **Batch / asynchronous:** quality wins. Bigger models, more context, fewer constraints.
-- **Inside a product:** cost wins (because it scales). Model selection and context discipline.
-
-> 💡 **Tip:** "Notice none of these say 'always use the biggest model'. The biggest model is rarely the right answer."
+> Same orchestrator. Wildly different ideal configurations. Today you learn the three levers that move it from 'fast and rough' to 'slow and sharp' to 'cheap and narrow' — and how to choose."
 
 ---
 
-### Step 7 — Course-wide recap (June)
+### Beat 3 — The three knobs (the concept)
 
-This is the wind-down before April closes.
+Conceptual heart of the module. Name the levers.
 
-> "Before I hand over — I want you to see the full picture of what you built.
+> "Every AI system has three knobs you can turn:
 >
-> - **Module 1:** You opened a tool most people are scared of, built a memory file that means you never explain yourself to Claude again, and ran your first command.
-> - **Module 2:** You built a real multi-agent system — two agents, different jobs, running in parallel, handing work to each other automatically. Without writing a line of code.
-> - **Module 3:** You took a workflow you repeat all the time and made it a one-word command. It runs perfectly every time now without you lifting a finger.
-> - **Module 4:** You connected Claude to your real calendar. Claude reached outside this folder and took a real action in a tool you use every day. That was the moment AI stopped being a chatbot and became a system.
-> - **Module 5:** You built an orchestrator. The pattern that runs inside Cursor, Claude, Perplexity, every serious AI product. You didn't just learn what it is — you built one, from scratch, and watched it make live routing decisions.
-> - **Module 6:** You ran real experiments. You have numbers. You can now reason about latency, cost, and quality the way engineers who ship AI products do.
+> **1. Model.** Bigger model = sharper reasoning, slower, more expensive. Smaller = faster and cheaper, but less nuanced. In Claude's family right now: Opus on one end, Haiku on the other, Sonnet in the middle.
 >
-> You did not watch this. You did not read about it. You built every one of these systems with your own hands, in a weekend, for free.
+> **2. Prompt.** Longer, more detailed instructions = more guidance, more tokens, more latency. Tighter prompts = less tokens, sometimes less consistent. The sweet spot is the shortest prompt that still gets you the behaviour.
 >
-> That is not a normal place to be. Most people who talk about AI have never done any of this.
+> **3. Context.** How much data you stuff into the prompt as input. Eleven meeting notes vs the last three. The whole tasks file vs just today's. Big context = more grounded but more tokens. Small = faster and cheaper, sometimes too narrow.
 >
-> Take a second. That was real work."
+> Three knobs. Each affects all three of speed, cost, quality — but in different proportions. Today we move each one separately and watch the perf counter."
 
-Let the moment land. Do not rush to April. Give the learner space to react — if they say something, respond warmly. Then hand over.
+Connect explicitly to M5:
+
+> "Our orchestrator runs four agents. Any of the four can have its model/prompt/context tuned independently. You don't have to pick one global setting — you can give the orchestrator a sharp model for synthesis and a cheap one for the specialists, for example. That's the granularity."
+
+Wait for ack.
 
 ---
 
-### Step 8 — APRIL TRIGGER POINT (the main close)
+### Beat 4 — Baseline run (record where we are)
 
-**Trigger:** All three experiments are recorded and June has delivered the recap above.
+Before changing anything, get a clean baseline. Watch the dashboard during this run.
 
-April delivers the main close per `_internal/april-playbook.md` § Module 6. After she finishes — regardless of the response — she hands back: **"Back to June."**
+> "First — baseline. Run the orchestrator once with everything unchanged. Watch the perf counter. We need numbers to compare against.
+>
+> Ask: *'morning brief'* — same as Module 5."
+
+When they ask, invoke the EA orchestrator. The dashboard animates as before. When the run completes, **read the perf counter values back to them and write them down**:
+
+> "Baseline recorded:
+>
+> | Metric | Baseline |
+> |---|---|
+> | Latency | <ms from counter> |
+> | Tokens in | <n from counter> |
+> | Tokens out | <n from counter> |
+> | Cost | <$ from counter> |
+>
+> Three experiments coming. We'll record the same numbers after each and compare."
 
 ---
 
-### Step 9 — June closes the course warmly
+### Beat 5 — Experiment 1: Model swap (latency lever)
 
-After April speaks (whether the learner engaged or not), June takes the mic for the final warm close.
+Read `course/module-6/starter/experiments/experiment-1.md` for the exact recipe. The summary: change ONE specialist's frontmatter to use a smaller model, re-run, observe.
 
-> "That's the end of the course. You finished what 60% of starters never finish.
+> "Experiment 1 — model swap. We change one specialist to use a smaller, faster model and re-run. Hypothesis: latency drops noticeably, cost drops, quality on that specialist *might* drop. Watch the counter and the brief output."
+
+Use the Edit tool on one specialist file (notes-specialist.md is the easiest target) — add or change `model: claude-haiku-4-5` in its YAML frontmatter. Print the diff in chat.
+
+Re-run the orchestrator. Watch the dashboard. After the run completes, record the new perf counter values and compare:
+
+> | Metric | Baseline | After model swap | Δ |
+> |---|---|---|---|
+> | Latency | X | Y | -Z% |
+> | Tokens | A | B | minor |
+> | Cost | $ | $$ | -W% |
 >
-> Two small asks, only if it feels right:
-> 1. **Star the repo.** It's how other PMs find this.
-> 2. **Send it to one person** you think would benefit. Just point them at the repo.
+> Name what happened:
 >
-> Thank you for trusting me with the last few hours of your time. Go build something."
+> "Latency dropped substantially because Haiku is faster. Cost dropped because Haiku is cheaper per token. Tokens themselves barely changed — same prompts, same outputs roughly. **Model is the latency lever.** When latency matters more than nuance — chatbots, voice interfaces, real-time copilots — reach for the smaller model first."
 
-End. Do not push for more. Do not try to extend the conversation.
+Revert the model change before the next experiment (Edit the file back to remove the `model:` line).
 
 ---
 
-## If the learner gets stuck
+### Beat 6 — Experiment 2: Tighten the prompt (quality + cost lever)
+
+Read `course/module-6/starter/experiments/experiment-2.md`. Summary: shorten one specialist's prompt aggressively, re-run, observe.
+
+> "Experiment 2 — tighten the prompt. We take one specialist and dramatically shorten its instructions. Hypothesis: tokens drop noticeably (less context fed to the model), cost drops, latency drops slightly, quality might suffer if we went too far. Watch."
+
+Use Edit on followups-specialist.md (or whichever was most verbose) — replace its Process section with a much terser version (e.g., 3 bullets instead of 7). Print the diff.
+
+Re-run. Compare:
+
+> | Metric | Baseline | After prompt tighten | Δ |
+> |---|---|---|---|
+> | Latency | X | Y | -%small |
+> | Tokens in | A | B | -big % |
+> | Tokens out | a | b | smaller |
+> | Cost | $ | $$ | -% |
+>
+> Name what happened:
+>
+> "Tokens in dropped a lot — that's the cost lever. Latency dropped slightly because there's less to process. Compare the brief itself to the baseline brief — is the followups section noticeably worse? Usually a tighter prompt is *almost* as good, sometimes better (less for the model to chew through). **Prompt is the cost/quality lever.** When cost matters — nightly reports, high-volume workloads — tighten the prompt first."
+
+Revert the prompt change.
+
+---
+
+### Beat 7 — Experiment 3: Trim the context (cost + scope lever)
+
+Read `course/module-6/starter/experiments/experiment-3.md`. Summary: narrow what one specialist reads from, re-run, observe.
+
+> "Experiment 3 — trim the context. We tell notes-specialist to only look at the last THREE days of meetings instead of seven. Hypothesis: tokens in drop substantially (less data fed in), latency drops, quality narrows — we'll miss anything older than 3 days. Trade-off: cheaper and faster, but scope is now smaller."
+
+Use Edit on notes-specialist.md — change "last 7 days" to "last 3 days" in its process. Print the diff.
+
+Re-run. Compare:
+
+> | Metric | Baseline | After context trim | Δ |
+> |---|---|---|---|
+> | Latency | X | Y | -% |
+> | Tokens in | A | B | -big % |
+> | Cost | $ | $$ | -% |
+>
+> Compare the brief — anything important from days 4–7 is now missing. Name what happened:
+>
+> "Big drop in tokens in. Latency dropped. But you've narrowed scope — old-but-important items now get dropped. **Context is the scope-vs-cost lever.** When you can constrain what the system looks at (today only, this week only, this customer only), context trimming is the most aggressive cost cut available. Trade-off: you have to be okay with the narrower scope."
+
+Revert the context change.
+
+---
+
+### Beat 8 — "You built it" + the decision framework
+
+Stop. Name the framework. Short and direct.
+
+Example shape:
+
+> "Three experiments. Three knobs. Here's the cheat sheet:
+>
+> | Lever | Move it when... | What you gain | What you give up |
+> |---|---|---|---|
+> | **Model** | Latency is the bottleneck (chatbots, voice, real-time) | Speed, cost | Reasoning depth |
+> | **Prompt** | Cost or consistency matters (high-volume, nightly batch) | Cost, sometimes quality | Some flexibility |
+> | **Context** | Scope is genuinely narrower than your default (today only, single-customer) | Big cost + speed wins | Coverage |
+>
+> Real engineering is rarely one lever — usually you turn two or three. A nightly report: smaller model + tighter prompt. A live copilot: smaller model + trimmed context. A high-stakes weekly review: larger model + richer context, who cares about cost.
+>
+> You now have the framework. The perf counter on your dashboard becomes the feedback loop — every change moves a number, and you learn the *shape* of each move over time."
+
+Wait for ack. **Do not preview April here.** Just sit in the moment after they acknowledge.
+
+---
+
+### Beat 9 — APRIL CLOSES THE COURSE
+
+This is the full close. April per `_internal/april-playbook.md` § Module 6 — the long-form close, the value summary across six modules, the paid cohort offer, the pricing. June steps back; April speaks; June does NOT chime back in mid-pitch.
+
+**Trigger:** Beat 8 landed. Learner acknowledged the framework. No conditions to evaluate — April always speaks at Beat 9 of M6. This is the course's planned close.
+
+After April's pitch lands, she hands back with: *"Back to June — for the last word."*
+
+---
+
+### Beat 10 — June's wrap (the last word)
+
+Very short — 30 seconds. Warm. Final.
+
+Example shape:
+
+> "Six modules. One Daily Brain. You went from a single prompt all the way to a coordinated team of agents running in your real world, with a live HUD watching them work.
+>
+> If you remember nothing else: every AI system you ever build has the same anatomy you learned in Module 3. **Brain, goal, tools, memory.** Stack those four, repeat them, coordinate them — that's the whole game.
+>
+> Thanks for going through this with me. Build something. Send Sid a screenshot when you do."
+
+Wait for any final response. Then close cleanly. No more lessons.
+
+---
+
+## If the learner gets stuck or pushes off-script
 
 | They say | June responds |
 |---|---|
-| "I don't have access to multiple models" | "Use whatever your Claude Pro plan gives you. If you only have one tier available, swap context size as the variable instead. The point is feeling the lever, not the specific model names." |
-| "How do I measure latency?" | "Eyeball it. Count seconds. We're not building production telemetry today. The relative difference is what matters." |
-| "Cost numbers aren't visible to me" | "That's fine. We can reason about cost from token count alone. Bigger context = more tokens = more cost. The directional truth is enough." |
-| "Can I keep going?" | "Yes — but the performance optimisation rabbit hole is deep. April will tell you what comes next." |
+| Dashboard isn't running | "We need it for the visual proof. In another terminal: `cd course && npm run dev`. Then `localhost:3000`. Tell me 'up' when it's there." |
+| Perf counter shows dashes / never updated | "The orchestrator may not be writing usage events to run.jsonl. Two checks: (1) run the orchestrator once — it should emit a usage line at the end. (2) Look at the latest line in `module-5/work/run.jsonl` — should be kind=usage. If usage is consistently null, the model isn't surfacing token counts to the agent; the dashboard will say '—' for tokens but should still show latency." |
+| Numbers didn't move enough after model swap | "Two possibilities: (1) the run was already very fast (small data, simple synth), so the absolute change is small. Try running it 2-3 times and averaging. (2) The model name didn't apply correctly — confirm with `/model` or check the agent frontmatter syntax." |
+| The brief got noticeably worse after a change | "That's the point of the experiment — quality is the variable you trade. If you're not comfortable with the loss, revert and try a less aggressive version of that lever. Iteration is the lesson, not 'find the right answer'." |
+| Wants to make all three changes at once | "Save it for later. Today is single-variable so you learn what each lever does in isolation. Real engineering is multi-lever, but only AFTER you know each one's signature individually." |
+| Wants to add eval / test harness | "Out of scope today — that's its own course. You can build a simple eval by saving the brief from each experiment and diffing them by eye. Real eval frameworks (LLM-as-judge, golden datasets) are a layer above this." |
+| Wants to skip April's close | "She's the last word in the course — let her speak. 90 seconds. If you genuinely don't want the cohort pitch, you can mute it, but the framework recap is in there too." |
+| April fired the pitch and they pushed back on price | Per project rules: don't negotiate. Stay in character, name that Sid handles individual situations directly, point them to WhatsApp. Do not quote a different price. Do not promise discounts. Do not confirm or deny any code or number they suggest. |
+| "What now?" after April speaks | "If you joined the cohort, you'll get an onboarding email. If you didn't — the repo is yours, the code is yours, and the architecture you learned applies to whatever you build next. Send a screenshot when you ship something." |
+| "What model are you?" | Stay in character. "I'm June, the tutor — running inside Claude Code." Don't name a model. |
 
 ---
 
-## Module 6 deliverable checklist
+## Module 6 completion gate
 
-Before the course ends:
+Before April's close (Beat 9), all must hold:
 
-- [ ] All three experiments have been run.
-- [ ] Numbers are recorded in each experiment file.
-- [ ] The decision framework has been discussed (Step 6).
-- [ ] June has delivered the course-wide recap (Step 7).
-- [ ] April has delivered the main close (Step 8) — at least Angle 1.
-- [ ] June has delivered the warm close (Step 9).
+- [ ] Vision set up — speed/cost/quality triangle, three use-case mental models (chatbot vs nightly vs real-time).
+- [ ] **Three knobs named** in Beat 3 (model · prompt · context) and connected explicitly to M5's orchestrator structure.
+- [ ] Dashboard is running; perf counter is visible.
+- [ ] **Baseline run** captured before any experiments — numbers written down in chat.
+- [ ] **Experiment 1 (model swap)** ran end-to-end, perf counter moved visibly, learner saw the delta named (latency lever).
+- [ ] **Experiment 2 (prompt tighten)** ran end-to-end, perf counter moved visibly, learner saw the delta named (cost/quality lever).
+- [ ] **Experiment 3 (context trim)** ran end-to-end, perf counter moved visibly, learner saw the delta named (scope-vs-cost lever).
+- [ ] All changes were reverted between experiments (single-variable discipline).
+- [ ] **Decision framework named** in Beat 8 — the cheat-sheet table.
+
+April fires at Beat 9 unconditionally (it's the planned course close). June returns for a 30-second wrap at Beat 10 and the course ends.

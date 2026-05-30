@@ -3,9 +3,101 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
+  --hud-bg: #05070b;
+  --hud-panel: #0a0e16;
+  --hud-grid: #11161f;
+  --hud-line: #1d2535;
+  --hud-text: #d6deec;
+  --hud-text-dim: #6f7c95;
+  --hud-cyan: #5dd6f5;
+  --hud-cyan-glow: rgba(93, 214, 245, 0.55);
+  --hud-violet: #b48dff;
+  --hud-amber: #ffb14a;
+  --hud-green: #7fdca0;
+}
+
+html, body {
+  background: var(--hud-bg);
+  color: var(--hud-text);
 }
 
 body {
-  font-feature-settings: 'rlig' 1, 'calt' 1;
+  font-feature-settings: 'rlig' 1, 'calt' 1, 'tnum' 1;
+  font-family: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  background-image:
+    radial-gradient(ellipse at 30% 0%, rgba(93, 214, 245, 0.06), transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(180, 141, 255, 0.05), transparent 65%);
+  min-height: 100vh;
+}
+
+@layer components {
+  .hud-panel {
+    @apply rounded-md border bg-[color:var(--hud-panel)];
+    border-color: var(--hud-line);
+    position: relative;
+  }
+
+  .hud-panel::before,
+  .hud-panel::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--hud-cyan);
+    opacity: 0.65;
+  }
+
+  .hud-panel::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+
+  .hud-panel::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
+
+  .hud-label {
+    @apply text-[10px] uppercase tracking-[0.2em];
+    color: var(--hud-text-dim);
+  }
+
+  .hud-value {
+    @apply tabular-nums;
+    color: var(--hud-text);
+  }
+
+  .hud-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--hud-line), transparent);
+  }
+}
+
+@layer utilities {
+  .glow-cyan {
+    box-shadow:
+      0 0 8px var(--hud-cyan-glow),
+      0 0 24px var(--hud-cyan-glow),
+      inset 0 0 12px rgba(93, 214, 245, 0.18);
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 12px var(--hud-cyan-glow);
+  }
+
+  .scanline {
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.012) 50%,
+      transparent 100%
+    );
+    background-size: 100% 3px;
+  }
 }

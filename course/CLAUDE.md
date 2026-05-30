@@ -49,14 +49,23 @@ Treat each decoded file as a normal markdown file — those are your operating i
 
 ```
 course/
-  CLAUDE.md            ← this file (your operating instructions)
-  MARKDOWN.md          ← learner-facing markdown cheatsheet. Point them here if formatting confuses them.
-  package.json         ← Daily Brain dashboard deps. Learners run `npm install` in Module 1.
-  app/                 ← Next.js dashboard. Learners run `npm run dev`; UI at localhost:3000.
-  components/          ← Dashboard UI sections.
-  data/meetings/       ← 10 sample meeting notes the agents read. Learners can add/edit.
-  module-1..6/         ← TASK.md (learner-facing) + starter/ files
-  README.md            ← public setup instructions
+  CLAUDE.md                ← this file (your operating instructions)
+  MARKDOWN.md              ← learner-facing markdown cheatsheet. Point learners here if formatting confuses them.
+  package.json             ← Daily Brain dashboard deps. Learners run `npm install` in Module 5.
+  app/                     ← Next.js dashboard (orchestrator HUD). Learners run `npm run dev` in Module 5; UI at localhost:3000.
+  components/              ← Dashboard components: OrchestratorGraph, TranscriptPane, PerfCounter.
+  lib/                     ← Event types + polling hook for the dashboard.
+  .claude/agents/          ← Ships with 4 pre-built agents for Module 5: ea-orchestrator, notes-specialist, calendar-specialist, followups-specialist. (M3's daily-briefing.md is learner-built and gitignored.)
+  data/meetings/           ← 11 sample meeting notes the agents read. Learners can add/edit.
+  module-1..6/             ← TASK.md (learner-facing) + starter/ files
+  README.md                ← public setup instructions
 ```
 
-**About the product they're building:** Daily Brain — a local web app that ingests the meeting notes folder and grows over six modules. Module 1 gets the dashboard running with mock data. Module 2 builds the summariser agent. Module 3 adds a Skill for consistent format (+ brief CLAUDE.md aside). Module 4 builds the orchestrator + action items. Module 5 adds Gmail MCP. Module 6 tunes performance. Greyed-out sections (Slack, Notion, scheduled runs) are visible from Module 1 as upsell hooks for the paid cohort.
+**About the product they're building:** Daily Brain — a personal "second brain / EA" that grows across six modules. Each module makes it see more and do more.
+
+- **Module 1 — Prompting.** Learner writes their first structured prompt to turn 11 messy meeting notes into a useful summary.
+- **Module 2 — Skills.** Learner builds two Skills (summariser + action-items-only) that Claude auto-routes to from natural language.
+- **Module 3 — Agents.** Learner builds the `daily-briefing` agent and learns the four-part anatomy: **Brain · Goal · Tools · Memory**.
+- **Module 4 — Real-world action.** Learner connects Google Calendar via the Claude.ai hosted connector (one click at claude.ai/customize/connectors, then `/mcp` in CLI). The M3 agent's Tools section is edited to add calendar tools — it now creates real events, sends real invites.
+- **Module 5 — Orchestrator + Jarvis HUD.** Learner spins up the dashboard for the first time (`npm install && npm run dev`). The EA orchestrator coordinates three specialists (notes, calendar, follow-ups) in parallel, with a live HUD animating dispatches and responses. Four agent files ship pre-built in `.claude/agents/`.
+- **Module 6 — Performance.** Learner runs three single-variable experiments on the M5 orchestrator (model swap, prompt tighten, context trim), watches the perf counter move, learns the speed/cost/quality framework. April closes the course at Beat 9.
