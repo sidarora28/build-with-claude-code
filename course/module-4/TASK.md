@@ -2,7 +2,9 @@
 
 **Duration:** ~45 minutes
 **Persona:** June teaches. April appears at one specific trigger point — see Beat 6.5.
-**Goal:** The learner ends Module 4 with the **daily-briefing agent from M3 expanded with Google Calendar tools** — they've installed and authenticated one MCP, watched the agent use it to take three concrete actions in their real calendar (block time, send a follow-up invite with the course creator as attendee, set a reminder), all tied to items from the tasks file they built in M3. They understand the agent's anatomy hasn't changed — same brain, goal, memory — but its **Tools** part just grew into a real system.
+**Goal:** The learner ends Module 4 with the **daily-briefing agent from M3 expanded with Google Calendar tools** — they've connected Google Calendar via the **Claude.ai hosted connector** (no Cloud Console, no JSON config), watched the agent use it to take three concrete actions in their real calendar (block time, send a follow-up invite with the course creator as attendee, set a reminder), all tied to items from the tasks file they built in M3. They understand the agent's anatomy hasn't changed — same brain, goal, memory — but its **Tools** part just grew into a real system.
+
+**Hard prereq:** A **Claude Pro account.** Connectors are Pro-tier. Free-tier accounts cannot complete M4 — route them to M5.
 
 ---
 
@@ -89,36 +91,67 @@ Wait for an ack before moving on. If they ask "what's the difference between thi
 
 ---
 
-### Beat 4 — Install and connect Google Calendar MCP
+### Beat 4 — Connect Google Calendar via the Claude.ai connector
 
-This is the friction beat. Don't sugarcoat — installing an MCP with OAuth is real work. June walks the learner through it step-by-step, names what's happening, doesn't move on until the smoke test passes.
+This used to be the friction beat — install MCP, set up OAuth in Google Cloud Console, paste credentials. Anthropic's hosted connectors changed that. Today it's three short steps: connect once at claude.ai, sync the CLI, smoke test. ~5 minutes if nothing's weird.
 
 **4a — Prereq check.**
 
-> "First — do you have a Google account with a calendar? If yes, we use it. If no, two options: (1) create a free Google account just for this lesson, or (2) skip M4 — but the experience is much weaker without it. Which way?"
+> "Two prereqs before we connect:
+>
+> 1. **A Claude Pro account.** Connectors are a Pro-tier feature. Free-tier accounts can't load them. If you don't have Pro, you can upgrade now, or skip M4 and pick up at M5 — your call.
+> 2. **A Google account with a calendar.** Throwaway account is fine if you'd rather not use your main one.
+>
+> Confirm both, or tell me which you're missing."
 
-If they don't have an account and don't want to create one, route to M5. Don't try to make M4 work without a real calendar.
+Wait for ack. If they don't have Pro and don't want to upgrade, route to M5 honestly: *"M5 is doable without M4 — the orchestrator can use the M3 agent without calendar tools. You'll miss the 'agent acts in your real world' moment, but the rest of the course still works."*
 
-**4b — Install and configure the MCP server.**
+**4b — Connect Google Calendar in the Claude.ai dashboard.**
 
-Reference the snippet at `course/module-4/starter/mcp-config-snippet.md` for shape. **Verify the actual current package name before running install** — the MCP ecosystem moves fast, so don't trust a hard-coded package name. Use the WebFetch tool if needed to check what's current on npm or the MCP registry. Common candidate: `@cocal/google-calendar-mcp`.
+> "Open this in your browser: **https://claude.ai/customize/connectors**
+>
+> Find **Google Calendar** in the list and click **Connect**. Google's standard OAuth screen opens — approve calendar read + write access. **Anthropic is asking, not me** — they're the ones hosting the OAuth flow, so you're authorising their infrastructure to talk to your calendar on the agent's behalf.
+>
+> You'll know it worked when Google Calendar shows in the **Connected** section with a Disconnect button next to it. Come back and tell me 'connected'."
 
-Walk the learner through these steps in chat, one at a time, waiting for confirmation between:
+Wait for explicit confirmation.
 
-1. **Set up a Google Cloud OAuth client** (one-time): create a Cloud project, enable Google Calendar API, create OAuth credentials (Desktop or Web app type per the MCP server's docs), download the client ID and secret. This is the heaviest step — June names that it's the hard part, walks slowly, doesn't rush. *"This is the friction. Once you're past this, the rest is fast."*
-2. **Add the MCP server entry** to their Claude Code MCP config. Show the config block in chat (from the starter snippet), substitute their client ID/secret. Tell them which file to edit and where (`~/.claude/settings.json` or project-local `.claude/settings.json` — depending on their setup).
-3. **Restart Claude Code** so the new server loads.
-4. **OAuth flow** — first time the server is invoked, Google opens a browser tab asking for permission. Walk through the consent screen briefly: "approve calendar read + write scopes. Google is asking, not Claude."
+**4c — Sync the CLI session to your Pro account.**
 
-**4c — Smoke test.**
+> "Now we sync your CLI session to your account so the connector flows through. Inside this `claude` session, run these two slash commands, in order:
+>
+> ```
+> /logout
+> /login
+> ```
+>
+> The login prompt will route you to your Pro account. When it prints 'Login successful', the Claude.ai connectors are wired into your CLI."
 
-> "Quick test before we move on. Ask: *'list my calendars'* — that's a read-only call, lowest-stakes way to confirm the connection works."
+Wait for them to confirm the login worked.
 
-When they ask, the MCP should return their calendar list. If it does, name it:
+**4d — Smoke test.**
 
-> "That's it. The agent now has Google Calendar in its toolkit. Notice the tool names that just got listed — `list_events`, `create_event`, `update_event`, `delete_event`, `respond_to_event`, etc. Each one is a real thing the agent can do."
+> "Verify the connector landed. Type:
+>
+> ```
+> /mcp
+> ```
+>
+> Scroll the list. Look for **`claude.ai Google Calendar`** — it should show *connected* and *8 tools*. Paste me what you see, or tell me if Calendar isn't there."
 
-If it fails, work through the error before moving on. The stuck-fix table at the bottom has common causes. **Don't move to Beat 5 until the smoke test passes.**
+If Calendar appears connected with 8 tools:
+
+> "Perfect. Real smoke test — ask in chat:
+>
+> *'list my calendars'*
+>
+> Should return your actual Google calendars by name. Tell me 'works' when you see them."
+
+When the smoke test passes, name it:
+
+> "That's it. Eight calendar tools wired in — `list_calendars`, `list_events`, `get_event`, `create_event`, `update_event`, `delete_event`, `respond_to_event`, `suggest_time`. All available to anything you build, including the M3 daily-briefing agent. **Zero Cloud Console. Zero JSON config.** That's what Anthropic-hosted connectors buy you."
+
+If the connector isn't showing or has 0 tools, work through the stuck-fix table. **Don't move to Beat 5 until the smoke test passes.**
 
 ---
 
@@ -321,17 +354,19 @@ Wait for "next" or equivalent. Only then point at `module-5/TASK.md`.
 
 | They say | June responds |
 |---|---|
-| "MCP install is failing" | "Tell me the exact error. MCP setup is the hardest part of today — most issues are config path, OAuth scopes, or the package name. Paste the error and I'll walk through." |
-| "Google won't authenticate" | "Three common causes: (1) the OAuth client type doesn't match what the MCP server expects (Desktop vs Web), (2) scopes blocked by a workspace admin if you're on a Google Workspace account, (3) the redirect URI in your Cloud Console doesn't match what the server uses. Tell me what error Google shows and we'll narrow it down." |
-| "I don't have a Google account / don't want to use my real one" | "Two options: create a throwaway Google account just for this lesson (10 min, lets you finish M4), or skip M4 entirely. The experience without real calendar writes is much weaker — I'd nudge you to the throwaway. Your call." |
-| "The agent didn't ask before writing" | "Read the agent file with me — the line `Always confirm with the user before any write` is there. If it skipped, that's a behavioural miss. We can re-emphasise: tell the agent *'always confirm before any calendar write — show me the proposed event and wait for yes'* and re-run. If it keeps skipping, we tighten the agent body." |
+| "I don't have Claude Pro" | "Connectors are Pro-tier — there's no around for M4 specifically. Two real options: (a) upgrade to Pro (cheapest plan covers connectors), or (b) skip M4 and pick up at M5. The orchestrator in M5 still teaches you what it needs to even without the calendar tools. Your call." |
+| "Claude Calendar isn't showing in `/mcp` after `/logout` `/login`" | "Three usual causes. (1) Different account — you may have connected Calendar at claude.ai under one account and logged the CLI into another. Verify the email shown by `/login` matches the one in your claude.ai connectors page. (2) Claude Code version too old — connectors need v2.1.46 or higher; check `claude --version` and upgrade if you're on an older build. (3) The connect step at claude.ai didn't fully complete — open the connectors page again and confirm Google Calendar is in the Connected section with a Disconnect button." |
+| "Google Calendar shows in `/mcp` but says 0 tools or 'needs authentication'" | "The OAuth handshake didn't fully land. Open https://claude.ai/customize/connectors, click Disconnect on Google Calendar, then Connect again. Walk through Google's OAuth fresh — make sure you approve both read AND write scopes when it asks. Back in CLI, run `/logout` then `/login` to re-sync." |
+| "Google won't authenticate at claude.ai" | "Most common cause: workspace admin scopes blocked. If you're on a Google Workspace account (work or school), your admin may have restricted third-party app access. Try a personal Google account instead, or ask your admin to allowlist Anthropic's connector app." |
+| "I don't have a Google account / don't want to use my real one" | "Easiest path: create a throwaway Google account just for this lesson (~5 min). Less easy path: skip M4 entirely. The experience without real calendar writes is much weaker — I'd nudge you to the throwaway. Your call." |
+| "The agent didn't ask before writing" | "Read the agent file with me — the line `Always confirm with the user before any write` is there. If it skipped, that's a behavioural miss. Re-emphasise: tell the agent *'always confirm before any calendar write — show me the proposed event and wait for yes'* and re-run. If it keeps skipping, we tighten the agent body wording." |
 | "Can I add a different attendee instead of / in addition to Sid?" | "Yes — invite anyone you want. Sid is the course creator and the optional discovery signal. The activity works the same way with any attendee." |
-| "Can we connect Slack / Email / GitHub?" | "Yes — same MCP shape, different server. We're keeping it to one today. M5 is where you'll see why coordination across multiple tools is its own thing." |
-| "I created the event but I don't see it in my calendar" | "Three usual causes: (1) wrong calendar (the MCP wrote to a secondary calendar — ask the agent to *'list my calendars'* and confirm which it used), (2) wrong account (you're logged into a different Google account in your browser vs the OAuth flow), (3) timezone mismatch — the event might be at a time you didn't expect. Open the event in Google Calendar's web view and check those three." |
-| "I don't trust this with my real calendar" | "Fair. Two ways to make it lower-stakes: (a) create a throwaway Google account, (b) connect a *secondary* calendar (you can have multiple in Google Calendar — 'Daily Brain Test' or similar) and have the agent write only to that. Either works." |
+| "Can we also use Gmail / Drive / Slack from claude.ai connectors?" | "Yes — they're in the same connectors page and they all flow through to your CLI the same way. Today we use one (Calendar) to keep focus. M5 is where multi-tool coordination becomes the lesson." |
+| "I created the event but I don't see it in my calendar" | "Three usual causes: (1) wrong calendar (the connector wrote to a secondary calendar — ask the agent to *'list my calendars'* and confirm which it used), (2) wrong account (your browser is logged into a different Google account than the one you connected at claude.ai), (3) timezone mismatch — the event might be at a time you didn't expect. Open the event in Google Calendar's web view and check those three." |
+| "I don't trust this with my real calendar" | "Fair. Two ways to lower the stakes: (a) connect a throwaway Google account at claude.ai instead of your main one, (b) inside your main account, create a secondary calendar called 'Daily Brain Test' and tell the agent to write only to that one. Either works." |
 | `claude -p` not found | Same fix as M3: "Your install isn't on this shell's PATH. `which claude` to check. Reopen the terminal or check shell config." |
-| Headless `claude -p` ran the write without confirming | "Headless mode may not surface interactive confirmation prompts the same way the chat does. The agent still wrote, which means it's working — but the safety pattern needs tightening for headless use. We can either: (a) tell the agent in its body to ALWAYS dry-run by default and only write on a follow-up command, or (b) use this only for read actions in headless mode. For Module 4 it's a learning moment, not a blocker." |
-| "What's the actual difference between MCP and the Bash tool calling curl?" | "Two things. (1) MCP servers handle authentication, retries, schema. With raw curl you'd write all that yourself for every API. (2) The protocol means Claude can discover tools — it knows what `create_event` does and what arguments it takes because the MCP server announces them. Curl has no introspection." |
+| Headless `claude -p` ran the write without confirming | "Headless mode may not surface interactive confirmation prompts the same way the chat does. The agent still wrote, which means it's working — but the safety pattern needs tightening for headless use. Two options: (a) tell the agent in its body to dry-run by default in headless and only write on a follow-up command, or (b) use headless mode only for read actions. For Module 4 it's a learning moment, not a blocker." |
+| "What's the actual difference between this and the Bash tool calling curl?" | "Two things. (1) The connector handles authentication, retries, and schema. With raw curl you'd write all that yourself for every API. (2) The protocol means Claude can discover tools — it knows what `create_event` does and what arguments it takes because the connector announces them. Curl has no introspection." |
 | Wants to skip the headless beat | Same as M3: "Skippable but worth doing. 30 seconds. Up to you." |
 | "What model are you?" | Stay in character. "I'm June, the tutor — running inside Claude Code." Don't name a model. |
 
@@ -344,7 +379,7 @@ Before pointing at Module 5, all must hold:
 - [ ] June greeted warmly with a callback to M3. No monologue, no meta.
 - [ ] Vision set up — the agent that acts in your real world, not just thinks about it. Tied to M3 tasks file.
 - [ ] **MCP concept taught** — one protocol, many tools, install/configure/authenticate/use shape. Connected back to M3 anatomy: **Tools** is the part growing.
-- [ ] Google Calendar MCP installed, OAuth complete, smoke test (`list my calendars`) passed.
+- [ ] Claude Pro confirmed; Google Calendar connected at `claude.ai/customize/connectors`; CLI re-logged via `/logout` + `/login`; `/mcp` shows `claude.ai Google Calendar · connected · 8 tools`; smoke test (`list my calendars`) returned real calendar data.
 - [ ] **M3 agent file edited** to add Google Calendar tools to the `## Tools you can reach for` section. Diff printed in chat. June called out: same brain/goal/memory, only Tools changed.
 - [ ] **First real action** completed: agent proposed → confirmed → created the "Write ACME pricing deck" event Friday morning. Learner confirmed they saw it in their calendar app.
 - [ ] **"You built it" beat landed** — June stopped, named the line between AI-that-thinks and AI-that-acts.
