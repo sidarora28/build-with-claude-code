@@ -35,6 +35,8 @@ export interface RunState {
   traces: DispatchTrace[];
   startedAt: number | null;
   endedAt: number | null;
+  finalBrief: string | null;
+  briefTs: number | null;
   totalRuns: number;
   totalErrors: number;
   usage: { tokens_in: number | null; tokens_out: number | null; cost_usd: number | null; latency_ms: number | null } | null;
@@ -79,6 +81,8 @@ export function deriveRunState(events: OrchestratorEvent[]): RunState {
   let runActive = false;
   let eaStatus: AgentStatus = 'idle';
   let usage: RunState['usage'] = null;
+  let finalBrief: string | null = null;
+  let briefTs: number | null = null;
 
   if (latestRunId) {
     const runEvents = events.filter((e) => 'run_id' in e && e.run_id === latestRunId);
@@ -117,6 +121,9 @@ export function deriveRunState(events: OrchestratorEvent[]): RunState {
             break;
           }
         }
+      } else if (e.kind === 'synthesise') {
+        finalBrief = e.msg;
+        briefTs = tsMs(e.ts);
       } else if (e.kind === 'usage') {
         usage = {
           tokens_in: e.tokens_in,
@@ -151,6 +158,8 @@ export function deriveRunState(events: OrchestratorEvent[]): RunState {
     traces,
     startedAt,
     endedAt,
+    finalBrief,
+    briefTs,
     totalRuns,
     totalErrors,
     usage,

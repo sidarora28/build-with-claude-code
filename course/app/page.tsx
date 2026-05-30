@@ -6,6 +6,7 @@ import { deriveRunState } from '@/lib/events';
 import { AgentsPanel } from '@/components/AgentsPanel';
 import { FlowPanel } from '@/components/FlowPanel';
 import { PerfPanel } from '@/components/PerfPanel';
+import { BriefPanel } from '@/components/BriefPanel';
 import { TranscriptPanel } from '@/components/TranscriptPanel';
 
 export default function Dashboard() {
@@ -38,7 +39,11 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className="boot flex-1" style={{ animationDelay: '340ms' }}>
+      <section className="boot" style={{ animationDelay: '320ms' }}>
+        <BriefPanel state={state} />
+      </section>
+
+      <section className="boot flex-1" style={{ animationDelay: '400ms' }}>
         <TranscriptPanel events={events} />
       </section>
 

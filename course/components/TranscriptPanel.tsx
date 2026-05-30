@@ -185,8 +185,11 @@ function Row({ event: e, flash, latest }: { event: OrchestratorEvent; flash: boo
     );
   } else if (e.kind === 'synthesise') {
     channel = <span style={{ color: 'var(--c-accent)' }}>EA · synthesise</span>;
+    const firstLine = e.msg.split('\n').find((l) => l.trim().length > 0) ?? 'final brief';
     payload = (
-      <span style={{ color: 'var(--text-3)' }}>combining specialist outputs → final brief</span>
+      <span style={{ color: 'var(--text-2)' }}>
+        composed brief — <Typewriter text={truncate(firstLine.replace(/^#+\s*/, ''), 140)} active={latest} />
+      </span>
     );
   } else if (e.kind === 'usage') {
     channel = <span style={{ color: 'var(--text-3)' }}>EA · usage</span>;
