@@ -4,6 +4,43 @@ import { useEffect, useRef, useState } from 'react';
 import type { OrchestratorEvent, SpecialistId } from '@/lib/events';
 import { SPECIALIST_META } from '@/lib/events';
 
+// Typewriter: reveals `text` char-by-char when `active`, with a blinking cursor.
+// When inactive (an older row), shows the full text instantly.
+function Typewriter({ text, active, cps = 240 }: { text: string; active: boolean; cps?: number }) {
+  const [n, setN] = useState(active ? 0 : text.length);
+
+  useEffect(() => {
+    if (!active) {
+      setN(text.length);
+      return;
+    }
+    setN(0);
+    let raf = 0;
+    let start: number | null = null;
+    const step = (t: number) => {
+      if (start === null) start = t;
+      const elapsed = (t - start) / 1000;
+      const target = Math.min(text.length, Math.floor(elapsed * cps));
+      setN(target);
+      if (target < text.length) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [text, active, cps]);
+
+  const typing = active && n < text.length;
+  return (
+    <>
+      {text.slice(0, n)}
+      {typing && (
+        <span className="blink" style={{ color: 'var(--c-accent)' }}>
+          ▋
+        </span>
+      )}
+    </>
+  );
+}
+
 interface Props {
   events: OrchestratorEvent[];
 }
@@ -97,7 +134,7 @@ export function TranscriptPanel({ events }: Props) {
         ) : (
           <div>
             {events.map((e, i) => (
-              <Row key={`${e.ts}-${i}`} event={e} flash={flashIdx === i} />
+              <Row key={`${e.ts}-${i}`} event={e} flash={flashIdx === i} latest={i === events.length - 1} />
             ))}
           </div>
         )}
@@ -106,7 +143,7 @@ export function TranscriptPanel({ events }: Props) {
   );
 }
 
-function Row({ event: e, flash }: { event: OrchestratorEvent; flash: boolean }) {
+function Row({ event: e, flash, latest }: { event: OrchestratorEvent; flash: boolean; latest: boolean }) {
   const kind = KIND_LABEL[e.kind];
   const kindColor = KIND_COLOR[e.kind];
 
@@ -115,7 +152,11 @@ function Row({ event: e, flash }: { event: OrchestratorEvent; flash: boolean }) 
 
   if (e.kind === 'orchestrator_start') {
     channel = <span style={{ color: 'var(--c-accent)' }}>EA</span>;
-    payload = <span style={{ color: 'var(--text-2)' }}>&ldquo;{e.prompt ?? 'morning brief'}&rdquo;</span>;
+    payload = (
+      <span style={{ color: 'var(--text-2)' }}>
+        &ldquo;<Typewriter text={e.prompt ?? 'morning brief'} active={latest} />&rdquo;
+      </span>
+    );
   } else if (e.kind === 'dispatch') {
     channel = (
       <>
@@ -125,7 +166,9 @@ function Row({ event: e, flash }: { event: OrchestratorEvent; flash: boolean }) 
       </>
     );
     payload = (
-      <span style={{ color: 'var(--text-2)' }}>{e.prompt ? `“${truncate(e.prompt, 110)}”` : '—'}</span>
+      <span style={{ color: 'var(--text-2)' }}>
+        {e.prompt ? <>“<Typewriter text={truncate(e.prompt, 110)} active={latest} />”</> : '—'}
+      </span>
     );
   } else if (e.kind === 'response') {
     channel = (
@@ -137,7 +180,7 @@ function Row({ event: e, flash }: { event: OrchestratorEvent; flash: boolean }) 
     );
     payload = (
       <span className="mono-xs" style={{ color: 'var(--text-2)', whiteSpace: 'pre-wrap' }}>
-        {truncate(e.msg, 260)}
+        <Typewriter text={truncate(e.msg, 260)} active={latest} cps={400} />
       </span>
     );
   } else if (e.kind === 'synthesise') {

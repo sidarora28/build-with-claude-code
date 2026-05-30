@@ -184,4 +184,20 @@ body::before {
   .flash {
     animation: flash 0.8s ease-out;
   }
+
+  /* boot-up: panel scans online */
+  @keyframes boot {
+    0% { opacity: 0; transform: translateY(6px); clip-path: inset(0 0 100% 0); }
+    60% { clip-path: inset(0 0 0 0); }
+    100% { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+  }
+  .boot {
+    animation: boot 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  /* a one-shot scan line that sweeps a panel as it comes online */
+  @keyframes scan {
+    0% { transform: translateY(-100%); opacity: 0.8; }
+    100% { transform: translateY(1200%); opacity: 0; }
+  }
 }

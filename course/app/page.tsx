@@ -22,15 +22,23 @@ export default function Dashboard() {
 
   return (
     <main className="relative z-10 mx-auto flex min-h-screen max-w-[1480px] flex-col gap-3 px-6 py-5">
-      <TopBar nowUtc={now} state={state} error={error} />
+      <div className="boot" style={{ animationDelay: '0ms' }}>
+        <TopBar nowUtc={now} state={state} error={error} />
+      </div>
 
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-[300px_minmax(0,1fr)_300px]">
-        <AgentsPanel state={state} />
-        <FlowPanel state={state} />
-        <PerfPanel state={state} />
+        <div className="boot" style={{ animationDelay: '90ms' }}>
+          <AgentsPanel state={state} />
+        </div>
+        <div className="boot" style={{ animationDelay: '170ms' }}>
+          <FlowPanel state={state} />
+        </div>
+        <div className="boot" style={{ animationDelay: '250ms' }}>
+          <PerfPanel state={state} />
+        </div>
       </section>
 
-      <section className="flex-1">
+      <section className="boot flex-1" style={{ animationDelay: '340ms' }}>
         <TranscriptPanel events={events} />
       </section>
 
