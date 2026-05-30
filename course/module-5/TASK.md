@@ -12,7 +12,7 @@
 
 **Two layers happening simultaneously:**
 
-1. **Module-specific:** they spin up the Daily Brain dashboard for the first time (Next.js, `npm install`, `localhost:3000`), then ask the EA orchestrator for a morning brief and watch the visualization come alive — animated pulses to specialists, live transcript streaming, perf counter ticking.
+1. **Module-specific:** they spin up the Daily Brain dashboard for the first time (Next.js, `npm install`, `localhost:3000`), then ask the EA orchestrator for a morning brief and watch the mission-control HUD come alive — specialist LEDs flip to "working," flow bars fill as each returns, the transcript streams the raw events, and the BRIEF panel types out EA's morning brief in plain language.
 2. **Transferable:** they learn the **orchestrator pattern**. One agent that does no work itself; three specialists each with a narrow domain; an event log that makes the coordination visible. This shape generalises to any multi-source AI system they'll build.
 
 ---
@@ -40,11 +40,13 @@ In `course/.claude/agents/`:
 - `followups-specialist.md` — reads meeting notes for "who's waiting on me"
 
 In `course/` (the Next.js dashboard):
-- `app/`, `components/`, `lib/` — the Jarvis-style HUD
-- `package.json` — deps include `next`, `react`, `framer-motion`
+- `app/`, `components/`, `lib/` — the mission-control HUD. Five panels: **AGENTS** (specialist roster + LEDs), **FLOW** (per-dispatch timing bars), **PERF** (locked until M6), **BRIEF** (EA's morning brief, typed out live), **TRANSCRIPT** (raw event log).
+- `package.json` — deps are `next`, `react`, `react-dom`. Pure CSS animations, no animation library.
 
 In `course/module-5/starter/`:
 - `README.md` — a reference doc the learner can look up; June doesn't read it aloud.
+- `sample-run.jsonl` — a recorded run.
+- `demo.mjs` — replays that run into `module-5/work/run.jsonl` with realistic timing, so the dashboard animates without needing the real orchestrator. Useful as a smoke-test in Beat 4 and as a fallback if a live run misfires.
 
 ---
 
@@ -127,7 +129,7 @@ Walk the learner through, one step at a time, waiting between each:
 > npm install
 > ```
 >
-> First-time install pulls Next.js, React, framer-motion, and a few others. Takes a minute or two. Tell me 'installed' when it finishes."
+> First-time install pulls Next.js, React, and a few others. Takes a minute or two. Tell me 'installed' when it finishes."
 
 When installed:
 
@@ -141,9 +143,26 @@ When installed:
 
 When they confirm they see it:
 
-> "Look at what's there. **Dark HUD, scanline texture, four panels.** The center is a glowing EA node. Three quieter nodes around it — NOTES, CALENDAR, FOLLOW-UPS. Lines connecting them. A live transcript pane on the right that says 'awaiting orchestrator'. A perf counter top-right showing dashes.
+> "Look at what's there. **A dark mission-control terminal.** Top bar with a live UTC clock and an IDLE status light. Then a row of panels:
+> - **AGENTS** (left) — EA plus three specialists (NOTES, CAL, FOLLOWS), each with a status light. All idle right now.
+> - **FLOW** (center) — empty; this is where dispatch timing bars will appear.
+> - **PERF** (right) — shows a small lock: *'unlocks in Module 6.'* Leave it; we turn it on next module.
+> - **BRIEF** (wide, below) — 'run the orchestrator to see your morning brief.'
+> - **TRANSCRIPT** (bottom) — 'awaiting orchestrator.'
 >
 > Everything's idle. We haven't asked for anything yet. Watch what happens when we do."
+
+**Optional smoke-test (offer it).** If the learner wants to confirm the dashboard works before the real run — or if you just want to prime them on what's about to happen:
+
+> "Want a 5-second preview? In a second terminal (dashboard still running), run:
+>
+> ```bash
+> node module-5/starter/demo.mjs
+> ```
+>
+> That replays a recorded run into the dashboard — you'll see the LEDs flip, the flow bars fill, the transcript stream, and the BRIEF panel type out. It's a stand-in; the real thing comes next, driven by your actual notes and calendar. Reload the page to clear it, then tell me 'ready' for the real run."
+
+If they'd rather go straight to the real orchestrator, skip the smoke-test.
 
 ---
 
@@ -180,37 +199,47 @@ When they ask, invoke the ea-orchestrator agent. **Critical:** the orchestrator 
 > "**EA dispatching in parallel...** [Task × 3 in one message] — three specialists kicked off at once. Watch the dashboard."
 
 (The learner switches to the browser tab. They see:
-- EA node breathing brighter (RUN ACTIVE)
-- Three pulses fire from EA to each specialist node
-- Specialist nodes light up in their colors and show "◉ working"
-- Transcript pane shows DISPATCH lines in real time)
+- Top-bar status flips to **RUN ACTIVE**
+- In **AGENTS**, all three specialist LEDs flip to "working" and pulse
+- In **FLOW**, three timing bars open up — one per dispatch
+- **TRANSCRIPT** streams DISPATCH rows in real time)
 
 As each specialist returns:
 
-> "**Notes specialist returned** — pulse coming back. **Calendar specialist returned.** **Follow-ups specialist returned.** All three home. Now I synthesise."
+> "**Notes specialist returned.** **Calendar specialist returned.** **Follow-ups specialist returned.** All three home. Now I synthesise."
 
-(Dashboard shows pulses returning, nodes turn "✓ returned", transcript shows RESPONSE entries with the specialist outputs, EA glows brighter during synthesise.)
+(Dashboard: each AGENTS LED turns "done" as it returns, its FLOW bar fills to the specialist's real duration, and TRANSCRIPT shows RESPONSE rows with the outputs typing in.)
 
-Finally:
+Finally — and this is the moment to point at:
+
+> "Watch the **BRIEF** panel. That's EA composing your morning brief, live."
+
+(The BRIEF panel types the brief out character-by-character — a headline, then **Today** / **Top actions** / **People owed** sections, priority pills on the actions, and a closing 'My take.')
 
 > "Here's the brief.
 >
 > ```
-> # Today's Brief — <date>
+> # Good morning.
 >
-> Top focus:
-> 1. ...
-> 2. ...
-> 3. ...
+> Here's your <day>, <date>.
 >
-> Today's calendar: ...
-> Follow-ups owed: ...
-> Deep-work window: ...
+> ## Today
+> <schedule + deep-work window>
+>
+> ## Top actions
+> 1. [HIGH] ... — <source>
+> 2. [HIGH] ... — <source>
+> 3. [MED] ... — <source>
+>
+> ## People owed
+> - ...
+>
+> My take: ...
 > ```
 >
 > Saved to `course/module-5/work/briefings/<date>.md`. Full run log at `module-5/work/run.jsonl`."
 
-The dashboard's perf counter ticks (tokens, cost, latency from the usage event). Specialist nodes settle into the "responded" state. Status shows "idle." Pause and let it sink in.
+The TRANSCRIPT shows the `usage` line (tokens/cost/latency) and the run completing; the top-bar status returns to **idle**. (The PERF panel stays locked — that's Module 6's reveal.) Pause and let it sink in.
 
 **Belt-and-suspenders:** if the orchestrator skips event-log writes and the dashboard stays blank, June names it — *"the orchestrator didn't write to run.jsonl. Let me run it again and make sure the event-log discipline holds"* — and re-invokes with explicit reminder. Without the event log, the dashboard is just decoration.
 
@@ -332,13 +361,13 @@ Wait for "next" or equivalent. Only then point at `module-6/TASK.md`.
 | Dashboard loads but stays blank / awaiting | "The dashboard polls `module-5/work/run.jsonl` every 500ms. If nothing's there, you'll see 'awaiting orchestrator' forever. Easiest check: ask me to run the orchestrator. If you already did and nothing appears, it means the orchestrator skipped the event log writes — let me re-run and make sure the log discipline holds." |
 | Specialist returns an error / empty | "Show me which one. If it's calendar-specialist, the Calendar connector probably isn't loaded — run `/mcp` to check. If it's notes-specialist returning empty, the `data/meetings/` folder may be missing or empty (fresh clone should have 11 notes). If it's followups-specialist returning '(no open follow-ups)', that's actually fine — the sample data may genuinely not have any in scope." |
 | The orchestrator did the specialists' work itself | "Read the orchestrator file's Goal section — *don't do the specialists' work yourself*. If the brain skipped it and read notes directly, name it and re-run with the reminder: *'use the Task tool to dispatch each specialist; do not read notes yourself'*. If it persists, tighten the orchestrator file's Boundaries section." |
-| Pulses don't animate, only transcript updates | "Dashboard might be cached. Hard-reload the browser tab (Cmd-Shift-R on Mac, Ctrl-Shift-R elsewhere). If still broken, check the browser console for errors. Most likely framer-motion didn't load — confirm `npm install` finished without errors." |
+| LEDs / flow bars don't animate, only transcript updates | "Dashboard might be cached. Hard-reload the browser tab (Cmd-Shift-R on Mac, Ctrl-Shift-R elsewhere). If still broken, check the browser console for errors. To confirm the dashboard itself is healthy, run `node module-5/starter/demo.mjs` in a second terminal — if the demo animates but a real run doesn't, the issue is the orchestrator's event-log writes, not the UI." |
 | Run was fast / specialists returned in milliseconds | "That's the parallel dispatch working. Three calls in roughly the time of the slowest one. Serial would have been 3× this. Cool, right?" |
 | Wants to add a fourth specialist | "Beat 8's tighter version. Copy one specialist file, rename, change the Goal/Tools/process for your new domain, save in `.claude/agents/`. Add it to the orchestrator's `Your team` section. Re-run. The dashboard doesn't know about your new specialist yet — it has hard-coded layout for three. We could extend the layout, but that's a Module-5-plus exercise. For today, three is the lesson." |
 | Wants to skip the dashboard | "You can skip it. The orchestrator works fine without the dashboard — it'll write the brief to a file and print to chat. You'll just miss the live visualization. If you'd rather not install Node, reply 'no dashboard' and I'll run the orchestrator headlessly in chat." |
 | `claude -p` not found | Same fix as M3/M4: PATH issue, `which claude`, reopen the terminal. |
 | Headless run completed but dashboard didn't update | "Two checks: (1) is the dashboard's `npm run dev` still running in its terminal? (2) are you watching the right port? Refresh the tab and check the transcript pane — events should appear within a second of the headless run finishing." |
-| "Can I make the dashboard look different / change colors?" | "All the styling lives in `app/globals.css` and the components in `components/`. The graph is `components/OrchestratorGraph.tsx`, the transcript is `components/TranscriptPane.tsx`. Fork away. Send me a screenshot when it's done." |
+| "Can I make the dashboard look different / change colors?" | "All the styling lives in `app/globals.css` (the palette is CSS variables at the top) and the panel components in `components/` — `AgentsPanel`, `FlowPanel`, `PerfPanel`, `BriefPanel`, `TranscriptPanel`. Fork away. Send me a screenshot when it's done." |
 | "What model are you?" | Stay in character. "I'm June, the tutor — running inside Claude Code." Don't name a model. |
 
 ---
@@ -350,9 +379,9 @@ Before pointing at Module 6, all must hold:
 - [ ] June greeted warmly with a callback to M4. No monologue, no meta.
 - [ ] Vision set up — chief of staff coordinating a team, dashboard about to come alive.
 - [ ] **Orchestration concept landed** — why a coordinator beats a monolith (serial / mixed context / swappability), and the explicit callback to M3 anatomy.
-- [ ] `npm install` completed; `npm run dev` is running; `localhost:3000` is open in the learner's browser; dark HUD with EA + 3 specialist nodes is visible.
+- [ ] `npm install` completed; `npm run dev` is running; `localhost:3000` is open in the learner's browser; the mission-control HUD is visible (AGENTS + FLOW + PERF + BRIEF + TRANSCRIPT panels, everything idle).
 - [ ] **Architecture read** — June opened the orchestrator file (and optionally the specialists), walked through Goal / Tools / Process out loud.
-- [ ] **First run completed end-to-end** — orchestrator dispatched all three specialists in parallel, wrote events to `module-5/work/run.jsonl`, dashboard animated (pulses + transcript + perf counter all updated), final brief saved to `module-5/work/briefings/<date>.md` and printed to chat.
+- [ ] **First run completed end-to-end** — orchestrator dispatched all three specialists in parallel, wrote events to `module-5/work/run.jsonl`, dashboard animated (AGENTS LEDs + FLOW bars + TRANSCRIPT stream + BRIEF panel composed the brief), final brief saved to `module-5/work/briefings/<date>.md` and printed to chat. (PERF stays locked — that's M6.)
 - [ ] **"You built it" beat landed** — June stopped, named the pattern (one coordinator + N specialists + transparent event log), said "you now know the shape."
 - [ ] Optional Beat 8 offered (modify a specialist). Learner took or skipped — both fine.
 - [ ] Headless run completed from another terminal; dashboard animated identically to the chat run.

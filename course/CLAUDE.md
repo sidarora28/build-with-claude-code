@@ -53,7 +53,7 @@ course/
   MARKDOWN.md              ← learner-facing markdown cheatsheet. Point learners here if formatting confuses them.
   package.json             ← Daily Brain dashboard deps. Learners run `npm install` in Module 5.
   app/                     ← Next.js dashboard (orchestrator HUD). Learners run `npm run dev` in Module 5; UI at localhost:3000.
-  components/              ← Dashboard components: OrchestratorGraph, TranscriptPane, PerfCounter.
+  components/              ← Dashboard panels: AgentsPanel, FlowPanel, PerfPanel, BriefPanel, TranscriptPanel.
   lib/                     ← Event types + polling hook for the dashboard.
   .claude/agents/          ← Ships with 4 pre-built agents for Module 5: ea-orchestrator, notes-specialist, calendar-specialist, followups-specialist. (M3's daily-briefing.md is learner-built and gitignored.)
   data/meetings/           ← 11 sample meeting notes the agents read. Learners can add/edit.
@@ -67,5 +67,5 @@ course/
 - **Module 2 — Skills.** Learner builds two Skills (summariser + action-items-only) that Claude auto-routes to from natural language.
 - **Module 3 — Agents.** Learner builds the `daily-briefing` agent and learns the four-part anatomy: **Brain · Goal · Tools · Memory**.
 - **Module 4 — Real-world action.** Learner connects Google Calendar via the Claude.ai hosted connector (one click at claude.ai/customize/connectors, then `/mcp` in CLI). The M3 agent's Tools section is edited to add calendar tools — it now creates real events, sends real invites.
-- **Module 5 — Orchestrator + Jarvis HUD.** Learner spins up the dashboard for the first time (`npm install && npm run dev`). The EA orchestrator coordinates three specialists (notes, calendar, follow-ups) in parallel, with a live HUD animating dispatches and responses. Four agent files ship pre-built in `.claude/agents/`.
+- **Module 5 — Orchestrator + mission-control HUD.** Learner spins up the dashboard for the first time (`npm install && npm run dev`). The EA orchestrator coordinates three specialists (notes, calendar, follow-ups) in parallel; the HUD's five panels (AGENTS, FLOW, PERF, BRIEF, TRANSCRIPT) animate the dispatches, responses, and the final brief composing live. PERF stays locked until M6. Four agent files ship pre-built in `.claude/agents/`; `module-5/starter/demo.mjs` replays a sample run for a no-orchestrator preview.
 - **Module 6 — Performance.** Learner runs three single-variable experiments on the M5 orchestrator (model swap, prompt tighten, context trim), watches the perf counter move, learns the speed/cost/quality framework. April closes the course at Beat 9.

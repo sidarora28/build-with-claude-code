@@ -15,15 +15,32 @@ course/
     └── followups-specialist.md    ← reads data/meetings/ for interpersonal debts.
 ```
 
-And a Next.js dashboard that visualises the orchestration live:
+And a Next.js dashboard that visualises the orchestration live — a mission-control ops terminal:
 
 ```
 course/
 ├── app/                ← Next.js app (the dashboard at localhost:3000)
-├── components/         ← UI: OrchestratorGraph, TranscriptPane, PerfCounter
-├── lib/                ← event types + polling hook
+├── components/         ← UI panels: AgentsPanel, FlowPanel, PerfPanel, BriefPanel, TranscriptPanel
+├── lib/                ← event types + deriveRunState + polling hook
 └── package.json        ← npm install once; npm run dev to launch
 ```
+
+The five panels:
+- **AGENTS** — the roster. EA + three specialists, each with a status LED (idle / working / done / error) and a dispatched/returned/errors tally.
+- **FLOW** — one progress bar per dispatch, showing real per-specialist timing as each returns.
+- **PERF** — tokens, cost, latency. **Locked in Module 5** ("unlocks in Module 6"); you turn it on with `?perf=1` in Module 6.
+- **BRIEF** — the payoff. EA's final morning brief types out here in plain language as it's composed.
+- **TRANSCRIPT** — the raw event log, one row per event (timestamp / kind / channel / payload), streaming live.
+
+### See it animate without a real run
+
+Want to watch the dashboard come alive before wiring up the orchestrator? With `npm run dev` running, open a second terminal and replay a sample run:
+
+```bash
+node module-5/starter/demo.mjs
+```
+
+It streams a recorded run into `module-5/work/run.jsonl` with realistic timing — boot cascade, LED pulses, flow bars filling, the brief composing. Re-run it any time.
 
 ## How the pieces talk
 
@@ -40,14 +57,14 @@ course/
 
 | `kind` | Fired when | Drives in the UI |
 |---|---|---|
-| `orchestrator_start` | EA starts a run | Status flips to "RUN ACTIVE" |
-| `dispatch` | EA invokes a specialist | Pulse animates from EA → that specialist node; node turns "working" |
-| `response` | Specialist returns | Pulse animates from specialist → EA; node turns "returned"; transcript shows the output |
-| `synthesise` | EA writes the final brief | EA node pulses brighter |
-| `usage` | EA records tokens/cost/latency for the run | Perf counter (top right) updates |
-| `orchestrator_end` | Run complete | Status flips to "idle" |
+| `orchestrator_start` | EA starts a run | Top-bar status flips to "RUN ACTIVE" |
+| `dispatch` | EA invokes a specialist | That specialist's LED in AGENTS turns "working"; a new bar opens in FLOW |
+| `response` | Specialist returns | AGENTS LED turns "done"; the FLOW bar fills to its real duration; TRANSCRIPT streams the output |
+| `synthesise` | EA writes the final brief | The BRIEF panel types out the brief markdown live |
+| `usage` | EA records tokens/cost/latency for the run | PERF panel updates (once unlocked with `?perf=1` in M6) |
+| `orchestrator_end` | Run complete | Top-bar status flips to "idle" |
 
-You don't need to memorise this — the dashboard's transcript pane shows each event in plain English as it fires.
+You don't need to memorise this — the TRANSCRIPT panel shows each event in plain English as it fires.
 
 ## Why this shape, not "one big agent"
 

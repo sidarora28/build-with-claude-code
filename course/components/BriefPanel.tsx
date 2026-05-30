@@ -131,12 +131,19 @@ function renderBrief(text: string) {
 }
 
 function renderInline(s: string) {
-  // Highlight [HIGH]/[MED]/[LOW] tags.
-  const parts = s.split(/(\[HIGH\]|\[MED\]|\[LOW\])/g);
+  // Split on priority tags AND **bold** spans, then style each piece.
+  const parts = s.split(/(\[HIGH\]|\[MED\]|\[LOW\]|\*\*[^*]+\*\*)/g);
   return parts.map((p, i) => {
     if (p === '[HIGH]') return <Tag key={i} color="var(--c-err)">HIGH</Tag>;
     if (p === '[MED]') return <Tag key={i} color="var(--c-warn)">MED</Tag>;
     if (p === '[LOW]') return <Tag key={i} color="var(--c-ok)">LOW</Tag>;
+    if (p.startsWith('**') && p.endsWith('**')) {
+      return (
+        <strong key={i} style={{ color: 'var(--text)', fontWeight: 700 }}>
+          {p.slice(2, -2)}
+        </strong>
+      );
+    }
     return <span key={i}>{p}</span>;
   });
 }

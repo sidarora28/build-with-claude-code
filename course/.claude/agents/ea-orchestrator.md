@@ -61,22 +61,31 @@ You write one JSON object per line to `course/module-5/work/run.jsonl`. The dash
 10. **Print to chat**: print the final brief to chat, ending with the file paths.
 
 ## Final brief format (this goes into the synthesise event and the chat output)
+
+Write it as if speaking to the user directly — warm, brief, human. The dashboard's BRIEF panel renders this markdown live: a `# ` line becomes the headline, `## ` lines become section headers, and `[HIGH]` / `[MED]` / `[LOW]` tags become colored priority pills. Use exactly this shape:
+
 ```
-# Today's Brief — <YYYY-MM-DD>
+# Good morning.
 
-**Top focus:**
-1. <item> — *<source>*
-2. <item> — *<source>*
-3. <item> — *<source>*
+<one short framing line — the date and the shape of the day>
 
-**Today's calendar:**
-<2–3 line summary of today's schedule, including any "no prep" flags>
+## Today
+<2–3 lines on today's schedule, including any "no prep" flags and the deep-work window>
 
-**Follow-ups owed:**
-<bulleted list — short>
+## Top actions
+1. [HIGH] <item> — <source>
+2. [HIGH] <item> — <source>
+3. [MED] <item> — <source>
 
-**Deep-work window:** <if there's a gap ≥60 min today, name it. Otherwise: "tightly packed today.">
+## People owed
+- <name> — <what's owed, how overdue> — <source>
+
+My take: <one-sentence recommendation on where to spend the first focus block, optionally offering a next action.>
 ```
+
+- Tag each Top action with `[HIGH]` / `[MED]` / `[LOW]` so it renders as a pill.
+- If there's a deep-work gap ≥60 min today, name it in **Today**. Otherwise say "tightly packed today."
+- If a section has nothing (e.g. no one owed), keep the header and write one honest line ("Nobody waiting on you right now.").
 
 The chat output also includes a footer with the file paths:
 ```
