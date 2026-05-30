@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,153 +6,182 @@
 
 :root {
   color-scheme: dark;
-  /* mil-spec HUD palette — pushed for contrast over mood */
-  --hud-bg: #04060a;
-  --hud-bg-2: #070b12;
-  --hud-panel: #0a0f18;
-  --hud-grid: #0f1623;
-  --hud-line: #2e3e5c;
-  --hud-line-bright: #4a6390;
-  --hud-text: #f3f7ff;
-  --hud-text-dim: #c8d4ec;
-  --hud-text-mute: #93a4c2;
-  --hud-cyan: #5fe3ff;
-  --hud-cyan-glow: rgba(95, 227, 255, 0.6);
-  --hud-violet: #c9a8ff;
-  --hud-amber: #ffc266;
-  --hud-green: #8ff0b4;
-  --hud-red: #ff8a8a;
 
-  --font-display: 'Chakra Petch', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* mission-control palette — flat, high-contrast, no glow needed */
+  --bg: #06080c;
+  --bg-rail: #080b11;
+  --panel: #0d1119;
+  --panel-2: #11161f;
+  --border: #1f2a3d;
+  --border-bright: #324464;
+  --grid: #131927;
+
+  --text: #f5f9ff;
+  --text-2: #c8d4ec;
+  --text-3: #8395b3;
+
+  --c-ok: #6ce5a0;
+  --c-warn: #ffc266;
+  --c-err: #ff7a7a;
+  --c-accent: #5fe3ff;
+
+  --c-notes: #c9a8ff;
+  --c-cal: #ffc266;
+  --c-follows: #6ce5a0;
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
-html, body {
-  background: var(--hud-bg);
-  color: var(--hud-text);
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
 }
 
 body {
   font-family: var(--font-mono);
-  font-feature-settings: 'tnum' 1, 'ss01' 1;
-  background:
-    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(95, 227, 255, 0.08), transparent 60%),
-    radial-gradient(ellipse 70% 50% at 100% 110%, rgba(196, 166, 255, 0.06), transparent 60%),
-    linear-gradient(180deg, var(--hud-bg) 0%, var(--hud-bg-2) 100%);
+  font-feature-settings: 'tnum' 1, 'cv02' 1, 'cv09' 1, 'ss01' 1;
+  background-image:
+    linear-gradient(180deg, #06080c 0%, #050709 100%);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* film grain — dialed way down so it doesn't eat text contrast */
-body::after {
+/* very faint grid texture — only visible under the page, not over panels */
+body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 100;
-  opacity: 0.02;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse at top, black, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at top, black, transparent 80%);
 }
 
 @layer base {
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
+    letter-spacing: -0.01em;
   }
 }
 
 @layer components {
-  .font-display {
-    font-family: var(--font-display);
+  /* the workhorse panel: sharp, matte, bracketed */
+  .panel {
+    @apply relative border;
+    background: var(--panel);
+    border-color: var(--border);
+    border-radius: 2px;
   }
 
-  .hud-panel {
-    @apply rounded-[3px] border;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 40%),
-      var(--hud-panel);
-    border-color: var(--hud-line);
-    position: relative;
-  }
-
-  /* corner brackets — top-left + bottom-right */
-  .hud-panel::before,
-  .hud-panel::after {
+  /* tiny corner ticks — subtle, sharp, not decorative noise */
+  .panel::before,
+  .panel::after {
     content: '';
     position: absolute;
-    width: 12px;
-    height: 12px;
-    border-color: var(--hud-cyan);
-    opacity: 0.7;
+    width: 6px;
+    height: 6px;
+    border-color: var(--c-accent);
+    opacity: 0.85;
   }
-
-  .hud-panel::before {
+  .panel::before {
     top: -1px;
     left: -1px;
-    border-top: 1.5px solid;
-    border-left: 1.5px solid;
+    border-top: 1px solid;
+    border-left: 1px solid;
   }
-
-  .hud-panel::after {
+  .panel::after {
     bottom: -1px;
     right: -1px;
-    border-bottom: 1.5px solid;
-    border-right: 1.5px solid;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
   }
 
-  .hud-label {
+  .panel-head {
+    @apply flex items-center justify-between border-b px-3 py-1.5;
+    border-color: var(--border);
+    background: linear-gradient(180deg, #0e131c, #0b0f17);
+  }
+
+  .panel-title {
     font-family: var(--font-display);
-    @apply text-[11px] uppercase tracking-[0.14em];
-    color: var(--hud-text-dim);
-    font-weight: 600;
+    @apply text-[11px] font-bold uppercase tracking-[0.16em];
+    color: var(--text);
   }
 
-  .hud-label-mute {
-    font-family: var(--font-display);
-    @apply text-[11px] uppercase tracking-[0.14em];
-    color: var(--hud-text-mute);
-    font-weight: 500;
-  }
-
-  .hud-value {
+  .panel-meta {
     font-family: var(--font-mono);
-    @apply tabular-nums;
-    color: var(--hud-text);
+    @apply text-[10px] tracking-wide;
+    color: var(--text-3);
   }
 
-  .hud-divider {
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--hud-line-bright), transparent);
+  /* tabular text helpers */
+  .label {
+    font-family: var(--font-mono);
+    @apply text-[10px] font-medium uppercase tracking-[0.12em];
+    color: var(--text-3);
+  }
+
+  .label-bright {
+    font-family: var(--font-mono);
+    @apply text-[10px] font-semibold uppercase tracking-[0.12em];
+    color: var(--text-2);
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    @apply tabular-nums font-medium;
+    color: var(--text);
+  }
+
+  .mono-xs {
+    font-family: var(--font-mono);
+    @apply text-[11px] leading-tight;
+    color: var(--text);
+  }
+
+  /* status pill */
+  .pill {
+    @apply inline-flex items-center gap-1 border px-1.5 py-px text-[10px] font-bold uppercase tracking-wider;
+    font-family: var(--font-mono);
+    border-radius: 1px;
   }
 }
 
 @layer utilities {
-  .glow-cyan {
-    box-shadow:
-      0 0 8px var(--hud-cyan-glow),
-      0 0 24px var(--hud-cyan-glow),
-      inset 0 0 12px rgba(95, 227, 255, 0.18);
+  .accent-bar {
+    background: linear-gradient(90deg, var(--c-accent), transparent);
   }
 
-  .text-glow-cyan {
-    text-shadow: 0 0 14px var(--hud-cyan-glow);
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    50.01%, 100% { opacity: 0.25; }
+  }
+  .blink {
+    animation: blink 1s steps(1) infinite;
   }
 
-  .scanline {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 3px,
-      rgba(255, 255, 255, 0.005) 4px
-    );
+  @keyframes pulse-led {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+    50% { opacity: 0.65; box-shadow: 0 0 0 4px transparent; }
+  }
+  .pulse-led {
+    animation: pulse-led 1.2s ease-in-out infinite;
   }
 
-  /* staggered boot-up reveal */
-  @keyframes boot-in {
-    0% { opacity: 0; transform: translateY(8px); filter: blur(4px); }
-    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  @keyframes flash {
+    0% { background-color: rgba(95, 227, 255, 0.18); }
+    100% { background-color: transparent; }
   }
-
-  .boot-in {
-    animation: boot-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  .flash {
+    animation: flash 0.8s ease-out;
   }
 }

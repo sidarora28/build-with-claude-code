@@ -1,82 +1,101 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import { useEventStream } from '@/lib/useEventStream';
-import { PerfCounter } from '@/components/PerfCounter';
-import { OrchestratorGraph } from '@/components/OrchestratorGraph';
-import { TranscriptPane } from '@/components/TranscriptPane';
+import { deriveRunState } from '@/lib/events';
+import { AgentsPanel } from '@/components/AgentsPanel';
+import { FlowPanel } from '@/components/FlowPanel';
+import { PerfPanel } from '@/components/PerfPanel';
+import { TranscriptPanel } from '@/components/TranscriptPanel';
 
 export default function Dashboard() {
   const { events, error } = useEventStream();
+  const state = useMemo(() => deriveRunState(events), [events]);
+  const [now, setNow] = useState('--:--:--');
+
+  useEffect(() => {
+    const tick = () => setNow(new Date().toISOString().slice(11, 19));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-[1480px] flex-col gap-5 px-8 py-6">
-      <header className="boot-in flex items-end justify-between" style={{ animationDelay: '0ms' }}>
-        <div>
-          <div className="flex items-center gap-3">
-            <MotionDot />
-            <h1
-              className="text-glow-cyan font-display text-[22px] font-bold tracking-[0.04em]"
-              style={{ color: 'var(--hud-cyan)' }}
-            >
-              DAILY&nbsp;BRAIN
-              <span style={{ color: 'var(--hud-text-dim)' }}> // </span>
-              <span style={{ color: 'var(--hud-text)' }}>ORCHESTRATOR</span>
-            </h1>
-          </div>
-          <p className="hud-label mt-1.5 flex items-center gap-2">
-            <span style={{ color: 'var(--hud-cyan)' }}>EA</span>
-            <span style={{ color: 'var(--hud-text-mute)' }}>+</span>
-            <span>3 specialists</span>
-            <span style={{ color: 'var(--hud-text-mute)' }}>·</span>
-            <span>live</span>
-            <span style={{ color: 'var(--hud-text-mute)' }}>·</span>
-            <span style={{ color: 'var(--hud-text-mute)' }}>module-5/work/run.jsonl</span>
-          </p>
-        </div>
-        <PerfCounter events={events} />
-      </header>
+    <main className="relative z-10 mx-auto flex min-h-screen max-w-[1480px] flex-col gap-3 px-6 py-5">
+      <TopBar nowUtc={now} state={state} error={error} />
 
-      {error && (
-        <div
-          className="hud-panel px-4 py-2 text-xs"
-          style={{ borderColor: 'var(--hud-red)', color: '#ffc4c4' }}
-        >
-          stream · {error}
-        </div>
-      )}
-
-      <section className="grid grid-cols-1 gap-5 lg:grid-cols-[auto_1fr]">
-        <div className="boot-in flex justify-center" style={{ animationDelay: '120ms' }}>
-          <OrchestratorGraph events={events} />
-        </div>
-        <div className="boot-in" style={{ animationDelay: '240ms' }}>
-          <TranscriptPane events={events} />
-        </div>
+      <section className="grid grid-cols-1 gap-3 lg:grid-cols-[300px_minmax(0,1fr)_300px]">
+        <AgentsPanel state={state} />
+        <FlowPanel state={state} />
+        <PerfPanel state={state} />
       </section>
 
-      <footer
-        className="boot-in mt-auto flex items-center justify-between pt-3"
-        style={{ animationDelay: '360ms' }}
-      >
-        <span className="hud-label-mute">
-          ▸ runs local · no data leaves your machine
-        </span>
-        <span className="hud-label-mute">
-          localhost:3000 · daily-brain
-        </span>
-      </footer>
+      <section className="flex-1">
+        <TranscriptPanel events={events} />
+      </section>
+
+      <BottomBar />
     </main>
   );
 }
 
-function MotionDot() {
+function TopBar({ nowUtc, state, error }: { nowUtc: string; state: ReturnType<typeof deriveRunState>; error: string | null }) {
+  const runActive = state.runActive;
+
   return (
-    <span className="relative flex h-2.5 w-2.5">
+    <div className="panel">
+      <div className="flex items-center justify-between gap-4 px-4 py-2.5">
+        <div className="flex items-center gap-3">
+          <span className="accent-bar h-4 w-1" />
+          <div>
+            <div className="font-display flex items-baseline gap-2 text-[16px] font-bold tracking-wider">
+              <span style={{ color: 'var(--c-accent)' }}>DAILY BRAIN</span>
+              <span style={{ color: 'var(--text-3)' }}>//</span>
+              <span style={{ color: 'var(--text)' }}>ORCHESTRATOR</span>
+            </div>
+            <div className="mt-0.5 flex items-center gap-2 text-[10px]" style={{ color: 'var(--text-3)' }}>
+              <span style={{ color: 'var(--text-2)' }}>module-5/work/run.jsonl</span>
+              <span>·</span>
+              <span>EA + 3 specialists</span>
+              <span>·</span>
+              <span>local-only</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-6">
+          <Kv label="UTC" value={nowUtc} mono />
+          <Kv label="run" value={state.latestRunId ? state.latestRunId.slice(-6) : '——'} mono />
+          <Kv label="status" value={runActive ? 'RUN ACTIVE' : 'IDLE'} color={runActive ? 'var(--c-accent)' : 'var(--text-3)'} blink={runActive} />
+        </div>
+      </div>
+      {error && (
+        <div className="border-t px-4 py-1.5 text-[11px]" style={{ borderColor: 'var(--c-err)', color: 'var(--c-err)' }}>
+          stream · {error}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Kv({ label, value, mono, color, blink }: { label: string; value: string; mono?: boolean; color?: string; blink?: boolean }) {
+  return (
+    <div className="flex flex-col items-end leading-tight">
+      <span className="label">{label}</span>
       <span
-        className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
-        style={{ background: 'var(--hud-cyan)' }}
-      />
-      <span className="relative inline-flex h-2.5 w-2.5 rounded-full glow-cyan" style={{ background: 'var(--hud-cyan)' }} />
-    </span>
+        className={(mono ? 'num ' : '') + (blink ? 'blink ' : '') + 'text-[12px] font-bold'}
+        style={{ color: color ?? 'var(--text)' }}
+      >
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function BottomBar() {
+  return (
+    <div className="flex items-center justify-between border-t pt-2.5" style={{ borderColor: 'var(--border)' }}>
+      <span className="label">▸ runs local · no data leaves your machine</span>
+      <span className="label">localhost:3000 · daily-brain · v0.2</span>
+    </div>
   );
 }
