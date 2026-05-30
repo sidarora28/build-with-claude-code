@@ -105,15 +105,15 @@ Wait for ack.
 
 ### Beat 4 — Unlock the counter, then baseline run
 
-**4a — Unlock.** The perf counter was deliberately dormant through Module 5 to keep the orchestration lesson clean. Turn it on now:
+**4a — Unlock.** The PERF panel was deliberately dormant through Module 5 to keep the orchestration lesson clean. Turn it on now:
 
-> "First, unlock the counter. In the browser tab running your dashboard, change the URL to:
+> "First, unlock it. In the browser tab running your dashboard, change the URL to:
 >
 > ```
 > localhost:3000/?perf=1
 > ```
 >
-> Hit Enter to reload. The top-right panel changes from 'unlocks in Module 6' to a live readout — Last run, Tokens in, Tokens out, Cost, Runs, Session total. Right now it'll show dashes because we haven't run anything since you reloaded. Tell me 'unlocked' when you see the live panel."
+> Hit Enter to reload. The PERF panel (right side of the top row) changes from the lock card to a live readout — **tokens·in, tokens·out, cost, latency**, plus a running **session·tokens** and **session·cost** below. Right now everything shows dashes because we haven't run anything since you reloaded. Tell me 'unlocked' when you see the live readout."
 
 Wait for confirmation.
 
@@ -181,7 +181,7 @@ Re-run. Compare:
 >
 > Name what happened:
 >
-> "Tokens in dropped a lot — that's the cost lever. Latency dropped slightly because there's less to process. Compare the brief itself to the baseline brief — is the followups section noticeably worse? Usually a tighter prompt is *almost* as good, sometimes better (less for the model to chew through). **Prompt is the cost/quality lever.** When cost matters — nightly reports, high-volume workloads — tighten the prompt first."
+> "Tokens in dropped a lot — that's the cost lever. Latency dropped slightly because there's less to process. Compare the brief itself to the baseline brief — is the 'People owed' section noticeably worse? Usually a tighter prompt is *almost* as good, sometimes better (less for the model to chew through). **Prompt is the cost/quality lever.** When cost matters — nightly reports, high-volume workloads — tighten the prompt first."
 
 Revert the prompt change.
 

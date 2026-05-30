@@ -16,7 +16,7 @@ Edit `course/.claude/agents/notes-specialist.md`. In the Process section, change
 2. Re-run the orchestrator: ask in chat *"morning brief"*.
 3. Wait for the run to complete.
 4. Read off the perf counter on the dashboard.
-5. **Compare the brief's "Top focus" items to the baseline** — anything that was originally from days 4–7 should now be missing.
+5. **Compare the brief's "Top actions" items to the baseline** — anything that was originally from days 4–7 should now be missing.
 
 ## What to compare
 | Metric | Expected direction | Why |

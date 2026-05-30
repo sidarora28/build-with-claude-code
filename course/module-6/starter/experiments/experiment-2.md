@@ -35,7 +35,7 @@ Edit `course/.claude/agents/followups-specialist.md`. Replace the `## Process` s
 2. Re-run the orchestrator: ask in chat *"morning brief"*.
 3. Wait for the run to complete.
 4. Read off the perf counter on the dashboard.
-5. **Also read the brief itself** — the "Follow-ups owed" section. Did quality hold?
+5. **Also read the brief itself** — the "People owed" section. Did quality hold?
 
 ## What to compare
 | Metric | Expected direction | Why |
@@ -44,7 +44,7 @@ Edit `course/.claude/agents/followups-specialist.md`. Replace the `## Process` s
 | Tokens in | ↓ big % | The prompt is shorter |
 | Tokens out | ≈ same or shorter | Output is brain-driven, but may be terser |
 | Cost | ↓ big % | Tokens-in drove the savings |
-| Brief follow-ups section | maybe equal, maybe more compact | Watch for missed follow-ups |
+| Brief "People owed" section | maybe equal, maybe more compact | Watch for missed follow-ups |
 
 ## Lever name
 **Prompt is the cost lever (with quality as the wager).** Reach for it when cost matters more than nuance — nightly batches, high-volume workloads, anything where you're hitting the system at scale.
