@@ -134,12 +134,15 @@ function Row({
 }) {
   return (
     <div className="flex gap-3">
-      <span className="hud-label shrink-0 pt-px" style={{ color: 'var(--hud-text-dim)' }}>
+      <span
+        className="shrink-0 pt-px font-mono text-[11px] tabular-nums"
+        style={{ color: 'var(--hud-text-mute)' }}
+      >
         {time}
       </span>
       <span
         className="hud-label shrink-0 pt-px"
-        style={{ color: kindColor, width: 78 }}
+        style={{ color: kindColor, width: 86 }}
       >
         {kind}
       </span>

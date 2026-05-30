@@ -60,14 +60,11 @@ export function PerfCounter({ events }: Props) {
 
   if (!unlocked) {
     return (
-      <div
-        className="hud-panel flex items-center gap-2 px-4 py-2.5 text-xs"
-        style={{ opacity: 0.6 }}
-      >
-        <span style={{ color: 'var(--hud-text-dim)' }}>◳</span>
+      <div className="hud-panel flex items-center gap-2.5 px-4 py-2.5 text-xs">
+        <span style={{ color: 'var(--hud-text-mute)', fontSize: 13 }}>◳</span>
         <div className="flex flex-col leading-tight">
           <span className="hud-label">Performance metrics</span>
-          <span className="text-[11px]" style={{ color: 'var(--hud-text-dim)' }}>
+          <span className="font-mono text-[11px]" style={{ color: 'var(--hud-text-mute)' }}>
             unlocks in Module 6
           </span>
         </div>

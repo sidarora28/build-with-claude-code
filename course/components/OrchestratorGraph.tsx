@@ -125,10 +125,8 @@ export function OrchestratorGraph({ events }: Props) {
       >
         {eaActive ? '◉ RUN ACTIVE' : '○ idle'}
       </div>
-      <div className="absolute bottom-3 left-4 z-20 hud-label" style={{ opacity: 0.8 }}>
-        SYS.EA // v0.2
-      </div>
-      <div className="absolute bottom-3 right-4 z-20 hud-label" style={{ opacity: 0.8 }}>
+      <div className="absolute bottom-3 left-4 z-20 hud-label">SYS.EA // v0.2</div>
+      <div className="absolute bottom-3 right-4 z-20 hud-label">
         {`N:${count(state, 'notes-specialist')} · C:${count(state, 'calendar-specialist')} · F:${count(state, 'followups-specialist')}`}
       </div>
 
@@ -334,7 +332,7 @@ export function OrchestratorGraph({ events }: Props) {
         <div className="font-display text-glow-cyan text-[21px] font-bold tracking-[0.08em]" style={{ color: 'var(--hud-cyan)' }}>
           EA
         </div>
-        <div className="font-display mt-0.5 text-[9px] uppercase tracking-[0.18em]" style={{ color: '#cfdcf0' }}>
+        <div className="font-display mt-0.5 text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--hud-text-dim)' }}>
           chief of staff
         </div>
       </motion.div>
@@ -434,7 +432,7 @@ function SpecialistDisc({
             {label}
           </span>
         </div>
-        <div className="mt-0.5 text-[10px] tracking-wide" style={{ color: '#b6c3da' }}>
+        <div className="mt-0.5 text-[11px] tracking-wide" style={{ color: 'var(--hud-text-dim)' }}>
           {sub}
         </div>
         <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: stateColor(state, color) }}>

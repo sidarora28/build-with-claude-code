@@ -25,12 +25,12 @@ export default function Dashboard() {
           </div>
           <p className="hud-label mt-1.5 flex items-center gap-2">
             <span style={{ color: 'var(--hud-cyan)' }}>EA</span>
-            <span style={{ opacity: 0.5 }}>+</span>
+            <span style={{ color: 'var(--hud-text-mute)' }}>+</span>
             <span>3 specialists</span>
-            <span style={{ opacity: 0.4 }}>·</span>
+            <span style={{ color: 'var(--hud-text-mute)' }}>·</span>
             <span>live</span>
-            <span style={{ opacity: 0.4 }}>·</span>
-            <span style={{ opacity: 0.7 }}>module-5/work/run.jsonl</span>
+            <span style={{ color: 'var(--hud-text-mute)' }}>·</span>
+            <span style={{ color: 'var(--hud-text-mute)' }}>module-5/work/run.jsonl</span>
           </p>
         </div>
         <PerfCounter events={events} />
@@ -58,10 +58,10 @@ export default function Dashboard() {
         className="boot-in mt-auto flex items-center justify-between pt-3"
         style={{ animationDelay: '360ms' }}
       >
-        <span className="hud-label" style={{ opacity: 0.7 }}>
+        <span className="hud-label-mute">
           ▸ runs local · no data leaves your machine
         </span>
-        <span className="hud-label" style={{ opacity: 0.7 }}>
+        <span className="hud-label-mute">
           localhost:3000 · daily-brain
         </span>
       </footer>
