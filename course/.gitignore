@@ -5,6 +5,7 @@ out/
 .env*.local
 .DS_Store
 next-env.d.ts
+tsconfig.tsbuildinfo
 
 # Learner artifacts created during the course (system prompts, drafts, etc.)
 # Keep the work/ folders themselves so fresh clones have them, but ignore contents.

@@ -255,24 +255,54 @@ If they say 'skip', acknowledge and move to Beat 9.
 
 ### Beat 9 — Hands-on: headless run from another terminal
 
-Mirror of M3 and M4. The orchestrator works without chat too.
+Mirror of M3 and M4 — but this is where it clicks that **the learner has built a system, not a chat.** Spend real time on the explanation here; don't rush it.
 
-> "Last big move. Open a third terminal (keep the dashboard running in its terminal, keep this chat open). In the third terminal:
+**9a — Set it up.**
+
+> "Last big move, and it's the one that changes how you think about all of this.
+>
+> Open a third terminal (keep the dashboard running in its terminal, keep this chat open). In the third terminal:
 >
 > ```bash
 > cd <your-path>/build-with-claude-code/course
 > claude -p \"morning brief\"
 > ```
 >
-> Watch the dashboard. The EA still dispatches all three specialists, the pulses still fire, the transcript still streams — all driven by a single command from a fresh terminal. No chat, no 'hi June'.
+> Watch the dashboard while it runs. Same thing happens — EA glows, pulses fire to all three specialists, transcript streams, the brief prints. But notice: there's no chat. No 'hi June'. No back-and-forth. One line in a terminal, and the whole machine runs.
 >
 > Tell me 'done' when you've seen it."
 
-When they confirm:
+**9b — Explain what just happened (this is the important part).**
 
-> "That command spun up a fresh Claude Code instance, found the EA orchestrator by description, ran the whole coordination dance, printed the brief, exited. **The dashboard didn't care that there was no chat — it just tailed run.jsonl and animated.**
+When they confirm, slow down and unpack it. This is the conceptual payoff of the whole course:
+
+> "Let me explain exactly what you just did, because it's bigger than it looks.
 >
-> That separation matters. The orchestrator is the system. The dashboard is the window. They're decoupled — your orchestrator could run headlessly on a cron at 6 AM, and when you open the dashboard later in the morning, the history is right there."
+> **What `claude -p \"morning brief\"` means.** The `claude` part is the Claude Code CLI. The `-p` flag means *'print mode'* — run one prompt, do the work, print the result, exit. No interactive session. The text in quotes is the prompt — the same thing you'd type to me in chat, except it goes straight to the engine.
+>
+> **Why this is the moment everything changes.** Up to now, you've been running everything by talking to me — June, your tutor. But here's the thing: **I'm not the system. You built the system.** The orchestrator, the three specialists, the event log, the dashboard — that's all yours, sitting in files on your disk. I was just the teacher walking you through building it.
+>
+> That `claude -p` command proves it. It didn't need me. It didn't need a conversation. It spun up a fresh Claude Code instance, found *your* EA orchestrator by its description, ran *your* coordination logic, used *your* specialists, wrote to *your* event log, and your dashboard animated — all from one line. **The tutor is gone and the system still runs.**
+>
+> **What this unlocks going forward.** Anything you can type as a prompt, you can run as a command. That means:
+> - **Aliases.** Drop `alias brief='claude -p \"morning brief\"'` in your shell config and now you just type `brief` anywhere.
+> - **Scheduling.** Hand that exact command to cron (`0 6 * * 1-5` = 6 AM every weekday) and your brief is waiting before you wake up. You don't open a chat — it just happens.
+> - **Piping and chaining.** `claude -p` prints to standard output, so you can pipe it into other tools — email it to yourself, post it to Slack, save it to a file, feed it into another script.
+> - **No babysitting.** The system runs whether or not you're watching. The dashboard is just a window you open when you're curious — the machine doesn't need it.
+>
+> **The mental shift:** you stop thinking 'I chat with an AI' and start thinking 'I built a thing that runs.' The chat was the construction site. `claude -p` is the building, open for business, with you nowhere in sight."
+
+**9c — Optional: let them make an alias right now.**
+
+> "Want to feel it? In your shell, run:
+>
+> ```bash
+> alias brief='cd <your-path>/build-with-claude-code/course && claude -p \"morning brief\"'
+> ```
+>
+> Now just type `brief` and hit Enter. That's your whole EA, one word. (To make it permanent, add that line to your `~/.zshrc` or `~/.bashrc`.)"
+
+If they'd rather move on, that's fine — the explanation in 9b is the real deliverable.
 
 ---
 

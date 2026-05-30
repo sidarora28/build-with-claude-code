@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { OrchestratorEvent } from '@/lib/events';
 
 interface Props {
@@ -24,17 +24,28 @@ function fmtUsd(usd: number | null | undefined) {
   return `$${usd.toFixed(3)}`;
 }
 
+// The perf counter is a Module 6 feature. In Module 5 it shows a locked
+// placeholder so the orchestration lesson stays uncluttered. Module 6
+// unlocks it by loading the dashboard at /?perf=1.
+function usePerfUnlocked() {
+  const [unlocked, setUnlocked] = useState(false);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setUnlocked(params.get('perf') === '1');
+  }, []);
+  return unlocked;
+}
+
 export function PerfCounter({ events }: Props) {
+  const unlocked = usePerfUnlocked();
+
   const stats = useMemo(() => {
-    // Find the latest usage event
     const usages = events.filter((e): e is Extract<OrchestratorEvent, { kind: 'usage' }> => e.kind === 'usage');
     const latest = usages[usages.length - 1];
     if (!latest) return null;
 
-    // Count total runs in this log
     const runs = events.filter((e) => e.kind === 'orchestrator_end').length;
 
-    // Sum across all usage events (for "session total")
     const total = usages.reduce(
       (acc, e) => ({
         tokens_in: (acc.tokens_in ?? 0) + (e.tokens_in ?? 0),
@@ -47,8 +58,25 @@ export function PerfCounter({ events }: Props) {
     return { latest, runs, total };
   }, [events]);
 
+  if (!unlocked) {
+    return (
+      <div
+        className="hud-panel flex items-center gap-2 px-4 py-2.5 text-xs"
+        style={{ opacity: 0.6 }}
+      >
+        <span style={{ color: 'var(--hud-text-dim)' }}>◳</span>
+        <div className="flex flex-col leading-tight">
+          <span className="hud-label">Performance metrics</span>
+          <span className="text-[11px]" style={{ color: 'var(--hud-text-dim)' }}>
+            unlocks in Module 6
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="hud-panel flex items-center gap-6 px-4 py-2.5 text-xs">
+    <div className="hud-panel flex items-center gap-6 px-4 py-2.5 text-xs glow-cyan">
       <Stat label="Last run" value={fmtMs(stats?.latest.latency_ms)} />
       <Divider />
       <Stat label="Tokens in" value={fmt(stats?.latest.tokens_in)} />

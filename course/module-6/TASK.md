@@ -59,7 +59,7 @@ Short, warm, no monologue.
 
 Example shape:
 
-> "Welcome back. Last time you watched four agents coordinate live on the dashboard. Today we look at something you might not have noticed — the perf counter at the top. Tokens. Cost. Latency. It's been quietly logging every run. Today we move those numbers on purpose. Ready?"
+> "Welcome back. Last time you watched four agents coordinate live on the dashboard. You might have noticed a panel top-right that said *'Performance metrics — unlocks in Module 6.'* This is Module 6. Today we unlock it, and then we move those numbers on purpose. Ready?"
 
 Wait for ack.
 
@@ -103,11 +103,23 @@ Wait for ack.
 
 ---
 
-### Beat 4 — Baseline run (record where we are)
+### Beat 4 — Unlock the counter, then baseline run
 
-Before changing anything, get a clean baseline. Watch the dashboard during this run.
+**4a — Unlock.** The perf counter was deliberately dormant through Module 5 to keep the orchestration lesson clean. Turn it on now:
 
-> "First — baseline. Run the orchestrator once with everything unchanged. Watch the perf counter. We need numbers to compare against.
+> "First, unlock the counter. In the browser tab running your dashboard, change the URL to:
+>
+> ```
+> localhost:3000/?perf=1
+> ```
+>
+> Hit Enter to reload. The top-right panel changes from 'unlocks in Module 6' to a live readout — Last run, Tokens in, Tokens out, Cost, Runs, Session total. Right now it'll show dashes because we haven't run anything since you reloaded. Tell me 'unlocked' when you see the live panel."
+
+Wait for confirmation.
+
+**4b — Baseline.** Before changing anything, get a clean baseline. Watch the dashboard during this run.
+
+> "Now — baseline. Run the orchestrator once with everything unchanged. Watch the perf counter fill in. We need numbers to compare against.
 >
 > Ask: *'morning brief'* — same as Module 5."
 
@@ -252,7 +264,8 @@ Wait for any final response. Then close cleanly. No more lessons.
 | They say | June responds |
 |---|---|
 | Dashboard isn't running | "We need it for the visual proof. In another terminal: `cd course && npm run dev`. Then `localhost:3000`. Tell me 'up' when it's there." |
-| Perf counter shows dashes / never updated | "The orchestrator may not be writing usage events to run.jsonl. Two checks: (1) run the orchestrator once — it should emit a usage line at the end. (2) Look at the latest line in `module-5/work/run.jsonl` — should be kind=usage. If usage is consistently null, the model isn't surfacing token counts to the agent; the dashboard will say '—' for tokens but should still show latency." |
+| Perf counter still says "unlocks in Module 6" | "The dashboard needs the `?perf=1` flag. Make sure the URL is exactly `localhost:3000/?perf=1` and you reloaded. If it's a single-page reload issue, hard-reload (Cmd-Shift-R / Ctrl-Shift-R)." |
+| Perf counter shows dashes / never updated | "Two layers. (1) Did you unlock it with `?perf=1`? If it still says 'unlocks in Module 6', that's the issue. (2) If it's unlocked but shows dashes after a run, the orchestrator may not be writing usage events to run.jsonl. Check the latest line in `module-5/work/run.jsonl` — should be kind=usage. If usage is consistently null, the model isn't surfacing token counts; the dashboard will show '—' for tokens but should still show latency." |
 | Numbers didn't move enough after model swap | "Two possibilities: (1) the run was already very fast (small data, simple synth), so the absolute change is small. Try running it 2-3 times and averaging. (2) The model name didn't apply correctly — confirm with `/model` or check the agent frontmatter syntax." |
 | The brief got noticeably worse after a change | "That's the point of the experiment — quality is the variable you trade. If you're not comfortable with the loss, revert and try a less aggressive version of that lever. Iteration is the lesson, not 'find the right answer'." |
 | Wants to make all three changes at once | "Save it for later. Today is single-variable so you learn what each lever does in isolation. Real engineering is multi-lever, but only AFTER you know each one's signature individually." |

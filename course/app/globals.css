@@ -7,14 +7,14 @@
   --hud-bg: #05070b;
   --hud-panel: #0a0e16;
   --hud-grid: #11161f;
-  --hud-line: #1d2535;
-  --hud-text: #d6deec;
-  --hud-text-dim: #6f7c95;
-  --hud-cyan: #5dd6f5;
-  --hud-cyan-glow: rgba(93, 214, 245, 0.55);
-  --hud-violet: #b48dff;
-  --hud-amber: #ffb14a;
-  --hud-green: #7fdca0;
+  --hud-line: #25304a;
+  --hud-text: #eaf0fb;
+  --hud-text-dim: #9fb0cc;
+  --hud-cyan: #6fe0ff;
+  --hud-cyan-glow: rgba(111, 224, 255, 0.6);
+  --hud-violet: #c4a6ff;
+  --hud-amber: #ffc266;
+  --hud-green: #8ff0b4;
 }
 
 html, body {
@@ -63,8 +63,9 @@ body {
   }
 
   .hud-label {
-    @apply text-[10px] uppercase tracking-[0.2em];
+    @apply text-[11px] uppercase tracking-[0.14em];
     color: var(--hud-text-dim);
+    font-weight: 500;
   }
 
   .hud-value {
