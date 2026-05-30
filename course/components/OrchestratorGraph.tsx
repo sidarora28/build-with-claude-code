@@ -331,10 +331,10 @@ export function OrchestratorGraph({ events }: Props) {
         }}
         transition={{ duration: eaActive ? 1.2 : 3, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <div className="text-glow-cyan text-[19px] font-bold tracking-wide" style={{ color: 'var(--hud-cyan)' }}>
+        <div className="font-display text-glow-cyan text-[21px] font-bold tracking-[0.08em]" style={{ color: 'var(--hud-cyan)' }}>
           EA
         </div>
-        <div className="mt-0.5 text-[10px] uppercase tracking-[0.14em]" style={{ color: '#cfdcf0' }}>
+        <div className="font-display mt-0.5 text-[9px] uppercase tracking-[0.18em]" style={{ color: '#cfdcf0' }}>
           chief of staff
         </div>
       </motion.div>
@@ -430,7 +430,7 @@ function SpecialistDisc({
         />
         <div className="flex items-center gap-1.5">
           <span style={{ color, fontSize: 13, lineHeight: 1 }}>{glyph}</span>
-          <span className="text-[12px] font-bold tracking-wider" style={{ color }}>
+          <span className="font-display text-[12px] font-bold tracking-[0.08em]" style={{ color }}>
             {label}
           </span>
         </div>
