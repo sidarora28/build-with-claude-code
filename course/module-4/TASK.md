@@ -116,32 +116,27 @@ Wait for ack. If they don't have Pro and don't want to upgrade, route to M5 hone
 
 Wait for explicit confirmation.
 
-**4c — Sync the CLI session to your Pro account.**
+**4c — Refresh the connector list in this session.**
 
-> "Now we sync your CLI session to your account so the connector flows through. Inside this `claude` session, run these two slash commands, in order:
->
-> ```
-> /logout
-> /login
-> ```
->
-> The login prompt will route you to your Pro account. When it prints 'Login successful', the Claude.ai connectors are wired into your CLI."
+This is the non-obvious step. Anthropic's Claude.ai connectors flow through to Claude Code automatically — but only on session start OR when you explicitly refresh. We refresh without killing the conversation by just running `/mcp`:
 
-Wait for them to confirm the login worked.
-
-**4d — Smoke test.**
-
-> "Verify the connector landed. Type:
+> "Now we pull the new connector into this session — without losing our chat. Type:
 >
 > ```
 > /mcp
 > ```
 >
-> Scroll the list. Look for **`claude.ai Google Calendar`** — it should show *connected* and *8 tools*. Paste me what you see, or tell me if Calendar isn't there."
+> That command lists your MCP servers and re-syncs the Claude.ai connector list. Look for **`claude.ai Google Calendar`** — it should show *connected* and *8 tools*. Paste me what you see, or tell me if Calendar isn't there."
 
-If Calendar appears connected with 8 tools:
+**Why `/mcp` and not `/logout` + `/login`:** the logout/login path WOULD work, but `/logout` ends the active session — you'd lose this conversation and have to `claude --resume <id>` to come back. `/mcp` refreshes the connector list in-place. Same result, zero disruption.
 
-> "Perfect. Real smoke test — ask in chat:
+If Calendar appears in `/mcp` with 8 tools, move to 4d.
+
+If Calendar is missing, try `/status` to check which auth method is active — connectors only sync when the active auth is your Claude.ai subscription (not an API key or `apiKeyHelper`). If it's not Claude.ai, fix the auth method first (see stuck-fix), then re-run `/mcp`.
+
+**4d — Smoke test.**
+
+> "Real smoke test — ask in chat:
 >
 > *'list my calendars'*
 >
@@ -151,7 +146,7 @@ When the smoke test passes, name it:
 
 > "That's it. Eight calendar tools wired in — `list_calendars`, `list_events`, `get_event`, `create_event`, `update_event`, `delete_event`, `respond_to_event`, `suggest_time`. All available to anything you build, including the M3 daily-briefing agent. **Zero Cloud Console. Zero JSON config.** That's what Anthropic-hosted connectors buy you."
 
-If the connector isn't showing or has 0 tools, work through the stuck-fix table. **Don't move to Beat 5 until the smoke test passes.**
+If the smoke test fails (says "no calendar tool" or errors out), work through the stuck-fix table. **Don't move to Beat 5 until the smoke test returns real calendar data.**
 
 ---
 
@@ -355,8 +350,8 @@ Wait for "next" or equivalent. Only then point at `module-5/TASK.md`.
 | They say | June responds |
 |---|---|
 | "I don't have Claude Pro" | "Connectors are Pro-tier — there's no around for M4 specifically. Two real options: (a) upgrade to Pro (cheapest plan covers connectors), or (b) skip M4 and pick up at M5. The orchestrator in M5 still teaches you what it needs to even without the calendar tools. Your call." |
-| "Claude Calendar isn't showing in `/mcp` after `/logout` `/login`" | "Three usual causes. (1) Different account — you may have connected Calendar at claude.ai under one account and logged the CLI into another. Verify the email shown by `/login` matches the one in your claude.ai connectors page. (2) Claude Code version too old — connectors need v2.1.46 or higher; check `claude --version` and upgrade if you're on an older build. (3) The connect step at claude.ai didn't fully complete — open the connectors page again and confirm Google Calendar is in the Connected section with a Disconnect button." |
-| "Google Calendar shows in `/mcp` but says 0 tools or 'needs authentication'" | "The OAuth handshake didn't fully land. Open https://claude.ai/customize/connectors, click Disconnect on Google Calendar, then Connect again. Walk through Google's OAuth fresh — make sure you approve both read AND write scopes when it asks. Back in CLI, run `/logout` then `/login` to re-sync." |
+| "Google Calendar isn't showing in `/mcp`" | "Run `/status` first — it shows which auth method is active. Connectors only sync when active auth is your Claude.ai subscription. If `/status` shows an API key or `apiKeyHelper`, unset that env var (or remove the helper from settings), then run `/login` and pick your Claude.ai account. If `/status` is already Claude.ai, three other causes: (1) different account — the email logged into CLI doesn't match the one that did the Connect step at claude.ai. (2) Claude Code version too old — needs v2.1.46+ for connector sync; `claude --version`. (3) The Connect at claude.ai didn't fully complete — open the connectors page again and confirm Google Calendar shows in Connected section with a Disconnect button." |
+| "Google Calendar shows in `/mcp` but says 0 tools or 'needs authentication'" | "The OAuth handshake didn't fully land. Open https://claude.ai/customize/connectors, click Disconnect on Google Calendar, then Connect again. Walk through Google's OAuth fresh — make sure you approve both read AND write scopes when it asks. Back in CLI, re-run `/mcp` to refresh — no `/logout` needed; that would end our session and you'd have to `claude --resume` to come back." |
 | "Google won't authenticate at claude.ai" | "Most common cause: workspace admin scopes blocked. If you're on a Google Workspace account (work or school), your admin may have restricted third-party app access. Try a personal Google account instead, or ask your admin to allowlist Anthropic's connector app." |
 | "I don't have a Google account / don't want to use my real one" | "Easiest path: create a throwaway Google account just for this lesson (~5 min). Less easy path: skip M4 entirely. The experience without real calendar writes is much weaker — I'd nudge you to the throwaway. Your call." |
 | "The agent didn't ask before writing" | "Read the agent file with me — the line `Always confirm with the user before any write` is there. If it skipped, that's a behavioural miss. Re-emphasise: tell the agent *'always confirm before any calendar write — show me the proposed event and wait for yes'* and re-run. If it keeps skipping, we tighten the agent body wording." |
@@ -379,7 +374,7 @@ Before pointing at Module 5, all must hold:
 - [ ] June greeted warmly with a callback to M3. No monologue, no meta.
 - [ ] Vision set up — the agent that acts in your real world, not just thinks about it. Tied to M3 tasks file.
 - [ ] **MCP concept taught** — one protocol, many tools, install/configure/authenticate/use shape. Connected back to M3 anatomy: **Tools** is the part growing.
-- [ ] Claude Pro confirmed; Google Calendar connected at `claude.ai/customize/connectors`; CLI re-logged via `/logout` + `/login`; `/mcp` shows `claude.ai Google Calendar · connected · 8 tools`; smoke test (`list my calendars`) returned real calendar data.
+- [ ] Claude Pro confirmed; Google Calendar connected at `claude.ai/customize/connectors`; `/mcp` in-session shows `claude.ai Google Calendar · connected · 8 tools`; smoke test (`list my calendars`) returned real calendar data. (Conversation history preserved throughout — no `/logout`.)
 - [ ] **M3 agent file edited** to add Google Calendar tools to the `## Tools you can reach for` section. Diff printed in chat. June called out: same brain/goal/memory, only Tools changed.
 - [ ] **First real action** completed: agent proposed → confirmed → created the "Write ACME pricing deck" event Friday morning. Learner confirmed they saw it in their calendar app.
 - [ ] **"You built it" beat landed** — June stopped, named the line between AI-that-thinks and AI-that-acts.
