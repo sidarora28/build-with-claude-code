@@ -67,11 +67,19 @@ End by handing off into Beat 3.
 
 ---
 
-### Beat 3 — First summary attempt (intentionally weak)
+### Beat 3 — Skim a few notes, then first summary attempt (intentionally weak)
 
-Tell them the repo ships with 11 sample meeting notes in `data/meetings/`. Invite them to ask for a summary.
+Tell them the repo ships with 11 sample meeting notes in `data/meetings/`. **Invite them to crack open 2–3 first** so they have the raw material in their head before the summary happens.
 
-> "There are 11 sample meeting notes in `data/meetings/`. Synthetic, but realistic — customer calls, eng syncs, design reviews, 1:1s. When you're ready, ask me to summarise them."
+> "Quick orientation. The repo ships with 11 sample meeting notes in `data/meetings/`. They're synthetic but realistic — customer calls, eng syncs, design reviews, 1:1s.
+>
+> Before I summarise them, **open `data/meetings/` in your file explorer and skim any 2 or 3**. Just get a feel for what the model is going to be reading. 30 seconds — no need to read them carefully.
+>
+> Reply `ready` when you've scanned a few (or `skip` if you'd rather just see the summary)."
+
+Wait for `ready` / `skip`. When they reply, **then** invite the summary ask:
+
+> "OK — when you're ready, ask me to summarise them."
 
 When they ask, use the **Read tool** to read each meeting note in `data/meetings/`. Then write a deliberately generic 5–6 line summary. Don't apologise. Don't pre-flag it as weak. Just deliver it. (It will be weak because we have no real brief — that's the point of this beat.)
 
@@ -231,23 +239,25 @@ Decisions:
 - Open: whether to delay strategy offsite until Q3 (strategy-offsite-prep)
 ```
 
-After printing, name what changed:
+After printing, **hand them the wheel** — explicitly invite a design choice, not a yes/no:
 
-> "That's your first real prompt. Five parts. None skipped."
+> "That's your first real prompt. Five parts. **Before we run it — this is YOUR prompt now.** Read it. Three options:
+>
+> 1. **Change something.** Swap the Role ('analyst' instead of 'chief of staff'? 'irreverent friend'?). Add a Constraint ('urgent items only', a specific tone — terse, formal, casual). Tighten the word limit. Tell me what you want different.
+> 2. **Add something.** A 4th section, a specific signal you want flagged ('flag anything with a date past Friday'), example outputs that match how YOU write. Tell me what's missing.
+> 3. **Leave it as-is.** Say `run it` and I'll fire it on the 11 notes.
+>
+> What do you want to do?"
+
+When they propose a change, make the edit with the Edit tool, print the updated file, then re-offer the same three options. Only run when they say `run it` (or equivalent).
 
 ---
 
-### Beat 9 — Pause, then re-run the summary
+### Beat 9 — Re-run with their brief
 
-**Do not auto-run.** Pause and ask first — let the learner anticipate the moment:
+When they say `run it`, use the Read tool to re-read all 11 meeting notes. Then produce a summary that follows the now-tweaked brief — sections per their Constraints, specific names and dates pulled from the files, bullet points (no prose paragraphs unless they asked for prose). After the new summary, name what shifted:
 
-> "Ready to see what this new brief does to the same 11 notes? Reply `go` and I'll re-run it."
-
-Wait for the go-ahead.
-
-When they reply, use the Read tool to re-read all 11 meeting notes. Then produce a summary that follows the new brief: three sections, under 400 words, specific names and dates pulled from the files, bullet points (no prose paragraphs). After the new summary, name what shifted:
-
-> "Same 11 notes. Different brief. Three real sections, named people, actual dates from the files. That's the entire job of prompt engineering."
+> "Same 11 notes. Your brief. Specific sections, named people, actual dates from the files. That's the entire job of prompt engineering — and notice this output is noticeably *yours*, not mine."
 
 ---
 

@@ -121,41 +121,59 @@ After printing, call out the `description` specifically — that's the new piece
 
 ### Beat 5 — The auto-trigger moment (#1)
 
-Pause. Set it up clearly. **Offer both options — natural language and explicit reach** — so the learner knows they're not locked into one style.
+**First — reload Claude Code so the new Skill is actually loaded.** New Skill files don't always show up to a running Claude Code session. Get this out of the way BEFORE the demo so the auto-trigger works for real (not faked by June):
 
-> "OK — now ask me for your weekly briefing. You've got two options:
+> "Quick housekeeping before the magic moment. I just wrote a Skill file to disk, but Claude Code sometimes doesn't notice new Skills until you restart. Let's reload cleanly:
 >
-> - **In your own words.** Just ask like you would a colleague — *'give me this week's briefing'*, *'what happened across my meetings this week'*, whatever feels natural. I pick the Skill from the description.
-> - **Explicitly reach for it.** Type `/summariser` or say *'use the summariser Skill'*. You can pile any extra instructions on top: *'/summariser but keep it under 200 words'* or *'use the summariser and skip the decisions section'*.
+> 1. Type `/exit` and press Enter.
+> 2. In the same terminal, type `claude` and press Enter to come back.
 >
-> Most days you'll use natural language. The explicit form is for when you want predictability or want to layer your own twist on top."
+> I'll still know where we are. Reply `back` when you're in."
 
-When they ask (either way), reach for the summariser Skill — read its file contents if needed using the Read tool, follow its instructions, read the meeting notes in `data/meetings/`, produce the briefing in the prescribed 3-section format. **If they layered extra instructions on top (e.g. "skip decisions" or "under 200 words"), respect those — that's a feature, not a confusion.** After delivering, name what just happened:
+Wait for `back`. Greet them briefly and continue.
+
+Then set up the trigger moment. **Offer both options — natural language and explicit reach** — so the learner knows they're not locked into one style.
+
+> "Welcome back. Now ask me for your weekly briefing. Two options:
+>
+> - **In your own words.** Ask like you would a colleague — *'give me this week's briefing'*, *'what happened across my meetings this week'*, whatever feels natural. I pick the Skill from its description.
+> - **Explicitly by name.** Type `/summariser` or say *'use the summariser Skill'*. Pile any extras on top: *'/summariser but keep it under 200 words'* or *'use the summariser and skip the decisions section'*.
+>
+> Most days you'll use natural language. The explicit form is for predictability or when you want to layer your own twist on top."
+
+When they ask (either way), the summariser Skill should fire automatically. Follow its instructions, read the meeting notes in `data/meetings/`, produce the briefing in the prescribed 3-section format. **If they layered extra instructions on top (e.g. "skip decisions" or "under 200 words"), respect those — that's a feature, not a confusion.** After delivering, name what just happened:
 
 > "Notice I didn't ask 'which prompt should I use?' You said [echo their phrasing] — that matched the summariser's description, so I picked it. That's the whole point. No copy-paste. No retyping. From here, every Friday: same ask, same Skill, no friction."
 
-**If auto-trigger doesn't fire** — e.g. Claude Code hasn't picked up the new Skill — read the Skill file explicitly with the Read tool and follow it. Pedagogically equivalent. Tell the learner transparently: *"Next session this fires fully automatically; for now I just loaded it explicitly so we don't lose the demo."*
+**If it STILL doesn't fire after the reload** (rare — but possible if the file path or YAML frontmatter is off): read the Skill file explicitly with the Read tool and follow it. Tell the learner transparently: *"Looks like it didn't pick up — I'm running it manually so we don't lose the demo. Try `/summariser` again after I'm done and it should fire on its own."*
 
 ---
 
-### Beat 6 — Why build a SECOND Skill?
+### Beat 6 — Why a SECOND Skill, and YOU pick which one
 
-Frame the choice as a design decision the learner can carry forward.
+Frame the choice as a real design decision — they pick the focus.
 
-> "Good. One Skill in. Here's a question: what if you only want action items? Just 'what do I need to do this week' — not the full briefing. Two options:
+> "Good. One Skill in. Here's the design question: what's the *second* slice of these notes you'd want at your fingertips? Three options that work well — pick whichever sounds most useful to YOU, or pitch your own:
 >
-> 1. Cram everything into one giant Skill with if/else branches.
-> 2. Build a second Skill, focused, that does only action items.
+> 1. **action-items-only** — just the things YOU need to DO. No summary, no decisions, no context. Bullet list of tasks with deadlines.
+> 2. **decisions-this-week** — every decision that got made or got punted, with who's on the hook for the open ones. No tasks.
+> 3. **what's-blocked** — anyone stalled waiting on someone else, anything stuck on missing input. The 'go nudge people' list.
 >
-> Option 2 wins. Small focused Skills compose. One big Skill that does five things is hard to trigger right (Claude doesn't know which branch you wanted) and a pain to change without breaking the others. Let's build the focused second one."
+> Or tell me a 4th in your own words.
+>
+> Why pick instead of just doing 'action items'? Because small focused Skills compose. One big Skill that does five things is hard to trigger right (Claude doesn't know which branch you wanted) and a pain to change without breaking the others. Each focused Skill is its own little door — the more you have, the more your second brain can do without you reaching for a menu.
+>
+> Which one?"
+
+Wait for their pick. If they hesitate, gently nudge to (1) — it's the safest default.
 
 ---
 
-### Beat 7 — Build Skill #2: action-items-only
+### Beat 7 — Build Skill #2: whatever they picked
 
-Same pattern as Beat 4. Use Write tool to create `course/.claude/skills/action-items-only/SKILL.md`. Print contents in chat as a code block.
+Same pattern as Beat 4. Use Write tool to create `course/.claude/skills/<their-pick>/SKILL.md`. Print contents in chat as a code block. Shape the body around what they chose — tight role, tight task, hard exclusions so it doesn't overlap with summariser, 2–3 example outputs in the style they picked.
 
-Example body:
+**Example body — assuming they picked action-items-only.** If they picked a different focus, June uses the same shape but tunes the description/role/task/constraints for *that* focus. The example below is the template:
 
 > "Here's Skill #2 — action-items-only:
 >
@@ -221,20 +239,23 @@ Wait for them to ask. When they do, use the action-items-only Skill but filter t
 
 ---
 
-### Beat 10 — Iterate via conversation
+### Beat 10 — Iterate via conversation: change the VOICE
 
-> "Last move. Say you want action items as a checklist with `[ ]` checkboxes instead of bullets — for copy-pasting into Notion or wherever. Don't open any file. Just tell me what to change in plain English."
+Cosmetic changes (like swapping bullets for checkboxes) are easy to miss. **Pick a tone change instead — drastic, fun, impossible to miss.** Hand the learner the menu:
 
-When they ask for the change, use the **Edit tool** to update the action-items-only Skill file (change the Constraints + Examples sections to use `- [ ]` checkboxes). After editing, print the changed sections in chat so the learner can see what shifted:
-
-> "Done. Here's what changed in the Skill:
+> "Last move — and this one's fun. Skills aren't just about format, they shape the *voice* of the output. Let's prove it. Tell me a voice and I'll re-run the summariser with it. Three suggestions — pick one or pitch your own:
 >
-> ```diff
-> - Bullet list only. No headings, no intro, no summary.
-> + Markdown checklist (`- [ ]` for each item). No headings, no intro, no summary.
-> ```
+> 1. **A news anchor.** Formal, third-person — *'In this week's developments, the team made notable progress on…'*
+> 2. **Your Indian mom giving you the briefing.** Affectionate nagging — *'Beta, you STILL haven't sent that ACME deck. When will you do it? And Marco called twice, why are you not picking up?'*
+> 3. **A Cold War spy briefing officer.** Clipped, paranoid, codenames for people — *'Subject ACME: deck overdue. Asset Marco: requesting handler attention. Status: actionable.'*
 >
-> Next time you ask for action items, they come as checkboxes. You didn't open a file, you didn't write any code. You described what you wanted. That's how you iterate on Skills."
+> Or pitch your own — your boss's voice, a Shakespearean herald, a sports commentator, whatever you want. Which one?"
+
+Wait for their pick. Use the **Edit tool** to update the summariser Skill file: change the `Role` line to reflect the chosen voice, and add one example output line in that voice under `Examples`. Print the changed file in chat.
+
+Then re-run the summariser on the same 11 notes. **The output should sound radically different** — that's the point. Name what just happened:
+
+> "Same notes. Same Skill. New voice. You changed one line in a file — via chat, in plain English — and the entire output just shape-shifted. That's the leverage of a Skill: tiny edits, big behavioral changes. From here on, every Friday's briefing comes out in [their picked voice]. Until you change it again."
 
 ---
 
@@ -281,7 +302,7 @@ Wait for "next" or equivalent confirmation. Only then point at `module-3/TASK.md
 
 | They say | June responds |
 |---|---|
-| "Why didn't the Skill auto-fire?" | "Either Claude Code hasn't reloaded since we created the file, or the trigger description wasn't specific enough. I'll read the Skill and follow it explicitly for this run — pedagogically equivalent. Fires fully automatically next session." |
+| "Why didn't the Skill auto-fire?" | First fix: have them `/exit` and relaunch `claude` from the same directory — most misses are a stale session, not a vague description. After they're back, try the Skill again. If it STILL doesn't fire, read the Skill file explicitly with the Read tool, and tell the learner transparently: *"Loaded it manually so we don't lose the demo. Likely the description needs tightening — we can iterate after."* |
 | "Where does the Skill file actually live?" | "On your laptop, where Claude Code keeps its Skills. You don't need to know the path — we edit everything from chat. The whole point is you stop touching files." |
 | "Can I have one big Skill that handles everything?" | "You could. You shouldn't. Small focused Skills compose. A giant Skill is hard to trigger right (which branch did you mean?) and a pain to change without breaking the other functions." Move on. |
 | "How does Claude pick which Skill to use?" | "From the description. That's why I was specific in both — 'weekly briefing, Monday summary' versus 'action items, todos'. Generic descriptions mean I pick wrong. Specific ones mean I route right." |

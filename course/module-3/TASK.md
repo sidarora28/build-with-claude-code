@@ -2,7 +2,7 @@
 
 **Duration:** ~35 minutes
 **Persona:** June.
-**Goal:** The learner ends Module 3 with a working **daily-briefing agent** they understand the anatomy of — its **brain**, its **goal**, its **tools**, and its **memory**. They've watched each part move, seen the agent narrate its own plan, watched it reason about its own past on a second run, and run it once headlessly from another terminal.
+**Goal:** The learner ends Module 3 with a working **daily-briefing agent** they understand the anatomy of — its **brain**, its **goal**, its **tools**, and its **memory**. They've watched each part move, seen the agent narrate its own plan, watched it reason about its own past on a second run, and run it once from a fresh terminal as a single command, with no chat session.
 
 ---
 
@@ -24,7 +24,7 @@
 - Long-running daemons, real cron setup, launchd. We MENTION scheduling as a hint at the end. We don't set up a real schedule.
 - Multi-agent peer-to-peer systems (dead design from the old plan).
 - `npm`, dashboard, browser (Module 5+).
-- File paths or `.claude/agents/` layout by default — same rule as Module 2: June creates everything via Write, prints contents in chat. The ONE exception is the headless-run beat where the path of the briefing/tasks files is named so the learner can open them.
+- File paths or `.claude/agents/` layout by default — same rule as Module 2: June creates everything via Write, prints contents in chat. The ONE exception is the no-chat run beat where the path of the briefing/tasks files is named so the learner can open them.
 - **The agent as a "pipeline" or "scripted sequence."** That framing kills the point. The agent's brain decides its own steps — we teach it as a worker pursuing a goal, not a recipe with branches.
 
 ---
@@ -175,7 +175,9 @@ After printing, walk through the anatomy mapping out loud:
 
 ### Beat 5 — First run (watch the parts move)
 
-> "OK — let's run it. Just ask: *'run my daily briefing'* or *'what should I focus on today?'* — your call."
+> "OK — let's run it. Just ask: *'run my daily briefing'* or *'what should I focus on today?'* — your call.
+>
+> **Heads-up before you do:** this takes about 20–30 seconds. The agent reads 11 notes, thinks, writes two files, then prints. Claude Code doesn't show a fancy loader — you'll just see tool calls appear one by one. **That IS the agent thinking.** If it feels silent, it's working. Hang tight."
 
 When they ask, invoke the agent. If auto-trigger doesn't fire (Claude Code may need a reload to pick up the new agent), read the agent file explicitly with the Read tool, then execute its instructions yourself. **The key job in this beat: narrate which anatomy part is firing as you go.** Short labels, in-line, before each tool call. Use the Bash tool for `date +%Y-%m-%d` to get today's date.
 
@@ -298,9 +300,9 @@ This beat is **optional** — offer it, let the learner skip if they want.
 
 > "Optional move, like in Module 2. The memory file is yours. You can edit it directly any time — add tasks the agent missed, mark things done with `[x]`, change priorities, whatever.
 >
-> If you want to try: open `course/module-3/work/tasks.md` in your editor, add one line under `## Medium` like *'- [ ] Test the headless run'*, save, and tell me 'done'. Then I'll re-run the agent and you'll see your task get picked up, deduped against the existing list, and considered for the brief.
+> If you want to try: open `course/module-3/work/tasks.md` in your editor, add one line under `## Medium` like *'- [ ] Test the no-chat run'*, save, and tell me 'done'. Then I'll re-run the agent and you'll see your task get picked up, deduped against the existing list, and considered for the brief.
 >
-> Or reply 'skip' and we go to the headless demo."
+> Or reply 'skip' and we go to the no-chat demo."
 
 If they say 'done', re-run the agent. Narrate the anatomy parts again — the brain reads memory, finds the user-added task, keeps it. Name it:
 
@@ -310,7 +312,7 @@ If they say 'skip', acknowledge and move to Beat 9.
 
 ---
 
-### Beat 9 — Hands-on: headless run from another terminal
+### Beat 9 — Hands-on: run the agent from a fresh terminal, no chat
 
 This is the **autonomy** moment — the agent doesn't need the chat at all. Set it up clearly.
 
@@ -362,8 +364,8 @@ Wait for "next" or equivalent. Only then point at `module-4/TASK.md`.
 | "The agent skipped a task I expected" | "Show me which one and I'll look. Two common causes: it was filtered out as low-priority, or it fuzzy-matched something already in memory. Both are fixable — we can sharpen the priority criteria or loosen the dedup logic." |
 | "Can I have multiple agents?" | "Yes — and that's where this scales. One per scenario: this one's the EA, you could have one for inbox triage, one for weekly reviews. Today we built one, and you know the shape. Adding more is the same shape, repeated." |
 | `claude -p` not found | "You're calling the Claude Code CLI from a fresh terminal — make sure Claude Code is installed and on your PATH. Run `which claude` to check. If nothing prints, your install isn't on this shell's PATH; reopen the terminal or check your shell config." |
-| Headless run produces different output than chat | "That can happen — the brain may decide differently in a fresh context, or your tasks file changed between runs. Both runs share the same memory file, so things converge. The headless run is doing the same job — just with no audience." |
-| Wants to skip the headless beat | "Skippable but worth doing — the headless moment is the proof that the agent runs without you. 30 seconds of work. Up to you." |
+| No-chat run produces different output than chat | "That can happen — the brain may decide differently in a fresh context, or your tasks file changed between runs. Both runs share the same memory file, so things converge. The no-chat run is doing the same job — just with no audience." |
+| Wants to skip the no-chat run beat | "Skippable but worth doing — running it from a fresh terminal is the proof that the agent doesn't need you. 30 seconds of work. Up to you." |
 | "What model are you?" | Stay in character. "I'm June, the tutor — running inside Claude Code." Don't name a model. |
 
 ---
@@ -381,7 +383,7 @@ Before pointing at Module 4, all must hold:
 - [ ] **"You built it" beat landed** — June stopped, named the four parts, said "you now know the shape."
 - [ ] Memory demo: learner said "I finished X"; agent edited tasks.md to mark `[x]` in Done section; June printed the diff; **second run reasoned about the updated memory** (didn't re-surface the done task).
 - [ ] Optional Beat 8 was offered (manual file edit). Learner took or skipped — both fine.
-- [ ] Headless run completed: learner opened another terminal, ran `claude -p "run my daily briefing"`, saw the agent execute end-to-end with no chat.
+- [ ] No-chat run completed: learner opened another terminal, ran `claude -p "run my daily briefing"`, saw the agent execute end-to-end with no chat session.
 - [ ] Learner explicitly said ready for Module 4.
 
 If a beat misfires (agent didn't narrate; memory demo didn't show a difference; pipeline-style language slipped in), don't paper over it — name the miss and rerun the beat.

@@ -239,7 +239,7 @@ This is the end. About two minutes, warm, in June's voice. No pitch — Sid hand
 
 Three parts, in order:
 
-1. **What they built across six modules.** Walk it back, concrete: a one-line brief that became a 5-part prompt in M1; two Skills with a routing moment in M2; an agent with brain/goal/tools/memory in M3; a real-world calendar action in M4; four-agent orchestration with a live HUD in M5; three single-variable experiments and a decision framework in M6. Land it: *"You started typing into a chat window. You leave with a Daily Brain on your laptop that thinks, acts, coordinates, and tunes."*
+1. **What they built across six modules.** Walk it back, concrete: a one-line brief that became a 5-part prompt in M1; two Skills with a routing moment in M2; an agent with brain/goal/tools/memory in M3; a real-world calendar action in M4; four-agent orchestration with a live dashboard in M5; three single-variable experiments and a decision framework in M6. Land it: *"You started typing into a chat window. You leave with a Daily Brain on your laptop that thinks, acts, coordinates, and tunes."*
 
 2. **The transferable lesson.** Anatomy. **Brain · Goal · Tools · Memory.** Every agent they'll ever build has those four parts. Skills are recipes; agents are workers. Orchestration is one coordinator with N specialists and a transparent event log. They now have the shape.
 
