@@ -1,7 +1,7 @@
 # Module 4 — The agent acts in your real world (Google Calendar MCP)
 
 **Duration:** ~45 minutes
-**Persona:** June teaches. April appears at one specific trigger point — see Beat 6.5.
+**Persona:** June.
 **Goal:** The learner ends Module 4 with the **daily-briefing agent from M3 expanded with Google Calendar tools** — they've connected Google Calendar via the **Claude.ai hosted connector** (no Cloud Console, no JSON config), watched the agent use it to take three concrete actions in their real calendar (block time, send a follow-up invite with the course creator as attendee, set a reminder), all tied to items from the tasks file they built in M3. They understand the agent's anatomy hasn't changed — same brain, goal, memory — but its **Tools** part just grew into a real system.
 
 **Hard prereq:** A **Claude Pro account.** Connectors are Pro-tier. Free-tier accounts cannot complete M4 — route them to M5.
@@ -225,24 +225,6 @@ Wait for an ack before continuing.
 
 ---
 
-### Beat 6.5 — APRIL TRIGGER POINT (conditional)
-
-**Trigger condition — all three must be true:**
-
-1. The Calendar MCP is connected and authenticated.
-2. The first event (Beat 5b) was successfully created and the learner saw it in their calendar app.
-3. The learner reacted **positively** — explicit enthusiasm: *"whoa"*, *"that's wild"*, *"cool"*, *"this is great"*, visible excitement.
-
-**If all three are true:** April appears per the April playbook § Module 4 — two short paragraphs, plant the seed, hand back. Then **"Back to June."**
-
-**If condition 3 is not met:** April does **not** appear. June continues directly to Beat 7. Do not force the trigger.
-
-After April speaks (or doesn't), June takes the mic back warmly:
-
-> "Right — back to building. Two more actions before we close this module."
-
----
-
 ### Beat 7 — Send the follow-up invite (with the course creator as an attendee)
 
 This is the deeper demo beat — uses the *attendee* side of calendar tools, and doubles as the discovery signal for Sid.
@@ -335,11 +317,9 @@ Don't preview specifics — keep it open.
 >
 > That's MCP. From here, things get interesting. One agent with bigger tools is powerful. **A team of specialists, coordinated, is something else entirely.** That's Module 5. Reply `next` when you're ready."
 
-**If April did NOT fire in Beat 6.5**, add one short line *before* the "Reply 'next'" close:
+Then add one short line *before* the "Reply 'next'" close:
 
 > "Quick aside before Module 5 — if you haven't already, star the repo. That's the whole tip jar."
-
-If April fired, skip the star nudge. Don't double-stack asks.
 
 Wait for "next" or equivalent. Only then point at `module-5/TASK.md`.
 
@@ -378,11 +358,10 @@ Before pointing at Module 5, all must hold:
 - [ ] **M3 agent file edited** to add Google Calendar tools to the `## Tools you can reach for` section. Diff printed in chat. June called out: same brain/goal/memory, only Tools changed.
 - [ ] **First real action** completed: agent proposed → confirmed → created the "Write ACME pricing deck" event Friday morning. Learner confirmed they saw it in their calendar app.
 - [ ] **"You built it" beat landed** — June stopped, named the line between AI-that-thinks and AI-that-acts.
-- [ ] **April trigger evaluated** — fired if conditions met (MCP working + first action visible + positive learner reaction), skipped silently otherwise. Did not force-trigger.
 - [ ] **Second real action** completed: follow-up invite for Mike at AcmeCorp in August, with `sid@justanotherpm.com` offered as attendee (learner chose to include or skip — both fine).
 - [ ] Optional Beat 8 offered (Marco reminder). Learner took or skipped.
 - [ ] Headless run completed: learner ran a `claude -p` calendar action from another terminal, saw the agent use MCP without chat.
-- [ ] If April did NOT fire — June added the one-line "star the repo" nudge before close. If April fired — no star nudge.
+- [ ] Star-the-repo nudge added before close.
 - [ ] Learner explicitly said ready for Module 5.
 
 If a beat misfires (MCP install failed permanently; agent wrote without confirming; learner didn't see the event), don't paper over it — name the miss and either rerun the beat or route to the stuck-fix table.

@@ -1,7 +1,7 @@
 # Module 1 — Write your first real prompt
 
 **Duration:** ~25 minutes
-**Persona:** June only. April does not appear.
+**Persona:** June.
 **Goal:** The learner ends Module 1 with three things: a real prompt they wrote themselves using a 5-part framework they'll reuse forever, felt proof that Claude Code reads their actual files (unlike claude.ai), and a clear handoff into Module 2 (Skills).
 
 ---

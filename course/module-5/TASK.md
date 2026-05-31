@@ -1,7 +1,7 @@
 # Module 5 — One chief, three specialists (orchestration)
 
 **Duration:** ~50 minutes
-**Persona:** June only. April does not appear (her full close is in M6).
+**Persona:** June.
 **Goal:** The learner ends Module 5 with the **EA orchestrator** running on their machine — a single "chief of staff" agent that dispatches three specialists (notes, calendar, follow-ups) in parallel and synthesises their outputs into a morning brief. They've installed the dashboard (`npm install` + `npm run dev`), watched the orchestration animate live in the browser, run it once headlessly from another terminal, and understood why this shape beats a single big agent for the same job.
 
 ---

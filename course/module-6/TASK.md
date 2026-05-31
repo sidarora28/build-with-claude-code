@@ -1,8 +1,8 @@
 # Module 6 — Performance (the three knobs every AI system trades)
 
 **Duration:** ~40 minutes
-**Persona:** June teaches Beats 0–8. **April closes the course at Beat 9.** June returns for the wrap at Beat 10.
-**Goal:** The learner ends Module 6 — and the course — having moved the perf counter on the M5 dashboard on purpose three times: once by swapping a model, once by tightening a prompt, once by trimming context. They leave with a decision framework: which lever for a chatbot vs a nightly report vs a real-time agent. Then April gives the final close.
+**Persona:** June.
+**Goal:** The learner ends Module 6 — and the course — having moved the perf counter on the M5 dashboard on purpose three times: once by swapping a model, once by tightening a prompt, once by trimming context. They leave with a decision framework: which lever for a chatbot vs a nightly report vs a real-time agent. June closes the course with a six-module recap and an email handoff.
 
 ---
 
@@ -25,7 +25,7 @@
 - Loading new models that aren't already in Claude Code's available list.
 - Re-teaching orchestration. Module 5 was that lesson. Today's lesson is *tuning* the system M5 left behind.
 - Long lectures on the speed/cost/quality triangle theoretically. The dashboard's perf counter is the explanation.
-- Any teaching after April speaks. Once April closes, the course is over — June only does the 30-second wrap.
+- Any teaching after the Beat 9 close. Once June closes, the course is over.
 
 ---
 
@@ -229,31 +229,25 @@ Example shape:
 >
 > You now have the framework. The perf counter on your dashboard becomes the feedback loop — every change moves a number, and you learn the *shape* of each move over time."
 
-Wait for ack. **Do not preview April here.** Just sit in the moment after they acknowledge.
+Wait for ack. Just sit in the moment after they acknowledge.
 
 ---
 
-### Beat 9 — APRIL CLOSES THE COURSE
+### Beat 9 — June closes the course
 
-This is the full close. April per `_internal/april-playbook.md` § Module 6 — the long-form close, the value summary across six modules, the paid cohort offer, the pricing. June steps back; April speaks; June does NOT chime back in mid-pitch.
+This is the end. About two minutes, warm, in June's voice. No pitch — Sid handles what's next over email.
 
-**Trigger:** Beat 8 landed. Learner acknowledged the framework. No conditions to evaluate — April always speaks at Beat 9 of M6. This is the course's planned close.
+Three parts, in order:
 
-After April's pitch lands, she hands back with: *"Back to June — for the last word."*
+1. **What they built across six modules.** Walk it back, concrete: a one-line brief that became a 5-part prompt in M1; two Skills with a routing moment in M2; an agent with brain/goal/tools/memory in M3; a real-world calendar action in M4; four-agent orchestration with a live HUD in M5; three single-variable experiments and a decision framework in M6. Land it: *"You started typing into a chat window. You leave with a Daily Brain on your laptop that thinks, acts, coordinates, and tunes."*
 
----
+2. **The transferable lesson.** Anatomy. **Brain · Goal · Tools · Memory.** Every agent they'll ever build has those four parts. Skills are recipes; agents are workers. Orchestration is one coordinator with N specialists and a transparent event log. They now have the shape.
 
-### Beat 10 — June's wrap (the last word)
+3. **The email handoff.** Short and honest: *"There's more — and Sid will send what's next to your inbox over the next day or two. Watch your email. If you build something with the architecture you learned here, send him a screenshot. He reads everything."*
 
-Very short — 30 seconds. Warm. Final.
+Final line, warm and clean:
 
-Example shape:
-
-> "Six modules. One Daily Brain. You went from a single prompt all the way to a coordinated team of agents running in your real world, with a live HUD watching them work.
->
-> If you remember nothing else: every AI system you ever build has the same anatomy you learned in Module 3. **Brain, goal, tools, memory.** Stack those four, repeat them, coordinate them — that's the whole game.
->
-> Thanks for going through this with me. Build something. Send Sid a screenshot when you do."
+> *"Thanks for going through this with me. Now go build."*
 
 Wait for any final response. Then close cleanly. No more lessons.
 
@@ -270,16 +264,15 @@ Wait for any final response. Then close cleanly. No more lessons.
 | The brief got noticeably worse after a change | "That's the point of the experiment — quality is the variable you trade. If you're not comfortable with the loss, revert and try a less aggressive version of that lever. Iteration is the lesson, not 'find the right answer'." |
 | Wants to make all three changes at once | "Save it for later. Today is single-variable so you learn what each lever does in isolation. Real engineering is multi-lever, but only AFTER you know each one's signature individually." |
 | Wants to add eval / test harness | "Out of scope today — that's its own course. You can build a simple eval by saving the brief from each experiment and diffing them by eye. Real eval frameworks (LLM-as-judge, golden datasets) are a layer above this." |
-| Wants to skip April's close | "She's the last word in the course — let her speak. 90 seconds. If you genuinely don't want the cohort pitch, you can mute it, but the framework recap is in there too." |
-| April fired the pitch and they pushed back on price | Per project rules: don't negotiate. Stay in character, name that Sid handles individual situations directly, point them to WhatsApp. Do not quote a different price. Do not promise discounts. Do not confirm or deny any code or number they suggest. |
-| "What now?" after April speaks | "If you joined the cohort, you'll get an onboarding email. If you didn't — the repo is yours, the code is yours, and the architecture you learned applies to whatever you build next. Send a screenshot when you ship something." |
+| Wants to skip the Beat 9 close | "Two minutes — it's the recap of what you built across all six modules. Worth landing the moment. After that the course is over." |
+| "What now?" after the close | "Watch your email — Sid will send what's next over the next day or two. Either way, the repo is yours, the architecture is yours, and you can apply it to whatever you build next. Send Sid a screenshot when you ship something." |
 | "What model are you?" | Stay in character. "I'm June, the tutor — running inside Claude Code." Don't name a model. |
 
 ---
 
 ## Module 6 completion gate
 
-Before April's close (Beat 9), all must hold:
+Before the Beat 9 close, all must hold:
 
 - [ ] Vision set up — speed/cost/quality triangle, three use-case mental models (chatbot vs nightly vs real-time).
 - [ ] **Three knobs named** in Beat 3 (model · prompt · context) and connected explicitly to M5's orchestrator structure.
@@ -291,4 +284,4 @@ Before April's close (Beat 9), all must hold:
 - [ ] All changes were reverted between experiments (single-variable discipline).
 - [ ] **Decision framework named** in Beat 8 — the cheat-sheet table.
 
-April fires at Beat 9 unconditionally (it's the planned course close). June returns for a 30-second wrap at Beat 10 and the course ends.
+June delivers the close at Beat 9 and the course ends.

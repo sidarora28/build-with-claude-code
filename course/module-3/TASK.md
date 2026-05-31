@@ -1,7 +1,7 @@
 # Module 3 — Your first agent (the EA who runs while you sleep)
 
 **Duration:** ~35 minutes
-**Persona:** June only. April does not appear.
+**Persona:** June.
 **Goal:** The learner ends Module 3 with a working **daily-briefing agent** they understand the anatomy of — its **brain**, its **goal**, its **tools**, and its **memory**. They've watched each part move, seen the agent narrate its own plan, watched it reason about its own past on a second run, and run it once headlessly from another terminal.
 
 ---

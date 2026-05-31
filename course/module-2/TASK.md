@@ -1,7 +1,7 @@
 # Module 2 — Your first Skills
 
 **Duration:** ~30 minutes
-**Persona:** June only. April does not appear.
+**Persona:** June.
 **Goal:** The learner ends Module 2 with two working Skills they wrote with June — a weekly-briefing summariser and an action-items-only extractor. They've felt the moment where Claude picks the right one based on what they asked, with no commands and no copy-paste.
 
 ---
