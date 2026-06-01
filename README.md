@@ -2,9 +2,11 @@
 
 A free, hands-on course for anyone who wants to build with AI. Six modules, taught entirely inside Claude Code by an AI tutor named June.
 
-You'll build a real working app on your laptop — **Daily Brain** — a stripped-down second brain that reads your meeting notes, summarises them, tracks your action items, lets you query them, and (by Module 5) plugs into your Gmail. By the end you have something you actually use on Monday morning.
+You'll build a real working app on your laptop — **Daily Brain** — a second brain that reads your meeting notes, turns them into a Monday-morning briefing, takes real action on your Google Calendar, and (by Module 5) runs a coordinated team of specialist agents you watch work on a live dashboard. By the end you have something you actually use on Monday morning.
 
 Built by [Sid Arora](https://justanotherpm.com), Head of Product for Gen AI at Yelp.
+
+**Curious what you'll build, module by module?** See **[CURRICULUM.md](./CURRICULUM.md)**.
 
 ---
 
